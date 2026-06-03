@@ -1,0 +1,126 @@
+# =============================================================================
+# Python
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# =============================================================================
+# IDEs & Editors
+# =============================================================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# =============================================================================
+# Logs & Databases
+# =============================================================================
+*.log
+*.sqlite
+*.sqlite3
+*.db
+
+# =============================================================================
+# Project Specific
+# =============================================================================
+
+# Data files (large / generated)
+data/*.db
+data/*.cache
+
+# Distance matrices can be regenerated
+data/distance_matrix_*.json
+
+# POI raw cache
+data/poi_enrichment_cache.json
+
+# Evaluation reports (generated)
+eval_*.txt
+eval_*.json
+eval_reports/
+
+# Frontend server logs
+frontend/*.log
+
+# Backend server logs
+backend_*.log
+backend_server*.log
+curl_result.json
+fetch_v2_log.txt
+data_quality_check.txt
+
+# Playwright MCP logs
+.playwright-mcp/
+
+# =============================================================================
+# OS
+# =============================================================================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/

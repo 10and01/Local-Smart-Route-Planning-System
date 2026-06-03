@@ -1,0 +1,7173 @@
+[
+  {
+    "poi_id": "mock_hangzhou_000",
+    "name": "西湖断桥残雪",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路208号",
+    "location": {
+      "lat": 30.25910601144591,
+      "lng": 120.14586174035351
+    },
+    "tel": "0571-83000261",
+    "rating": 4.9,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "拍照",
+      "浪漫",
+      "免费",
+      "标志性",
+      "湖景"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "值得去",
+      "人多"
+    ],
+    "highlights": "拍照是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_000.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_001",
+    "name": "雷峰塔",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路867号",
+    "location": {
+      "lat": 30.23154031484799,
+      "lng": 120.14862114068757
+    },
+    "tel": "0571-81447009",
+    "rating": 4.7,
+    "price": 40,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "历史文化",
+      "登高",
+      "西湖十景",
+      "夜景"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "建议早去",
+      "景色美"
+    ],
+    "highlights": "历史文化是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_001.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_002",
+    "name": "三潭印月",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路522号",
+    "location": {
+      "lat": 30.23842173170514,
+      "lng": 120.1407180593406
+    },
+    "tel": "0571-81185659",
+    "rating": 4.6,
+    "price": 55,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "西湖",
+      "游船",
+      "拍照",
+      "人民币背景",
+      "Island"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "景色美",
+      "人多"
+    ],
+    "highlights": "西湖是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_002.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_003",
+    "name": "苏堤春晓",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路775号",
+    "location": {
+      "lat": 30.24572322599853,
+      "lng": 120.13469009552264
+    },
+    "tel": "0571-81726107",
+    "rating": 4.8,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "漫步",
+      "自然风光",
+      "免费",
+      "晨跑",
+      "赏花"
+    ],
+    "ugc_keywords": [
+      "人多",
+      "有历史",
+      "建议早去"
+    ],
+    "highlights": "漫步是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_003.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_004",
+    "name": "白堤",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路527号",
+    "location": {
+      "lat": 30.255846078992473,
+      "lng": 120.15087503705966
+    },
+    "tel": "0571-82654728",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 45,
+    "tags": [
+      "散步",
+      "湖景",
+      "免费",
+      "骑行",
+      "桃花"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "建议早去",
+      "人多"
+    ],
+    "highlights": "散步是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_004.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_005",
+    "name": "平湖秋月",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路320号",
+    "location": {
+      "lat": 30.252728211533327,
+      "lng": 120.14241276792468
+    },
+    "tel": "0571-87321662",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "赏月",
+      "安静",
+      "西湖十景",
+      "秋天"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "空气好",
+      "拍照出片"
+    ],
+    "highlights": "赏月是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_005.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_006",
+    "name": "花港观鱼",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路941号",
+    "location": {
+      "lat": 30.23287649968548,
+      "lng": 120.13869192532995
+    },
+    "tel": "0571-86855387",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "亲子",
+      "喂鱼",
+      "园林",
+      "拍照",
+      "春天"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "人多",
+      "拍照出片"
+    ],
+    "highlights": "亲子是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_006.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_007",
+    "name": "曲院风荷",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路599号",
+    "location": {
+      "lat": 30.262122996581727,
+      "lng": 120.13057351807784
+    },
+    "tel": "0571-84061054",
+    "rating": 4.6,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "荷花",
+      "夏天",
+      "园林",
+      "拍照",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "建议早去",
+      "拍照出片",
+      "空气好"
+    ],
+    "highlights": "荷花是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_007.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_008",
+    "name": "柳浪闻莺",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路69号",
+    "location": {
+      "lat": 30.238587419606205,
+      "lng": 120.15541091839528
+    },
+    "tel": "0571-89138975",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "柳树",
+      "鸟叫",
+      "安静",
+      "免费",
+      "晨练"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "门票贵",
+      "有历史"
+    ],
+    "highlights": "柳树是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_008.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_009",
+    "name": "南屏晚钟",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路587号",
+    "location": {
+      "lat": 30.228583045464205,
+      "lng": 120.14475088966212
+    },
+    "tel": "0571-81808230",
+    "rating": 4.3,
+    "price": 10,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 40,
+    "tags": [
+      "寺庙",
+      "钟声",
+      "安静",
+      "文化",
+      "净慈寺"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "值得去",
+      "建议早去"
+    ],
+    "highlights": "寺庙是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_009.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_010",
+    "name": "灵隐寺",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路527号",
+    "location": {
+      "lat": 30.239616158422187,
+      "lng": 120.09827523412619
+    },
+    "tel": "0571-81559317",
+    "rating": 4.6,
+    "price": 75,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 120,
+    "tags": [
+      "寺庙",
+      "祈福",
+      "古建筑",
+      "人气旺",
+      "文化"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "有历史",
+      "人多"
+    ],
+    "highlights": "寺庙是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_010.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_011",
+    "name": "飞来峰造像",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路590号",
+    "location": {
+      "lat": 30.24285738311411,
+      "lng": 120.09419104343839
+    },
+    "tel": "0571-82728790",
+    "rating": 4.6,
+    "price": 45,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "石窟",
+      "石刻",
+      "历史",
+      "佛教",
+      "艺术"
+    ],
+    "ugc_keywords": [
+      "人多",
+      "景色美",
+      "建议早去"
+    ],
+    "highlights": "石窟是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_011.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_012",
+    "name": "永福寺",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路130号",
+    "location": {
+      "lat": 30.243766760449695,
+      "lng": 120.09523768287684
+    },
+    "tel": "0571-83690469",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "寺庙",
+      "茶园",
+      "安静",
+      "素面",
+      "祈福"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "景色美",
+      "建议早去"
+    ],
+    "highlights": "寺庙是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_012.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_013",
+    "name": "韬光寺",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路780号",
+    "location": {
+      "lat": 30.24454616221406,
+      "lng": 120.09301378997374
+    },
+    "tel": "0571-88410917",
+    "rating": 4.7,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "寺庙",
+      "登山",
+      "观潮",
+      "安静",
+      "小众"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "有历史",
+      "值得去"
+    ],
+    "highlights": "寺庙是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_013.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_014",
+    "name": "北高峰",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路37号",
+    "location": {
+      "lat": 30.2487935297769,
+      "lng": 120.08948821053379
+    },
+    "tel": "0571-84672450",
+    "rating": 4.4,
+    "price": 8,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "登山",
+      "观景",
+      "财神庙",
+      "缆车",
+      "俯瞰"
+    ],
+    "ugc_keywords": [
+      "人多",
+      "拍照出片",
+      "门票贵"
+    ],
+    "highlights": "登山是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_014.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_015",
+    "name": "法喜寺",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路457号",
+    "location": {
+      "lat": 30.235445243209835,
+      "lng": 120.08888531143059
+    },
+    "tel": "0571-85074503",
+    "rating": 4.5,
+    "price": 10,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "寺庙",
+      "祈福",
+      "网红",
+      "御守",
+      "拍照"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "有历史",
+      "建议早去"
+    ],
+    "highlights": "寺庙是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_015.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_016",
+    "name": "法镜寺",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路32号",
+    "location": {
+      "lat": 30.237658201701755,
+      "lng": 120.08973912725439
+    },
+    "tel": "0571-84451470",
+    "rating": 4.5,
+    "price": 10,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 40,
+    "tags": [
+      "寺庙",
+      "女众道场",
+      "安静",
+      "三生石"
+    ],
+    "ugc_keywords": [
+      "有历史",
+      "值得去",
+      "建议早去"
+    ],
+    "highlights": "寺庙是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_016.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_017",
+    "name": "三天竺",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路57号",
+    "location": {
+      "lat": 30.235041367131654,
+      "lng": 120.08942499544992
+    },
+    "tel": "0571-86854117",
+    "rating": 4.6,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 90,
+    "tags": [
+      "古道",
+      "寺庙",
+      "茶文化",
+      "安静",
+      "徒步"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "有历史",
+      "门票贵"
+    ],
+    "highlights": "古道是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_017.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_018",
+    "name": "西溪湿地",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路599号",
+    "location": {
+      "lat": 30.26982608018418,
+      "lng": 120.0651627711523
+    },
+    "tel": "0571-82106009",
+    "rating": 4.8,
+    "price": 80,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 180,
+    "tags": [
+      "自然",
+      "湿地",
+      "乘船",
+      "宁静",
+      "拍照",
+      "生态"
+    ],
+    "ugc_keywords": [
+      "建议早去",
+      "值得去",
+      "门票贵"
+    ],
+    "highlights": "自然是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_018.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_019",
+    "name": "洪园",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路238号",
+    "location": {
+      "lat": 30.27578558373835,
+      "lng": 120.0584769052161
+    },
+    "tel": "0571-85737366",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "湿地",
+      "古建筑",
+      "文化",
+      "小众",
+      "安静"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "建议早去",
+      "拍照出片"
+    ],
+    "highlights": "湿地是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_019.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_020",
+    "name": "烟水渔庄",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路132号",
+    "location": {
+      "lat": 30.267223386163604,
+      "lng": 120.05976158569167
+    },
+    "tel": "0571-82893983",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "湿地",
+      "农家乐",
+      "捕鱼",
+      "民俗",
+      "亲子"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "建议早去",
+      "有历史"
+    ],
+    "highlights": "湿地是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_020.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_021",
+    "name": "深潭口",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路731号",
+    "location": {
+      "lat": 30.272950683005124,
+      "lng": 120.0637611805927
+    },
+    "tel": "0571-89270042",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "湿地",
+      "古樟树",
+      "非诚勿扰",
+      "拍照"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "景色美",
+      "空气好"
+    ],
+    "highlights": "湿地是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_021.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_022",
+    "name": "河坊街",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路766号",
+    "location": {
+      "lat": 30.240672560080977,
+      "lng": 120.16843809984853
+    },
+    "tel": "0571-82381850",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 120,
+    "tags": [
+      "古街",
+      "小吃",
+      "购物",
+      "夜景",
+      "老字号"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "人多",
+      "拍照出片"
+    ],
+    "highlights": "古街是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_022.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_023",
+    "name": "南宋御街",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路199号",
+    "location": {
+      "lat": 30.24212559348756,
+      "lng": 120.16661929538753
+    },
+    "tel": "0571-89241431",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "古街",
+      "历史",
+      "建筑",
+      "水景",
+      "步行街"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "人多",
+      "有历史"
+    ],
+    "highlights": "古街是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_023.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_024",
+    "name": "吴山广场",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路649号",
+    "location": {
+      "lat": 30.238300940807562,
+      "lng": 120.16523387410594
+    },
+    "tel": "0571-88084340",
+    "rating": 4.0,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "广场",
+      "城隍阁",
+      "登山",
+      "市井",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "值得去",
+      "空气好"
+    ],
+    "highlights": "广场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_024.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_025",
+    "name": "城隍阁",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路166号",
+    "location": {
+      "lat": 30.23403181790579,
+      "lng": 120.1636389091453
+    },
+    "tel": "0571-88833158",
+    "rating": 4.4,
+    "price": 30,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "登高",
+      "夜景",
+      "俯瞰",
+      "历史",
+      "喝茶"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "空气好",
+      "景色美"
+    ],
+    "highlights": "登高是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_025.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_026",
+    "name": "胡雪岩故居",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路464号",
+    "location": {
+      "lat": 30.244406085535356,
+      "lng": 120.17098430224286
+    },
+    "tel": "0571-82173081",
+    "rating": 4.5,
+    "price": 20,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "古建筑",
+      "历史",
+      "园林",
+      "豪宅",
+      "文化"
+    ],
+    "ugc_keywords": [
+      "建议早去",
+      "门票贵",
+      "拍照出片"
+    ],
+    "highlights": "古建筑是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_026.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_027",
+    "name": "南宋官窑博物馆",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "博物馆",
+    "address": "杭州市西湖区某某路591号",
+    "location": {
+      "lat": 30.20963086406294,
+      "lng": 120.14420143062806
+    },
+    "tel": "0571-89198208",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "陶瓷",
+      "历史",
+      "文化",
+      "亲子",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "涨知识",
+      "讲解好",
+      "安静"
+    ],
+    "highlights": "陶瓷是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_027.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_028",
+    "name": "杭州博物馆",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "博物馆",
+    "address": "杭州市拱墅区某某路63号",
+    "location": {
+      "lat": 30.242642410783894,
+      "lng": 120.16468271922257
+    },
+    "tel": "0571-83304873",
+    "rating": 4.7,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "历史",
+      "文物",
+      "免费",
+      "文化",
+      "镇馆之宝"
+    ],
+    "ugc_keywords": [
+      "涨知识",
+      "值得二刷",
+      "讲解好"
+    ],
+    "highlights": "历史是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_028.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_029",
+    "name": "中国丝绸博物馆",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "博物馆",
+    "address": "杭州市西湖区某某路55号",
+    "location": {
+      "lat": 30.224966107634987,
+      "lng": 120.15425475744068
+    },
+    "tel": "0571-83079769",
+    "rating": 4.8,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "丝绸",
+      "时尚",
+      "文化",
+      "建筑美",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "亲子适合",
+      "涨知识",
+      "讲解好"
+    ],
+    "highlights": "丝绸是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_029.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_030",
+    "name": "浙江省博物馆",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "博物馆",
+    "address": "杭州市西湖区某某路532号",
+    "location": {
+      "lat": 30.25510708291516,
+      "lng": 120.13901047416489
+    },
+    "tel": "0571-85956429",
+    "rating": 4.7,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "文物",
+      "历史",
+      "文化",
+      "免费",
+      "镇馆之宝"
+    ],
+    "ugc_keywords": [
+      "亲子适合",
+      "免费",
+      "涨知识"
+    ],
+    "highlights": "文物是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_030.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_031",
+    "name": "小河直街",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路880号",
+    "location": {
+      "lat": 30.295909478382768,
+      "lng": 120.15584862494372
+    },
+    "tel": "0571-89853239",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 90,
+    "tags": [
+      "文艺",
+      "古街",
+      "拍照",
+      "下午茶",
+      "运河"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "门票贵",
+      "有历史"
+    ],
+    "highlights": "文艺是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_031.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_032",
+    "name": "桥西历史街区",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路319号",
+    "location": {
+      "lat": 30.30023049953138,
+      "lng": 120.14905398163215
+    },
+    "tel": "0571-82673273",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "运河",
+      "博物馆群",
+      "古街",
+      "文化",
+      "手工艺"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "人多",
+      "空气好"
+    ],
+    "highlights": "运河是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_032.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_033",
+    "name": "拱宸桥",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路787号",
+    "location": {
+      "lat": 30.302099346917906,
+      "lng": 120.1481626387219
+    },
+    "tel": "0571-82624719",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 30,
+    "tags": [
+      "古桥",
+      "运河",
+      "历史",
+      "拍照",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "空气好",
+      "门票贵"
+    ],
+    "highlights": "古桥是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_033.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_034",
+    "name": "刀剪剑博物馆",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "博物馆",
+    "address": "杭州市拱墅区某某路858号",
+    "location": {
+      "lat": 30.298875514048106,
+      "lng": 120.15264872407728
+    },
+    "tel": "0571-83559528",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 45,
+    "tags": [
+      "非遗",
+      "手工艺",
+      "亲子",
+      "免费",
+      "独特"
+    ],
+    "ugc_keywords": [
+      "值得二刷",
+      "亲子适合",
+      "涨知识"
+    ],
+    "highlights": "非遗是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_034.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_035",
+    "name": "中国扇博物馆",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "博物馆",
+    "address": "杭州市上城区某某路630号",
+    "location": {
+      "lat": 30.298131121435286,
+      "lng": 120.15163009180395
+    },
+    "tel": "0571-89783691",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 40,
+    "tags": [
+      "非遗",
+      "手工艺",
+      "文化",
+      "免费",
+      "优雅"
+    ],
+    "ugc_keywords": [
+      "涨知识",
+      "安静",
+      "免费"
+    ],
+    "highlights": "非遗是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_035.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_036",
+    "name": "大兜路历史街区",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路673号",
+    "location": {
+      "lat": 30.291895314414464,
+      "lng": 120.15797128146129
+    },
+    "tel": "0571-85808293",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "运河",
+      "夜市",
+      "文艺",
+      "美食",
+      "夜景"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "建议早去",
+      "值得去"
+    ],
+    "highlights": "运河是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_036.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_037",
+    "name": "宋城",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "休闲娱乐",
+    "address": "杭州市拱墅区某某路930号",
+    "location": {
+      "lat": 30.184210079527286,
+      "lng": 120.1045378348206
+    },
+    "tel": "0571-86972573",
+    "rating": 4.6,
+    "price": 320,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 240,
+    "tags": [
+      "演出",
+      "穿越",
+      "主题公园",
+      "千古情",
+      "表演"
+    ],
+    "ugc_keywords": [
+      "好玩",
+      "值得票价",
+      "刺激"
+    ],
+    "highlights": "演出是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_037.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_038",
+    "name": "杭州极地海洋公园",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "休闲娱乐",
+    "address": "杭州市上城区某某路340号",
+    "location": {
+      "lat": 30.17024535573395,
+      "lng": 120.12041103123566
+    },
+    "tel": "0571-81006607",
+    "rating": 4.5,
+    "price": 290,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 180,
+    "tags": [
+      "海洋动物",
+      "亲子",
+      "表演",
+      "企鹅",
+      "白鲸"
+    ],
+    "ugc_keywords": [
+      "放松",
+      "推荐",
+      "人不多"
+    ],
+    "highlights": "海洋动物是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_038.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_039",
+    "name": "中国美术学院象山校区",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路457号",
+    "location": {
+      "lat": 30.149986820928184,
+      "lng": 120.08040558346575
+    },
+    "tel": "0571-86261005",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "建筑",
+      "艺术",
+      "拍照",
+      "设计",
+      "校园"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "值得去",
+      "人多"
+    ],
+    "highlights": "建筑是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_039.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_040",
+    "name": "之江校区",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路239号",
+    "location": {
+      "lat": 30.19515813008874,
+      "lng": 120.10918031529484
+    },
+    "tel": "0571-86293466",
+    "rating": 4.6,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "建筑",
+      "民国",
+      "红砖",
+      "拍照",
+      "安静"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "有历史",
+      "建议早去"
+    ],
+    "highlights": "建筑是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_040.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_041",
+    "name": "楼外楼",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路711号",
+    "location": {
+      "lat": 30.25736701452839,
+      "lng": 120.13904724878111
+    },
+    "tel": "0571-85607463",
+    "rating": 4.1,
+    "price": 200,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 90,
+    "tags": [
+      "杭帮菜",
+      "西湖醋鱼",
+      "老字号",
+      "景观位",
+      "历史"
+    ],
+    "ugc_keywords": [
+      "必点菜",
+      "提前预约",
+      "环境好"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_041.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_042",
+    "name": "知味观",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路899号",
+    "location": {
+      "lat": 30.255499554891244,
+      "lng": 120.1656351640224
+    },
+    "tel": "0571-86591402",
+    "rating": 4.2,
+    "price": 80,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "小笼包",
+      "点心",
+      "老字号",
+      "平价",
+      "猫耳朵"
+    ],
+    "ugc_keywords": [
+      "服务一般",
+      "味道好",
+      "性价比高"
+    ],
+    "highlights": "小笼包是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_042.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_043",
+    "name": "外婆家",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路157号",
+    "location": {
+      "lat": 30.267397846113195,
+      "lng": 120.15487238715987
+    },
+    "tel": "0571-85895078",
+    "rating": 4.7,
+    "price": 90,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "杭帮菜",
+      "排队王",
+      "性价比高",
+      "家庭",
+      "麻婆豆腐"
+    ],
+    "ugc_keywords": [
+      "味道好",
+      "性价比高",
+      "提前预约"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_043.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_044",
+    "name": "绿茶餐厅",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "餐饮服务",
+    "address": "杭州市余杭区某某路185号",
+    "location": {
+      "lat": 30.271801262075,
+      "lng": 120.1602616648998
+    },
+    "tel": "0571-87241170",
+    "rating": 4.4,
+    "price": 100,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "创意菜",
+      "环境好",
+      "拍照",
+      "年轻人",
+      "面包诱惑"
+    ],
+    "ugc_keywords": [
+      "分量足",
+      "必点菜",
+      "提前预约"
+    ],
+    "highlights": "创意菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_044.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_045",
+    "name": "新白鹿餐厅",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "餐饮服务",
+    "address": "杭州市余杭区某某路716号",
+    "location": {
+      "lat": 30.264885846826044,
+      "lng": 120.15893610248683
+    },
+    "tel": "0571-80915988",
+    "rating": 4.4,
+    "price": 70,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "杭帮菜",
+      "便宜",
+      "排队",
+      "必吃",
+      "蛋黄鸡翅"
+    ],
+    "ugc_keywords": [
+      "必点菜",
+      "分量足",
+      "排队久"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_045.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_046",
+    "name": "老头儿油爆虾",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路756号",
+    "location": {
+      "lat": 30.249750769460537,
+      "lng": 120.1698811126778
+    },
+    "tel": "0571-80622293",
+    "rating": 4.3,
+    "price": 110,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "油爆虾",
+      "地道",
+      "老店",
+      "夜宵",
+      "干炸响铃"
+    ],
+    "ugc_keywords": [
+      "分量足",
+      "服务一般",
+      "排队久"
+    ],
+    "highlights": "油爆虾是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_046.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_047",
+    "name": "张生记",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路496号",
+    "location": {
+      "lat": 30.264685031135286,
+      "lng": 120.16554426114234
+    },
+    "tel": "0571-84708941",
+    "rating": 4.5,
+    "price": 150,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 90,
+    "tags": [
+      "杭帮菜",
+      "老鸭煲",
+      "老字号",
+      "家庭",
+      "宴请"
+    ],
+    "ugc_keywords": [
+      "排队久",
+      "分量足",
+      "味道好"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_047.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_048",
+    "name": "奎元馆",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路655号",
+    "location": {
+      "lat": 30.25617902772745,
+      "lng": 120.1679354276913
+    },
+    "tel": "0571-81966589",
+    "rating": 4.1,
+    "price": 50,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 45,
+    "tags": [
+      "片儿川",
+      "虾爆鳝面",
+      "老字号",
+      "面食",
+      "平价"
+    ],
+    "ugc_keywords": [
+      "服务一般",
+      "环境好",
+      "性价比高"
+    ],
+    "highlights": "片儿川是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_048.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_049",
+    "name": "王润兴酒楼",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路713号",
+    "location": {
+      "lat": 30.241710820612603,
+      "lng": 120.1688755295979
+    },
+    "tel": "0571-88286993",
+    "rating": 3.9,
+    "price": 120,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "乾隆鱼",
+      "杭帮菜",
+      "老字号",
+      "历史",
+      "古装"
+    ],
+    "ugc_keywords": [
+      "性价比高",
+      "必点菜",
+      "分量足"
+    ],
+    "highlights": "乾隆鱼是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_049.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_050",
+    "name": "山外山",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路717号",
+    "location": {
+      "lat": 30.26013179294373,
+      "lng": 120.1243114890795
+    },
+    "tel": "0571-89161877",
+    "rating": 4.3,
+    "price": 130,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "杭帮菜",
+      "植物园",
+      "素菜",
+      "老字号",
+      "环境"
+    ],
+    "ugc_keywords": [
+      "服务一般",
+      "必点菜",
+      "味道好"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_050.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_051",
+    "name": "菊英面店",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "餐饮服务",
+    "address": "杭州市西湖区某某路204号",
+    "location": {
+      "lat": 30.247531159723277,
+      "lng": 120.17197261405269
+    },
+    "tel": "0571-86543947",
+    "rating": 4.0,
+    "price": 30,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 40,
+    "tags": [
+      "片儿川",
+      "拌川",
+      "市井",
+      "排队",
+      "舌尖"
+    ],
+    "ugc_keywords": [
+      "环境好",
+      "提前预约",
+      "分量足"
+    ],
+    "highlights": "片儿川是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_051.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_052",
+    "name": "方老大面",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路51号",
+    "location": {
+      "lat": 30.244668238959772,
+      "lng": 120.1742139072036
+    },
+    "tel": "0571-89221320",
+    "rating": 4.1,
+    "price": 35,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 40,
+    "tags": [
+      "拌川",
+      "腰花",
+      "市井",
+      "排队",
+      "地道"
+    ],
+    "ugc_keywords": [
+      "提前预约",
+      "必点菜",
+      "性价比高"
+    ],
+    "highlights": "拌川是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_052.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_053",
+    "name": "孙奶奶葱包桧",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "餐饮服务",
+    "address": "杭州市西湖区某某路420号",
+    "location": {
+      "lat": 30.240591616256445,
+      "lng": 120.1681838136192
+    },
+    "tel": "0571-84841084",
+    "rating": 4.4,
+    "price": 10,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 20,
+    "tags": [
+      "小吃",
+      "葱包桧",
+      "市井",
+      "路边摊",
+      "地道"
+    ],
+    "ugc_keywords": [
+      "必点菜",
+      "提前预约",
+      "排队久"
+    ],
+    "highlights": "小吃是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_053.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_054",
+    "name": "周萍粽子",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "餐饮服务",
+    "address": "杭州市西湖区某某路307号",
+    "location": {
+      "lat": 30.237372770510174,
+      "lng": 120.16767726304674
+    },
+    "tel": "0571-88507277",
+    "rating": 4.2,
+    "price": 15,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 20,
+    "tags": [
+      "粽子",
+      "大肉粽",
+      "市井",
+      "老字号",
+      "早餐"
+    ],
+    "ugc_keywords": [
+      "排队久",
+      "环境好",
+      "性价比高"
+    ],
+    "highlights": "粽子是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_054.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_055",
+    "name": "游埠豆浆",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "餐饮服务",
+    "address": "杭州市余杭区某某路631号",
+    "location": {
+      "lat": 30.251598171702,
+      "lng": 120.17452378922066
+    },
+    "tel": "0571-81205215",
+    "rating": 4.4,
+    "price": 15,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 25,
+    "tags": [
+      "豆浆",
+      "油条",
+      "早餐",
+      "市井",
+      "地道"
+    ],
+    "ugc_keywords": [
+      "性价比高",
+      "提前预约",
+      "服务一般"
+    ],
+    "highlights": "豆浆是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_055.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_056",
+    "name": "苏小柳",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路803号",
+    "location": {
+      "lat": 30.264429955942855,
+      "lng": 120.15972554449631
+    },
+    "tel": "0571-80757444",
+    "rating": 4.6,
+    "price": 80,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "小笼包",
+      "江南点心",
+      "精致",
+      "拍照",
+      "蟹粉"
+    ],
+    "ugc_keywords": [
+      "服务一般",
+      "必点菜",
+      "排队久"
+    ],
+    "highlights": "小笼包是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_056.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_057",
+    "name": "菲乐餐厅",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路747号",
+    "location": {
+      "lat": 30.257039445841343,
+      "lng": 120.1412757061682
+    },
+    "tel": "0571-81743243",
+    "rating": 4.4,
+    "price": 90,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "杭帮菜",
+      "白切肉",
+      "家常",
+      "小众",
+      "本地"
+    ],
+    "ugc_keywords": [
+      "提前预约",
+      "性价比高",
+      "分量足"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_057.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_058",
+    "name": "德明饭店",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路692号",
+    "location": {
+      "lat": 30.237111062226823,
+      "lng": 120.17377713338745
+    },
+    "tel": "0571-80527822",
+    "rating": 4.4,
+    "price": 100,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "杭帮菜",
+      "卤大肠",
+      "市井",
+      "排队",
+      "苍蝇馆"
+    ],
+    "ugc_keywords": [
+      "性价比高",
+      "环境好",
+      "分量足"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_058.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_059",
+    "name": "星巴克(西湖天地店)",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "咖啡厅",
+    "address": "杭州市上城区某某路130号",
+    "location": {
+      "lat": 30.255710925281644,
+      "lng": 120.14298468882491
+    },
+    "tel": "0571-84728038",
+    "rating": 4.4,
+    "price": 50,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 45,
+    "tags": [
+      "湖景",
+      "下午茶",
+      "拍照",
+      "休息",
+      "连锁"
+    ],
+    "ugc_keywords": [
+      "价格偏贵",
+      "氛围好",
+      "拍照好看"
+    ],
+    "highlights": "湖景是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_059.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_060",
+    "name": "% Arabica(杭州店)",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "咖啡厅",
+    "address": "杭州市余杭区某某路661号",
+    "location": {
+      "lat": 30.269508684719767,
+      "lng": 120.14931607352852
+    },
+    "tel": "0571-88596012",
+    "rating": 4.6,
+    "price": 45,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 40,
+    "tags": [
+      "网红",
+      "拿铁",
+      "极简风",
+      "拍照",
+      "品质"
+    ],
+    "ugc_keywords": [
+      "适合办公",
+      "价格偏贵",
+      "咖啡香"
+    ],
+    "highlights": "网红是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_060.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_061",
+    "name": "M Stand",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "咖啡厅",
+    "address": "杭州市余杭区某某路902号",
+    "location": {
+      "lat": 30.26498100498856,
+      "lng": 120.16186784181271
+    },
+    "tel": "0571-82469830",
+    "rating": 4.1,
+    "price": 40,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 40,
+    "tags": [
+      "鲜椰冰咖",
+      "设计感",
+      "商务",
+      "下午茶",
+      "网红"
+    ],
+    "ugc_keywords": [
+      "氛围好",
+      "座位少",
+      "拍照好看"
+    ],
+    "highlights": "鲜椰冰咖是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_061.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_062",
+    "name": "Black Rainbow Coffee",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "咖啡厅",
+    "address": "杭州市上城区某某路139号",
+    "location": {
+      "lat": 30.27110852683226,
+      "lng": 120.16440411299885
+    },
+    "tel": "0571-81651846",
+    "rating": 4.5,
+    "price": 50,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 45,
+    "tags": [
+      "手冲",
+      "蛋糕",
+      "日系",
+      "安静",
+      "社区"
+    ],
+    "ugc_keywords": [
+      "适合办公",
+      "拍照好看",
+      "氛围好"
+    ],
+    "highlights": "手冲是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_062.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_063",
+    "name": "Parking Coffee",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "咖啡厅",
+    "address": "杭州市上城区某某路283号",
+    "location": {
+      "lat": 30.26833213620524,
+      "lng": 120.16832051685189
+    },
+    "tel": "0571-81843891",
+    "rating": 4.7,
+    "price": 45,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 40,
+    "tags": [
+      "冠军咖啡",
+      "手冲",
+      "专业",
+      "探店",
+      "小众"
+    ],
+    "ugc_keywords": [
+      "价格偏贵",
+      "拍照好看",
+      "咖啡香"
+    ],
+    "highlights": "冠军咖啡是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_063.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_064",
+    "name": "SECTION COFFEE",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "咖啡厅",
+    "address": "杭州市上城区某某路609号",
+    "location": {
+      "lat": 30.27531859644834,
+      "lng": 120.15544991317819
+    },
+    "tel": "0571-87088407",
+    "rating": 4.5,
+    "price": 40,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 40,
+    "tags": [
+      "露营风",
+      "拍照",
+      "特调",
+      "年轻人",
+      "网红"
+    ],
+    "ugc_keywords": [
+      "适合办公",
+      "咖啡香",
+      "氛围好"
+    ],
+    "highlights": "露营风是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_064.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_065",
+    "name": "灵隐寺慈悲咖啡",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "咖啡厅",
+    "address": "杭州市余杭区某某路468号",
+    "location": {
+      "lat": 30.24015706117311,
+      "lng": 120.09773464733522
+    },
+    "tel": "0571-84778404",
+    "rating": 4.5,
+    "price": 35,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 30,
+    "tags": [
+      "寺庙",
+      "禅意",
+      "祈福",
+      "特色",
+      "文创"
+    ],
+    "ugc_keywords": [
+      "适合办公",
+      "咖啡香",
+      "氛围好"
+    ],
+    "highlights": "寺庙是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_065.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_066",
+    "name": "晓书馆咖啡",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "咖啡厅",
+    "address": "杭州市拱墅区某某路364号",
+    "location": {
+      "lat": 30.420176219797117,
+      "lng": 120.02977629400742
+    },
+    "tel": "0571-83632528",
+    "rating": 4.6,
+    "price": 40,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 45,
+    "tags": [
+      "书店",
+      "文艺",
+      "安静",
+      "阅读",
+      "良渚"
+    ],
+    "ugc_keywords": [
+      "拍照好看",
+      "咖啡香",
+      "座位少"
+    ],
+    "highlights": "书店是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_066.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_067",
+    "name": "湖滨银泰in77",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "购物服务",
+    "address": "杭州市余杭区某某路234号",
+    "location": {
+      "lat": 30.255646592671564,
+      "lng": 120.16431310292256
+    },
+    "tel": "0571-84743190",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 120,
+    "tags": [
+      "商场",
+      "潮牌",
+      "美食",
+      "地铁直达",
+      "年轻"
+    ],
+    "ugc_keywords": [
+      "好逛",
+      "吃饭方便",
+      "停车难"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_067.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_068",
+    "name": "武林夜市",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "购物服务",
+    "address": "杭州市拱墅区某某路752号",
+    "location": {
+      "lat": 30.274456501053226,
+      "lng": 120.16403155627812
+    },
+    "tel": "0571-81287633",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "夜市",
+      "小吃",
+      "手作",
+      "热闹",
+      "平价"
+    ],
+    "ugc_keywords": [
+      "品牌多",
+      "吃饭方便",
+      "周末人多"
+    ],
+    "highlights": "夜市是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_068.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_069",
+    "name": "杭州大厦",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "购物服务",
+    "address": "杭州市上城区某某路929号",
+    "location": {
+      "lat": 30.27045202857375,
+      "lng": 120.16233567606004
+    },
+    "tel": "0571-88394286",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "高端",
+      "奢侈品",
+      "老牌",
+      "市中心",
+      "全"
+    ],
+    "ugc_keywords": [
+      "吃饭方便",
+      "好逛",
+      "周末人多"
+    ],
+    "highlights": "高端是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_069.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_070",
+    "name": "万象城",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "购物服务",
+    "address": "杭州市余杭区某某路870号",
+    "location": {
+      "lat": 30.255300401526107,
+      "lng": 120.21069312327413
+    },
+    "tel": "0571-87876302",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 120,
+    "tags": [
+      "高端",
+      "美食",
+      "IMAX",
+      "年轻",
+      "钱塘江"
+    ],
+    "ugc_keywords": [
+      "吃饭方便",
+      "停车难",
+      "品牌多"
+    ],
+    "highlights": "高端是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_070.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_071",
+    "name": "嘉里中心",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "购物服务",
+    "address": "杭州市拱墅区某某路742号",
+    "location": {
+      "lat": 30.260822369006252,
+      "lng": 120.16082767917337
+    },
+    "tel": "0571-88408358",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "年轻",
+      "潮流",
+      "美食",
+      "市中心",
+      "活动多"
+    ],
+    "ugc_keywords": [
+      "停车难",
+      "品牌多",
+      "周末人多"
+    ],
+    "highlights": "年轻是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_071.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_072",
+    "name": "来福士中心",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "购物服务",
+    "address": "杭州市上城区某某路22号",
+    "location": {
+      "lat": 30.249058838379717,
+      "lng": 120.20556415944611
+    },
+    "tel": "0571-83834763",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "现代",
+      "美食",
+      "双子塔",
+      "年轻",
+      "打卡"
+    ],
+    "ugc_keywords": [
+      "好逛",
+      "周末人多",
+      "品牌多"
+    ],
+    "highlights": "现代是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_072.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_073",
+    "name": "丝绸市场",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "购物服务",
+    "address": "杭州市拱墅区某某路817号",
+    "location": {
+      "lat": 30.265072379851627,
+      "lng": 120.16939274930104
+    },
+    "tel": "0571-80995330",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 60,
+    "tags": [
+      "丝绸",
+      "批发",
+      "老字号",
+      "旗袍",
+      "伴手礼"
+    ],
+    "ugc_keywords": [
+      "周末人多",
+      "好逛",
+      "停车难"
+    ],
+    "highlights": "丝绸是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_073.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_074",
+    "name": "四季青服装市场",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "购物服务",
+    "address": "杭州市余杭区某某路969号",
+    "location": {
+      "lat": 30.250055287269213,
+      "lng": 120.22005859394477
+    },
+    "tel": "0571-80721456",
+    "rating": 3.8,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 120,
+    "tags": [
+      "服装",
+      "批发",
+      "便宜",
+      "淘宝",
+      "量大"
+    ],
+    "ugc_keywords": [
+      "好逛",
+      "品牌多",
+      "吃饭方便"
+    ],
+    "highlights": "服装是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_074.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_075",
+    "name": "吴山花鸟市场",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "购物服务",
+    "address": "杭州市余杭区某某路245号",
+    "location": {
+      "lat": 30.2366785166146,
+      "lng": 120.16177384373685
+    },
+    "tel": "0571-81083667",
+    "rating": 4.0,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 45,
+    "tags": [
+      "花鸟",
+      "宠物",
+      "市井",
+      "热闹",
+      "生活"
+    ],
+    "ugc_keywords": [
+      "停车难",
+      "周末人多",
+      "好逛"
+    ],
+    "highlights": "花鸟是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_075.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_076",
+    "name": "西湖音乐喷泉",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "休闲娱乐",
+    "address": "杭州市拱墅区某某路777号",
+    "location": {
+      "lat": 30.25478994026759,
+      "lng": 120.16232941390756
+    },
+    "tel": "0571-85018149",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 30,
+    "tags": [
+      "喷泉",
+      "夜景",
+      "免费",
+      "壮观",
+      "拍照"
+    ],
+    "ugc_keywords": [
+      "人不多",
+      "好玩",
+      "推荐"
+    ],
+    "highlights": "喷泉是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_076.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_077",
+    "name": "印象西湖演出",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "休闲娱乐",
+    "address": "杭州市西湖区某某路529号",
+    "location": {
+      "lat": 30.251226106184426,
+      "lng": 120.14081241035935
+    },
+    "tel": "0571-80502574",
+    "rating": 4.6,
+    "price": 340,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 70,
+    "tags": [
+      "演出",
+      "夜景",
+      "文化",
+      "张艺谋",
+      "震撼"
+    ],
+    "ugc_keywords": [
+      "推荐",
+      "值得票价",
+      "人不多"
+    ],
+    "highlights": "演出是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_077.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_078",
+    "name": "杭州乐园",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "休闲娱乐",
+    "address": "杭州市上城区某某路270号",
+    "location": {
+      "lat": 30.15982331436714,
+      "lng": 120.15457405206071
+    },
+    "tel": "0571-82014919",
+    "rating": 4.1,
+    "price": 190,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 240,
+    "tags": [
+      "过山车",
+      "刺激",
+      "亲子",
+      "水上",
+      "尖叫"
+    ],
+    "ugc_keywords": [
+      "刺激",
+      "好玩",
+      "人不多"
+    ],
+    "highlights": "过山车是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_078.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_079",
+    "name": "云曼温泉",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "休闲娱乐",
+    "address": "杭州市上城区某某路428号",
+    "location": {
+      "lat": 30.164681925459863,
+      "lng": 120.16051082673873
+    },
+    "tel": "0571-89675337",
+    "rating": 4.6,
+    "price": 198,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 180,
+    "tags": [
+      "温泉",
+      "放松",
+      "日式",
+      "秋冬",
+      "度假"
+    ],
+    "ugc_keywords": [
+      "刺激",
+      "放松",
+      "推荐"
+    ],
+    "highlights": "温泉是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_079.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_080",
+    "name": "清河坊夜游",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "休闲娱乐",
+    "address": "杭州市上城区某某路599号",
+    "location": {
+      "lat": 30.24115979183134,
+      "lng": 120.1674495888256
+    },
+    "tel": "0571-84274447",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "夜景",
+      "古街",
+      "灯笼",
+      "拍照",
+      "文化"
+    ],
+    "ugc_keywords": [
+      "值得票价",
+      "刺激",
+      "好玩"
+    ],
+    "highlights": "夜景是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_080.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_081",
+    "name": "南山路酒吧街",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "休闲娱乐",
+    "address": "杭州市余杭区某某路294号",
+    "location": {
+      "lat": 30.230626697519273,
+      "lng": 120.14914901706872
+    },
+    "tel": "0571-83867601",
+    "rating": 4.0,
+    "price": 150,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 120,
+    "tags": [
+      "酒吧",
+      "夜生活",
+      "文艺",
+      "音乐",
+      "年轻人"
+    ],
+    "ugc_keywords": [
+      "值得票价",
+      "好玩",
+      "人不多"
+    ],
+    "highlights": "酒吧是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_081.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_082",
+    "name": "胜利河美食街",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "休闲娱乐",
+    "address": "杭州市上城区某某路818号",
+    "location": {
+      "lat": 30.289925828437624,
+      "lng": 120.16542273898244
+    },
+    "tel": "0571-81816410",
+    "rating": 4.1,
+    "price": 80,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 90,
+    "tags": [
+      "夜宵",
+      "大排档",
+      "热闹",
+      "本地",
+      "啤酒"
+    ],
+    "ugc_keywords": [
+      "刺激",
+      "值得票价",
+      "放松"
+    ],
+    "highlights": "夜宵是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_082.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_083",
+    "name": "西湖美术馆",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "博物馆",
+    "address": "杭州市余杭区某某路839号",
+    "location": {
+      "lat": 30.253590256001146,
+      "lng": 120.13805004651817
+    },
+    "tel": "0571-83256793",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "书画",
+      "艺术",
+      "免费",
+      "安静",
+      "文化"
+    ],
+    "ugc_keywords": [
+      "讲解好",
+      "亲子适合",
+      "值得二刷"
+    ],
+    "highlights": "书画是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_083.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_084",
+    "name": "唐云艺术馆",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "博物馆",
+    "address": "杭州市余杭区某某路554号",
+    "location": {
+      "lat": 30.231358320857776,
+      "lng": 120.14522778014741
+    },
+    "tel": "0571-88637549",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 40,
+    "tags": [
+      "书画",
+      "国画",
+      "免费",
+      "安静",
+      "文化"
+    ],
+    "ugc_keywords": [
+      "值得二刷",
+      "亲子适合",
+      "讲解好"
+    ],
+    "highlights": "书画是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_084.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_085",
+    "name": "韩美林艺术馆",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "博物馆",
+    "address": "杭州市余杭区某某路414号",
+    "location": {
+      "lat": 30.25074318742605,
+      "lng": 120.11482865010376
+    },
+    "tel": "0571-85874042",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "雕塑",
+      "艺术",
+      "设计",
+      "福娃",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "安静",
+      "免费",
+      "涨知识"
+    ],
+    "highlights": "雕塑是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_085.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_086",
+    "name": "良渚博物院",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "博物馆",
+    "address": "杭州市西湖区某某路302号",
+    "location": {
+      "lat": 30.419554722171334,
+      "lng": 120.02921344119099
+    },
+    "tel": "0571-86192667",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "史前",
+      "玉器",
+      "世界遗产",
+      "文明",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "值得二刷",
+      "涨知识",
+      "亲子适合"
+    ],
+    "highlights": "史前是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_086.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_087",
+    "name": "西泠印社",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路591号",
+    "location": {
+      "lat": 30.25147142645754,
+      "lng": 120.13600241350676
+    },
+    "tel": "0571-87886119",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "篆刻",
+      "书法",
+      "文化",
+      "金石",
+      "孤山"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "建议早去",
+      "空气好"
+    ],
+    "highlights": "篆刻是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_087.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_088",
+    "name": "浙江省图书馆",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "文化",
+    "address": "杭州市余杭区某某路692号",
+    "location": {
+      "lat": 30.265306999813966,
+      "lng": 120.15422617010931
+    },
+    "tel": "0571-88095758",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "阅读",
+      "安静",
+      "学习",
+      "免费",
+      "古籍"
+    ],
+    "ugc_keywords": [
+      "有格调",
+      "文艺",
+      "适合发呆"
+    ],
+    "highlights": "阅读是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_088.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_089",
+    "name": "晓风书屋",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "文化",
+    "address": "杭州市余杭区某某路631号",
+    "location": {
+      "lat": 30.25734350488947,
+      "lng": 120.14088441609351
+    },
+    "tel": "0571-82234384",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 40,
+    "tags": [
+      "独立书店",
+      "文艺",
+      "安静",
+      "阅读",
+      "小众"
+    ],
+    "ugc_keywords": [
+      "安静",
+      "有格调",
+      "文艺"
+    ],
+    "highlights": "独立书店是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_089.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_090",
+    "name": "太子湾公园",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路438号",
+    "location": {
+      "lat": 30.228288271165578,
+      "lng": 120.13467799889824
+    },
+    "tel": "0571-82328404",
+    "rating": 4.8,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "郁金香",
+      "春天",
+      "野餐",
+      "拍照",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "有历史",
+      "值得去"
+    ],
+    "highlights": "郁金香是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_090.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_091",
+    "name": "杭州植物园",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路788号",
+    "location": {
+      "lat": 30.262497521205276,
+      "lng": 120.121531263559
+    },
+    "tel": "0571-82135546",
+    "rating": 4.7,
+    "price": 10,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "植物",
+      "四季",
+      "安静",
+      "亲子",
+      "梅花园"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "景色美",
+      "值得去"
+    ],
+    "highlights": "植物是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_091.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_092",
+    "name": "九溪烟树",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路82号",
+    "location": {
+      "lat": 30.204114260962363,
+      "lng": 120.10514603360339
+    },
+    "tel": "0571-83637497",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 120,
+    "tags": [
+      "溪流",
+      "徒步",
+      "茶园",
+      "秋天",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "空气好",
+      "值得去"
+    ],
+    "highlights": "溪流是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_092.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_093",
+    "name": "龙井村",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路179号",
+    "location": {
+      "lat": 30.21531480878726,
+      "lng": 120.11555822226619
+    },
+    "tel": "0571-87773322",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 90,
+    "tags": [
+      "茶园",
+      "茶文化",
+      "徒步",
+      "农家菜",
+      "采茶"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "有历史",
+      "空气好"
+    ],
+    "highlights": "茶园是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_093.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_094",
+    "name": "满觉陇",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路232号",
+    "location": {
+      "lat": 30.219842123142342,
+      "lng": 120.12449931048074
+    },
+    "tel": "0571-83837779",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "桂花",
+      "秋天",
+      "民宿",
+      "安静",
+      "喝茶"
+    ],
+    "ugc_keywords": [
+      "建议早去",
+      "景色美",
+      "拍照出片"
+    ],
+    "highlights": "桂花是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_094.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_095",
+    "name": "云栖竹径",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路998号",
+    "location": {
+      "lat": 30.190458128928494,
+      "lng": 120.09539663137274
+    },
+    "tel": "0571-83450087",
+    "rating": 4.6,
+    "price": 8,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "竹林",
+      "徒步",
+      "安静",
+      "洗肺",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "人多",
+      "景色美"
+    ],
+    "highlights": "竹林是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_095.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_096",
+    "name": "虎跑公园",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路892号",
+    "location": {
+      "lat": 30.21882267349351,
+      "lng": 120.14402814633921
+    },
+    "tel": "0571-88420248",
+    "rating": 4.3,
+    "price": 15,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "泉水",
+      "李叔同",
+      "自然",
+      "安静",
+      "泡茶"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "门票贵",
+      "空气好"
+    ],
+    "highlights": "泉水是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_096.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_097",
+    "name": "六和塔",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路850号",
+    "location": {
+      "lat": 30.1890383425599,
+      "lng": 120.13000835634372
+    },
+    "tel": "0571-88914481",
+    "rating": 4.7,
+    "price": 20,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "古塔",
+      "钱塘江",
+      "登高",
+      "历史",
+      "视野"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "空气好",
+      "景色美"
+    ],
+    "highlights": "古塔是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_097.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_098",
+    "name": "白塔公园",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路637号",
+    "location": {
+      "lat": 30.19533776344526,
+      "lng": 120.1255087584669
+    },
+    "tel": "0571-89528688",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "铁路",
+      "樱花",
+      "文艺",
+      "拍照",
+      "亲子"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "门票贵",
+      "人多"
+    ],
+    "highlights": "铁路是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_098.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_099",
+    "name": "八卦田遗址公园",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路949号",
+    "location": {
+      "lat": 30.21472644340776,
+      "lng": 120.13929285855005
+    },
+    "tel": "0571-85002021",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "农耕",
+      "亲子",
+      "历史",
+      "油菜花",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "人多",
+      "值得去",
+      "拍照出片"
+    ],
+    "highlights": "农耕是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_099.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_100",
+    "name": "茅家埠",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路702号",
+    "location": {
+      "lat": 30.259519258909727,
+      "lng": 120.12854674298048
+    },
+    "tel": "0571-84363418",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "湿地",
+      "野趣",
+      "人少",
+      "拍照",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "人多",
+      "值得去"
+    ],
+    "highlights": "湿地是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_100.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_101",
+    "name": "郭庄",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路379号",
+    "location": {
+      "lat": 30.257724558629917,
+      "lng": 120.13181949447765
+    },
+    "tel": "0571-85089179",
+    "rating": 4.5,
+    "price": 10,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "园林",
+      "古典",
+      "茶室",
+      "安静",
+      "小众"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "建议早去",
+      "值得去"
+    ],
+    "highlights": "园林是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_101.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_102",
+    "name": "杭州花圃",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路204号",
+    "location": {
+      "lat": 30.264838233675235,
+      "lng": 120.12403009245578
+    },
+    "tel": "0571-80137558",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "花卉",
+      "春天",
+      "免费",
+      "拍照",
+      "亲子"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "拍照出片",
+      "建议早去"
+    ],
+    "highlights": "花卉是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_102.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_103",
+    "name": "岳王庙",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路26号",
+    "location": {
+      "lat": 30.24975655089014,
+      "lng": 120.13572917891904
+    },
+    "tel": "0571-80829754",
+    "rating": 4.5,
+    "price": 25,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "历史",
+      "岳飞",
+      "爱国",
+      "文化",
+      "古建筑"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "有历史",
+      "拍照出片"
+    ],
+    "highlights": "历史是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_103.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_104",
+    "name": "于谦祠",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路11号",
+    "location": {
+      "lat": 30.247922491655167,
+      "lng": 120.13372148398865
+    },
+    "tel": "0571-80980101",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "历史",
+      "古建筑",
+      "安静",
+      "文化",
+      "小众"
+    ],
+    "ugc_keywords": [
+      "有历史",
+      "空气好",
+      "门票贵"
+    ],
+    "highlights": "历史是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_104.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_105",
+    "name": "章太炎纪念馆",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "博物馆",
+    "address": "杭州市拱墅区某某路984号",
+    "location": {
+      "lat": 30.24914537671835,
+      "lng": 120.1334856687991
+    },
+    "tel": "0571-82918419",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 40,
+    "tags": [
+      "历史",
+      "名人",
+      "免费",
+      "文化",
+      "教育"
+    ],
+    "ugc_keywords": [
+      "值得二刷",
+      "讲解好",
+      "免费"
+    ],
+    "highlights": "历史是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_105.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_106",
+    "name": "张苍水祠",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路33号",
+    "location": {
+      "lat": 30.247366645590258,
+      "lng": 120.13582869885542
+    },
+    "tel": "0571-86999520",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 30,
+    "tags": [
+      "历史",
+      "古建筑",
+      "安静",
+      "文化",
+      "西湖"
+    ],
+    "ugc_keywords": [
+      "人多",
+      "拍照出片",
+      "值得去"
+    ],
+    "highlights": "历史是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_106.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_107",
+    "name": "茶叶博物馆",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "博物馆",
+    "address": "杭州市拱墅区某某路668号",
+    "location": {
+      "lat": 30.222142612350982,
+      "lng": 120.12873785338915
+    },
+    "tel": "0571-82903609",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "茶文化",
+      "免费",
+      "建筑美",
+      "拍照",
+      "教育"
+    ],
+    "ugc_keywords": [
+      "讲解好",
+      "亲子适合",
+      "涨知识"
+    ],
+    "highlights": "茶文化是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_107.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_108",
+    "name": "中国茶叶博物馆龙井馆区",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "博物馆",
+    "address": "杭州市上城区某某路276号",
+    "location": {
+      "lat": 30.218923666877583,
+      "lng": 120.12537068943327
+    },
+    "tel": "0571-81017197",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "茶文化",
+      "龙井",
+      "建筑美",
+      "拍照",
+      "安静"
+    ],
+    "ugc_keywords": [
+      "亲子适合",
+      "涨知识",
+      "免费"
+    ],
+    "highlights": "茶文化是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_108.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_109",
+    "name": "双峰插云",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路393号",
+    "location": {
+      "lat": 30.267926612148603,
+      "lng": 120.11936057248005
+    },
+    "tel": "0571-82465125",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "西湖十景",
+      "登山",
+      "云雾",
+      "拍照",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "有历史",
+      "人多",
+      "拍照出片"
+    ],
+    "highlights": "西湖十景是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_109.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_110",
+    "name": "青芝坞",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路131号",
+    "location": {
+      "lat": 30.266702113671187,
+      "lng": 120.12232873885496
+    },
+    "tel": "0571-89956870",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "民宿",
+      "文艺",
+      "美食",
+      "拍照",
+      "慢生活"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "人多",
+      "空气好"
+    ],
+    "highlights": "民宿是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_110.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_111",
+    "name": "浙大玉泉校区",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "文化",
+    "address": "杭州市余杭区某某路905号",
+    "location": {
+      "lat": 30.263189705196922,
+      "lng": 120.1258082551126
+    },
+    "tel": "0571-85646583",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 45,
+    "tags": [
+      "高校",
+      "建筑",
+      "历史",
+      "免费",
+      "拍照"
+    ],
+    "ugc_keywords": [
+      "有格调",
+      "适合发呆",
+      "小众"
+    ],
+    "highlights": "高校是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_111.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_112",
+    "name": "市民中心",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "文化",
+    "address": "杭州市余杭区某某路589号",
+    "location": {
+      "lat": 30.245824067950934,
+      "lng": 120.21064666465443
+    },
+    "tel": "0571-85440552",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 30,
+    "tags": [
+      "建筑",
+      "现代",
+      "打卡",
+      "免费",
+      "市政府"
+    ],
+    "ugc_keywords": [
+      "有格调",
+      "小众",
+      "适合发呆"
+    ],
+    "highlights": "建筑是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_112.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_113",
+    "name": "城市阳台",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路557号",
+    "location": {
+      "lat": 30.247557505575138,
+      "lng": 120.21197524845535
+    },
+    "tel": "0571-83115833",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "观景",
+      "钱塘江",
+      "夜景",
+      "免费",
+      "吹风"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "拍照出片",
+      "人多"
+    ],
+    "highlights": "观景是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_113.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_114",
+    "name": "杭州大剧院",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "文化",
+    "address": "杭州市拱墅区某某路963号",
+    "location": {
+      "lat": 30.246507852930964,
+      "lng": 120.20735279937783
+    },
+    "tel": "0571-82116313",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "演出",
+      "建筑",
+      "艺术",
+      "现代",
+      "地标"
+    ],
+    "ugc_keywords": [
+      "适合发呆",
+      "有格调",
+      "小众"
+    ],
+    "highlights": "演出是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_114.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_115",
+    "name": "钱塘江夜游",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "休闲娱乐",
+    "address": "杭州市余杭区某某路819号",
+    "location": {
+      "lat": 30.24940331883845,
+      "lng": 120.2156021568678
+    },
+    "tel": "0571-81975430",
+    "rating": 4.2,
+    "price": 138,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "游船",
+      "夜景",
+      "浪漫",
+      "灯光",
+      "地标"
+    ],
+    "ugc_keywords": [
+      "人不多",
+      "放松",
+      "刺激"
+    ],
+    "highlights": "游船是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_115.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_116",
+    "name": "钱江新城灯光秀",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "休闲娱乐",
+    "address": "杭州市余杭区某某路752号",
+    "location": {
+      "lat": 30.249184694770083,
+      "lng": 120.21161988167673
+    },
+    "tel": "0571-83222911",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 30,
+    "tags": [
+      "夜景",
+      "灯光",
+      "免费",
+      "震撼",
+      "打卡"
+    ],
+    "ugc_keywords": [
+      "值得票价",
+      "好玩",
+      "放松"
+    ],
+    "highlights": "夜景是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_116.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_117",
+    "name": "砂之船奥特莱斯",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "购物服务",
+    "address": "杭州市上城区某某路221号",
+    "location": {
+      "lat": 30.245394551197634,
+      "lng": 120.21258521147757
+    },
+    "tel": "0571-80412296",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 120,
+    "tags": [
+      "outlet",
+      "打折",
+      "品牌",
+      "购物",
+      "餐饮"
+    ],
+    "ugc_keywords": [
+      "品牌多",
+      "停车难",
+      "周末人多"
+    ],
+    "highlights": "outlet是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_117.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_118",
+    "name": "杭州国际会议中心",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "文化",
+    "address": "杭州市上城区某某路726号",
+    "location": {
+      "lat": 30.244270489108025,
+      "lng": 120.20975607153501
+    },
+    "tel": "0571-87704635",
+    "rating": 3.9,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 20,
+    "tags": [
+      "建筑",
+      "会议",
+      "现代",
+      "地标",
+      "金球"
+    ],
+    "ugc_keywords": [
+      "适合发呆",
+      "安静",
+      "小众"
+    ],
+    "highlights": "建筑是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_118.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_119",
+    "name": "星光大道",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "购物服务",
+    "address": "杭州市拱墅区某某路770号",
+    "location": {
+      "lat": 30.2107812848133,
+      "lng": 120.20520843966341
+    },
+    "tel": "0571-86735467",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "商场",
+      "电影",
+      "美食",
+      "年轻",
+      "滨江"
+    ],
+    "ugc_keywords": [
+      "吃饭方便",
+      "周末人多",
+      "品牌多"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_119.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_120",
+    "name": "滨江龙湖天街",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "购物服务",
+    "address": "杭州市余杭区某某路347号",
+    "location": {
+      "lat": 30.20562683995848,
+      "lng": 120.20923194420963
+    },
+    "tel": "0571-82818272",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 120,
+    "tags": [
+      "商场",
+      "潮牌",
+      "美食",
+      "亲子",
+      "打卡"
+    ],
+    "ugc_keywords": [
+      "停车难",
+      "品牌多",
+      "好逛"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_120.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_121",
+    "name": "杭州印",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路627号",
+    "location": {
+      "lat": 30.21562367624157,
+      "lng": 120.19959576355286
+    },
+    "tel": "0571-81244491",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 30,
+    "tags": [
+      "建筑",
+      "地标",
+      "拍照",
+      "现代",
+      "钱塘江"
+    ],
+    "ugc_keywords": [
+      "建议早去",
+      "空气好",
+      "景色美"
+    ],
+    "highlights": "建筑是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_121.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_122",
+    "name": "白马湖公园",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路778号",
+    "location": {
+      "lat": 30.165592535001494,
+      "lng": 120.19417393340981
+    },
+    "tel": "0571-81649249",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "花海",
+      "动漫",
+      "免费",
+      "亲子",
+      "野餐"
+    ],
+    "ugc_keywords": [
+      "有历史",
+      "建议早去",
+      "景色美"
+    ],
+    "highlights": "花海是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_122.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_123",
+    "name": "中国动漫博物馆",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "博物馆",
+    "address": "杭州市西湖区某某路635号",
+    "location": {
+      "lat": 30.16859948535051,
+      "lng": 120.19831508186994
+    },
+    "tel": "0571-86429188",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "动漫",
+      "亲子",
+      "互动",
+      "拍照",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "免费",
+      "讲解好",
+      "安静"
+    ],
+    "highlights": "动漫是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_123.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_124",
+    "name": "西兴古镇",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路771号",
+    "location": {
+      "lat": 30.199597347630913,
+      "lng": 120.21566541376946
+    },
+    "tel": "0571-87443988",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "古镇",
+      "运河",
+      "安静",
+      "历史",
+      "小众"
+    ],
+    "ugc_keywords": [
+      "有历史",
+      "人多",
+      "值得去"
+    ],
+    "highlights": "古镇是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_124.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_125",
+    "name": "物联网小镇",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "文化",
+    "address": "杭州市余杭区某某路114号",
+    "location": {
+      "lat": 30.208627386700577,
+      "lng": 120.219817457085
+    },
+    "tel": "0571-83340065",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 30,
+    "tags": [
+      "科技",
+      "现代",
+      "企业",
+      "打卡",
+      "创新"
+    ],
+    "ugc_keywords": [
+      "小众",
+      "适合发呆",
+      "有格调"
+    ],
+    "highlights": "科技是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_125.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_126",
+    "name": "钱塘江樱花跑道",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路52号",
+    "location": {
+      "lat": 30.21228749551768,
+      "lng": 120.20195221699736
+    },
+    "tel": "0571-86897213",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "跑步",
+      "樱花",
+      "江景",
+      "免费",
+      "春天"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "景色美",
+      "空气好"
+    ],
+    "highlights": "跑步是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_126.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_127",
+    "name": "奥体中心",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "文化",
+    "address": "杭州市上城区某某路717号",
+    "location": {
+      "lat": 30.229752799327166,
+      "lng": 120.23023013685287
+    },
+    "tel": "0571-85334032",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 45,
+    "tags": [
+      "体育",
+      "建筑",
+      "地标",
+      "演唱会",
+      "莲花碗"
+    ],
+    "ugc_keywords": [
+      "小众",
+      "文艺",
+      "有格调"
+    ],
+    "highlights": "体育是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_127.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_128",
+    "name": "钱江世纪城公园",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路883号",
+    "location": {
+      "lat": 30.234736135861944,
+      "lng": 120.23525627647595
+    },
+    "tel": "0571-89520540",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "公园",
+      "江景",
+      "夜景",
+      "免费",
+      "休闲"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "值得去",
+      "人多"
+    ],
+    "highlights": "公园是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_128.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_129",
+    "name": "萧山博物馆",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "博物馆",
+    "address": "杭州市拱墅区某某路211号",
+    "location": {
+      "lat": 30.179451655278964,
+      "lng": 120.26041750963323
+    },
+    "tel": "0571-81779374",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "历史",
+      "文物",
+      "免费",
+      "文化",
+      "教育"
+    ],
+    "ugc_keywords": [
+      "安静",
+      "免费",
+      "亲子适合"
+    ],
+    "highlights": "历史是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_129.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_130",
+    "name": "跨湖桥遗址博物馆",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "博物馆",
+    "address": "杭州市西湖区某某路487号",
+    "location": {
+      "lat": 30.154947154391838,
+      "lng": 120.25057985570255
+    },
+    "tel": "0571-86886375",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 50,
+    "tags": [
+      "史前",
+      "独木舟",
+      "考古",
+      "免费",
+      "教育"
+    ],
+    "ugc_keywords": [
+      "讲解好",
+      "安静",
+      "免费"
+    ],
+    "highlights": "史前是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_130.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_131",
+    "name": "东方文化园",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路246号",
+    "location": {
+      "lat": 30.139500375815608,
+      "lng": 120.23991566424142
+    },
+    "tel": "0571-82836801",
+    "rating": 4.2,
+    "price": 80,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 120,
+    "tags": [
+      "宗教",
+      "建筑",
+      "文化",
+      "祈福",
+      "大型"
+    ],
+    "ugc_keywords": [
+      "人多",
+      "有历史",
+      "门票贵"
+    ],
+    "highlights": "宗教是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_131.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_132",
+    "name": "烂苹果乐园",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "休闲娱乐",
+    "address": "杭州市西湖区某某路604号",
+    "location": {
+      "lat": 30.16581922773556,
+      "lng": 120.15465429018543
+    },
+    "tel": "0571-89909290",
+    "rating": 4.2,
+    "price": 160,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 180,
+    "tags": [
+      "亲子",
+      "室内",
+      "游乐",
+      "互动",
+      "彩色"
+    ],
+    "ugc_keywords": [
+      "放松",
+      "刺激",
+      "推荐"
+    ],
+    "highlights": "亲子是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_132.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_133",
+    "name": "浪浪浪水公园",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "休闲娱乐",
+    "address": "杭州市上城区某某路381号",
+    "location": {
+      "lat": 30.16222771768634,
+      "lng": 120.15825584724458
+    },
+    "tel": "0571-86463345",
+    "rating": 4.3,
+    "price": 150,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 180,
+    "tags": [
+      "水上游乐",
+      "夏天",
+      "刺激",
+      "亲子",
+      "滑梯"
+    ],
+    "ugc_keywords": [
+      "放松",
+      "好玩",
+      "人不多"
+    ],
+    "highlights": "水上游乐是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_133.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_134",
+    "name": "北干山",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路617号",
+    "location": {
+      "lat": 30.174942920423586,
+      "lng": 120.26553342888826
+    },
+    "tel": "0571-88823098",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "登山",
+      "观景",
+      "免费",
+      "晨练",
+      "城市"
+    ],
+    "ugc_keywords": [
+      "建议早去",
+      "人多",
+      "空气好"
+    ],
+    "highlights": "登山是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_134.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_135",
+    "name": "余暨公园",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路404号",
+    "location": {
+      "lat": 30.184829944848904,
+      "lng": 120.25475486099577
+    },
+    "tel": "0571-83411732",
+    "rating": 3.9,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "公园",
+      "湖泊",
+      "免费",
+      "休闲",
+      "亲子"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "有历史",
+      "人多"
+    ],
+    "highlights": "公园是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_135.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_136",
+    "name": "梦想小镇",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "文化",
+    "address": "杭州市余杭区某某路850号",
+    "location": {
+      "lat": 30.280059877104605,
+      "lng": 119.99999514974097
+    },
+    "tel": "0571-85307737",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "创业",
+      "古镇",
+      "互联网",
+      "拍照",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "安静",
+      "适合发呆",
+      "有格调"
+    ],
+    "highlights": "创业是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_136.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_137",
+    "name": "人工智能小镇",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "文化",
+    "address": "杭州市上城区某某路531号",
+    "location": {
+      "lat": 30.285720538165105,
+      "lng": 119.9950814940148
+    },
+    "tel": "0571-80978115",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 30,
+    "tags": [
+      "科技",
+      "现代",
+      "未来",
+      "打卡",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "文艺",
+      "安静",
+      "有格调"
+    ],
+    "highlights": "科技是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_137.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_138",
+    "name": "径山寺",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路118号",
+    "location": {
+      "lat": 30.350048107144076,
+      "lng": 119.85098659671395
+    },
+    "tel": "0571-85365039",
+    "rating": 4.7,
+    "price": 20,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 120,
+    "tags": [
+      "寺庙",
+      "禅宗",
+      "茶道",
+      "登山",
+      "安静"
+    ],
+    "ugc_keywords": [
+      "有历史",
+      "空气好",
+      "门票贵"
+    ],
+    "highlights": "寺庙是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_138.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_139",
+    "name": "双溪漂流",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "休闲娱乐",
+    "address": "杭州市拱墅区某某路477号",
+    "location": {
+      "lat": 30.31918724784767,
+      "lng": 119.87959962327763
+    },
+    "tel": "0571-83881248",
+    "rating": 4.4,
+    "price": 100,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 120,
+    "tags": [
+      "漂流",
+      "夏天",
+      "刺激",
+      "亲子",
+      "竹筏"
+    ],
+    "ugc_keywords": [
+      "放松",
+      "刺激",
+      "人不多"
+    ],
+    "highlights": "漂流是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_139.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_140",
+    "name": "山沟沟",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路2号",
+    "location": {
+      "lat": 30.380129762953526,
+      "lng": 119.80009414563888
+    },
+    "tel": "0571-80732330",
+    "rating": 4.2,
+    "price": 50,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 180,
+    "tags": [
+      "自然",
+      "瀑布",
+      "徒步",
+      "农家乐",
+      "避暑"
+    ],
+    "ugc_keywords": [
+      "有历史",
+      "人多",
+      "值得去"
+    ],
+    "highlights": "自然是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_140.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_141",
+    "name": "良渚古城遗址公园",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路324号",
+    "location": {
+      "lat": 30.40975180362936,
+      "lng": 120.01912323791005
+    },
+    "tel": "0571-80022505",
+    "rating": 4.6,
+    "price": 60,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 180,
+    "tags": [
+      "世界遗产",
+      "史前",
+      "稻田",
+      "鹿苑",
+      "文化"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "拍照出片",
+      "门票贵"
+    ],
+    "highlights": "世界遗产是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_141.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_142",
+    "name": "美丽洲公园",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路306号",
+    "location": {
+      "lat": 30.40492225956035,
+      "lng": 120.0252225764733
+    },
+    "tel": "0571-85356652",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 50,
+    "tags": [
+      "公园",
+      "湿地",
+      "免费",
+      "亲子",
+      "野餐"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "建议早去",
+      "门票贵"
+    ],
+    "highlights": "公园是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_142.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_143",
+    "name": "五常湿地",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路127号",
+    "location": {
+      "lat": 30.29090207722202,
+      "lng": 120.03011922634462
+    },
+    "tel": "0571-87179913",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "湿地",
+      "自然",
+      "免费",
+      "安静",
+      "徒步"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "人多",
+      "门票贵"
+    ],
+    "highlights": "湿地是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_143.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_144",
+    "name": "未来科技城学术交流中心",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "文化",
+    "address": "杭州市西湖区某某路853号",
+    "location": {
+      "lat": 30.281567582386778,
+      "lng": 119.99825913499474
+    },
+    "tel": "0571-86119381",
+    "rating": 3.9,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 20,
+    "tags": [
+      "建筑",
+      "科技",
+      "现代",
+      "地标",
+      "会议"
+    ],
+    "ugc_keywords": [
+      "小众",
+      "文艺",
+      "安静"
+    ],
+    "highlights": "建筑是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_144.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_145",
+    "name": "杭州新天地",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "购物服务",
+    "address": "杭州市上城区某某路350号",
+    "location": {
+      "lat": 30.309863408522023,
+      "lng": 120.17514630894196
+    },
+    "tel": "0571-83647415",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "商场",
+      "演艺",
+      "夜生活",
+      "年轻",
+      "活力"
+    ],
+    "ugc_keywords": [
+      "品牌多",
+      "吃饭方便",
+      "周末人多"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_145.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_146",
+    "name": "太阳马戏《X绮幻之境》",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "休闲娱乐",
+    "address": "杭州市余杭区某某路593号",
+    "location": {
+      "lat": 30.31252157529749,
+      "lng": 120.1786601649928
+    },
+    "tel": "0571-84859667",
+    "rating": 4.5,
+    "price": 380,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 90,
+    "tags": [
+      "演出",
+      "震撼",
+      "杂技",
+      "艺术",
+      "必看"
+    ],
+    "ugc_keywords": [
+      "刺激",
+      "放松",
+      "好玩"
+    ],
+    "highlights": "演出是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_146.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_147",
+    "name": "半山国家森林公园",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路580号",
+    "location": {
+      "lat": 30.349070653446645,
+      "lng": 120.17928920376549
+    },
+    "tel": "0571-80837580",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 120,
+    "tags": [
+      "森林",
+      "登山",
+      "免费",
+      "洗肺",
+      "亲子"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "有历史",
+      "人多"
+    ],
+    "highlights": "森林是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_147.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_148",
+    "name": "虎山水库",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路421号",
+    "location": {
+      "lat": 30.34455460802691,
+      "lng": 120.17809327519774
+    },
+    "tel": "0571-84290200",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "水库",
+      "安静",
+      "钓鱼",
+      "自然",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "值得去",
+      "有历史"
+    ],
+    "highlights": "水库是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_148.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_149",
+    "name": "运河上街",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "购物服务",
+    "address": "杭州市拱墅区某某路354号",
+    "location": {
+      "lat": 30.30559158366111,
+      "lng": 120.15419945305413
+    },
+    "tel": "0571-85524019",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "商场",
+      "美食",
+      "亲子",
+      "运河",
+      "便利"
+    ],
+    "ugc_keywords": [
+      "吃饭方便",
+      "品牌多",
+      "停车难"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_149.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_150",
+    "name": "青山湖国家森林公园",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路237号",
+    "location": {
+      "lat": 30.23008598241787,
+      "lng": 119.71976035881708
+    },
+    "tel": "0571-86335230",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 180,
+    "tags": [
+      "森林",
+      "湖泊",
+      "骑行",
+      "免费",
+      "自然"
+    ],
+    "ugc_keywords": [
+      "建议早去",
+      "人多",
+      "值得去"
+    ],
+    "highlights": "森林是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_150.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_151",
+    "name": "大明山",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路555号",
+    "location": {
+      "lat": 30.05085701428586,
+      "lng": 118.95024673892259
+    },
+    "tel": "0571-81403065",
+    "rating": 4.4,
+    "price": 88,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 240,
+    "tags": [
+      "滑雪",
+      "登山",
+      "云海",
+      "秋天",
+      "壮观"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "景色美",
+      "门票贵"
+    ],
+    "highlights": "滑雪是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_151.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_152",
+    "name": "天目山",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路325号",
+    "location": {
+      "lat": 30.320244659442192,
+      "lng": 119.42073938544104
+    },
+    "tel": "0571-81088111",
+    "rating": 4.7,
+    "price": 110,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 240,
+    "tags": [
+      "古树",
+      "森林",
+      "避暑",
+      "佛教",
+      "自然"
+    ],
+    "ugc_keywords": [
+      "有历史",
+      "值得去",
+      "门票贵"
+    ],
+    "highlights": "古树是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_152.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_153",
+    "name": "浙西大峡谷",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路721号",
+    "location": {
+      "lat": 30.150541408763164,
+      "lng": 118.85007973079908
+    },
+    "tel": "0571-81226032",
+    "rating": 4.2,
+    "price": 100,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 240,
+    "tags": [
+      "峡谷",
+      "漂流",
+      "瀑布",
+      "自然",
+      "徒步"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "有历史",
+      "门票贵"
+    ],
+    "highlights": "峡谷是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_153.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_154",
+    "name": "太湖源",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路542号",
+    "location": {
+      "lat": 30.180608561558625,
+      "lng": 119.44918979084552
+    },
+    "tel": "0571-87449591",
+    "rating": 4.2,
+    "price": 70,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 180,
+    "tags": [
+      "溪流",
+      "瀑布",
+      "夏天",
+      "清凉",
+      "自然"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "拍照出片",
+      "人多"
+    ],
+    "highlights": "溪流是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_154.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_155",
+    "name": "柳溪江",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路876号",
+    "location": {
+      "lat": 30.120902058897723,
+      "lng": 119.30092242411409
+    },
+    "tel": "0571-82888772",
+    "rating": 4.1,
+    "price": 60,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 120,
+    "tags": [
+      "竹筏",
+      "江景",
+      "安静",
+      "自然",
+      "夏天"
+    ],
+    "ugc_keywords": [
+      "人多",
+      "值得去",
+      "空气好"
+    ],
+    "highlights": "竹筏是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_155.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_156",
+    "name": "临安博物馆",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "博物馆",
+    "address": "杭州市拱墅区某某路906号",
+    "location": {
+      "lat": 30.22464370384089,
+      "lng": 119.69985576748591
+    },
+    "tel": "0571-87555486",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "建筑",
+      "文物",
+      "普利兹克",
+      "免费",
+      "文化"
+    ],
+    "ugc_keywords": [
+      "安静",
+      "讲解好",
+      "免费"
+    ],
+    "highlights": "建筑是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_156.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_157",
+    "name": "钱王陵",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路431号",
+    "location": {
+      "lat": 30.228370181929126,
+      "lng": 119.71071319038377
+    },
+    "tel": "0571-89898773",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 40,
+    "tags": [
+      "历史",
+      "吴越国",
+      "文化",
+      "安静",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "空气好",
+      "有历史"
+    ],
+    "highlights": "历史是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_157.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_158",
+    "name": "龙门古镇",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市西湖区某某路4号",
+    "location": {
+      "lat": 30.252,
+      "lng": 120.143
+    },
+    "tel": "0571-85534180",
+    "rating": 4.3,
+    "price": 70,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 120,
+    "tags": [
+      "古镇",
+      "孙权",
+      "明清",
+      "拍照",
+      "文化"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "门票贵",
+      "建议早去"
+    ],
+    "highlights": "古镇是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_158.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_159",
+    "name": "富春江",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市拱墅区某某路598号",
+    "location": {
+      "lat": 30.049656726529864,
+      "lng": 119.95022867687726
+    },
+    "tel": "0571-87492268",
+    "rating": 4.6,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 120,
+    "tags": [
+      "江景",
+      "小三峡",
+      "游船",
+      "自然",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "人多",
+      "空气好",
+      "门票贵"
+    ],
+    "highlights": "江景是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_159.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_160",
+    "name": "黄公望隐居地",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路328号",
+    "location": {
+      "lat": 30.079033768852753,
+      "lng": 119.98051800612458
+    },
+    "tel": "0571-83437065",
+    "rating": 4.3,
+    "price": 50,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "书画",
+      "富春山居图",
+      "竹林",
+      "文化",
+      "安静"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "景色美",
+      "人多"
+    ],
+    "highlights": "书画是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_160.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_161",
+    "name": "新沙岛",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "address": "杭州市上城区某某路139号",
+    "location": {
+      "lat": 30.020707064424826,
+      "lng": 119.91993170845694
+    },
+    "tel": "0571-84562636",
+    "rating": 4.0,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 120,
+    "tags": [
+      "岛屿",
+      "农家乐",
+      "采摘",
+      "亲子",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "门票贵",
+      "值得去"
+    ],
+    "highlights": "岛屿是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_161.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_162",
+    "name": "杭州野生动物世界",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "休闲娱乐",
+    "address": "杭州市余杭区某某路160号",
+    "location": {
+      "lat": 30.180569404877236,
+      "lng": 119.97983296671863
+    },
+    "tel": "0571-89733752",
+    "rating": 4.5,
+    "price": 220,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 240,
+    "tags": [
+      "动物",
+      "亲子",
+      "自驾",
+      "互动",
+      "大型"
+    ],
+    "ugc_keywords": [
+      "推荐",
+      "刺激",
+      "值得票价"
+    ],
+    "highlights": "动物是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_162.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_163",
+    "name": "东吴文化公园",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路793号",
+    "location": {
+      "lat": 30.030609728173356,
+      "lng": 119.94051208836059
+    },
+    "tel": "0571-88382689",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "公园",
+      "三国",
+      "文化",
+      "免费",
+      "亲子"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "景色美",
+      "建议早去"
+    ],
+    "highlights": "公园是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_163.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_164",
+    "name": "鹳山",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "风景名胜",
+    "address": "杭州市余杭区某某路154号",
+    "location": {
+      "lat": 30.040213017409755,
+      "lng": 119.93004507815625
+    },
+    "tel": "0571-84303180",
+    "rating": 4.0,
+    "price": 0,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "登山",
+      "江景",
+      "免费",
+      "文化",
+      "历史"
+    ],
+    "ugc_keywords": [
+      "人多",
+      "有历史",
+      "值得去"
+    ],
+    "highlights": "登山是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_164.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_165",
+    "name": "龙井菜馆",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "餐饮服务",
+    "address": "杭州市余杭区某某路294号",
+    "location": {
+      "lat": 30.2192845079382,
+      "lng": 120.11884404110147
+    },
+    "tel": "0571-80422718",
+    "rating": 4.5,
+    "price": 120,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "杭帮菜",
+      "龙井",
+      "环境好",
+      "茶园",
+      "家常"
+    ],
+    "ugc_keywords": [
+      "服务一般",
+      "必点菜",
+      "排队久"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_165.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_166",
+    "name": "茶人村",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "餐饮服务",
+    "address": "杭州市余杭区某某路2号",
+    "location": {
+      "lat": 30.217700511203798,
+      "lng": 120.11963394971555
+    },
+    "tel": "0571-83334313",
+    "rating": 4.2,
+    "price": 130,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "杭帮菜",
+      "茶香",
+      "私房",
+      "环境好",
+      "小众"
+    ],
+    "ugc_keywords": [
+      "必点菜",
+      "环境好",
+      "分量足"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_166.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_167",
+    "name": "朴墅餐厅",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路99号",
+    "location": {
+      "lat": 30.26679652640512,
+      "lng": 120.12476653919596
+    },
+    "tel": "0571-88205198",
+    "rating": 4.3,
+    "price": 110,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "创意菜",
+      "青芝坞",
+      "环境好",
+      "年轻人",
+      "拍照"
+    ],
+    "ugc_keywords": [
+      "必点菜",
+      "环境好",
+      "性价比高"
+    ],
+    "highlights": "创意菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_167.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_168",
+    "name": "素描餐厅",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "餐饮服务",
+    "address": "杭州市西湖区某某路677号",
+    "location": {
+      "lat": 30.23857732885188,
+      "lng": 120.09662048175754
+    },
+    "tel": "0571-81422570",
+    "rating": 4.2,
+    "price": 100,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "创意菜",
+      "灵隐",
+      "环境好",
+      "榴莲烤鸡",
+      "网红"
+    ],
+    "ugc_keywords": [
+      "必点菜",
+      "分量足",
+      "提前预约"
+    ],
+    "highlights": "创意菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_168.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_169",
+    "name": "马灯部落",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "餐饮服务",
+    "address": "杭州市余杭区某某路36号",
+    "location": {
+      "lat": 30.23142308927068,
+      "lng": 120.13995702097618
+    },
+    "tel": "0571-82168580",
+    "rating": 4.2,
+    "price": 140,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "西餐",
+      "四眼井",
+      "露台",
+      "拍照",
+      "约会"
+    ],
+    "ugc_keywords": [
+      "味道好",
+      "必点菜",
+      "排队久"
+    ],
+    "highlights": "西餐是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_169.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_170",
+    "name": "弄堂里",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路865号",
+    "location": {
+      "lat": 30.260703160417233,
+      "lng": 120.14967220749362
+    },
+    "tel": "0571-84235884",
+    "rating": 4.4,
+    "price": 70,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "杭帮菜",
+      "便宜",
+      "家常",
+      "排队",
+      "卤鸡爪"
+    ],
+    "ugc_keywords": [
+      "分量足",
+      "环境好",
+      "性价比高"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_170.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_171",
+    "name": "慧娟面馆",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路736号",
+    "location": {
+      "lat": 30.2746487827203,
+      "lng": 120.17584675047046
+    },
+    "tel": "0571-87669385",
+    "rating": 4.4,
+    "price": 35,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 40,
+    "tags": [
+      "片儿川",
+      "拌川",
+      "老店",
+      "夜宵",
+      "地道"
+    ],
+    "ugc_keywords": [
+      "味道好",
+      "必点菜",
+      "服务一般"
+    ],
+    "highlights": "片儿川是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_171.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_172",
+    "name": "阿强面馆",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路524号",
+    "location": {
+      "lat": 30.24792039237631,
+      "lng": 120.17623306313288
+    },
+    "tel": "0571-86192885",
+    "rating": 4.3,
+    "price": 30,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 40,
+    "tags": [
+      "拌川",
+      "猪肝",
+      "市井",
+      "排队",
+      "地道"
+    ],
+    "ugc_keywords": [
+      "排队久",
+      "提前预约",
+      "环境好"
+    ],
+    "highlights": "拌川是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_172.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_173",
+    "name": "方传面馆",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路224号",
+    "location": {
+      "lat": 30.251993205913948,
+      "lng": 120.16757445745084
+    },
+    "tel": "0571-85069746",
+    "rating": 4.3,
+    "price": 28,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 35,
+    "tags": [
+      "片儿川",
+      "拌川",
+      "老字号",
+      "平价",
+      "本地"
+    ],
+    "ugc_keywords": [
+      "味道好",
+      "分量足",
+      "必点菜"
+    ],
+    "highlights": "片儿川是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_173.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_174",
+    "name": "复兴面王",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "餐饮服务",
+    "address": "杭州市西湖区某某路865号",
+    "location": {
+      "lat": 30.255615886486698,
+      "lng": 120.1697060706337
+    },
+    "tel": "0571-88645933",
+    "rating": 4.3,
+    "price": 35,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 40,
+    "tags": [
+      "拌川",
+      "腰花",
+      "市井",
+      "排队",
+      "网红"
+    ],
+    "ugc_keywords": [
+      "环境好",
+      "排队久",
+      "提前预约"
+    ],
+    "highlights": "拌川是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_174.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_175",
+    "name": "小狗面馆",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "餐饮服务",
+    "address": "杭州市西湖区某某路59号",
+    "location": {
+      "lat": 30.250462069189833,
+      "lng": 120.17494946161726
+    },
+    "tel": "0571-80432878",
+    "rating": 4.0,
+    "price": 25,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 35,
+    "tags": [
+      "拌川",
+      "肉丝",
+      "老店",
+      "市井",
+      "平价"
+    ],
+    "ugc_keywords": [
+      "提前预约",
+      "分量足",
+      "服务一般"
+    ],
+    "highlights": "拌川是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_175.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_176",
+    "name": "荣鲜面馆",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "餐饮服务",
+    "address": "杭州市余杭区某某路694号",
+    "location": {
+      "lat": 30.252331724308515,
+      "lng": 120.17109418406595
+    },
+    "tel": "0571-88239416",
+    "rating": 4.3,
+    "price": 30,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 35,
+    "tags": [
+      "片儿川",
+      "海鲜",
+      "老店",
+      "平价",
+      "本地"
+    ],
+    "ugc_keywords": [
+      "提前预约",
+      "必点菜",
+      "排队久"
+    ],
+    "highlights": "片儿川是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_176.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_177",
+    "name": "叶马茶楼",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路201号",
+    "location": {
+      "lat": 30.25766237080864,
+      "lng": 120.13840715470779
+    },
+    "tel": "0571-84909801",
+    "rating": 4.4,
+    "price": 130,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "杭帮菜",
+      "私房",
+      "黄鱼",
+      "家庭",
+      "老店"
+    ],
+    "ugc_keywords": [
+      "性价比高",
+      "味道好",
+      "提前预约"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_177.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_178",
+    "name": "民厨饭堂",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路346号",
+    "location": {
+      "lat": 30.26587104541812,
+      "lng": 120.15501383885706
+    },
+    "tel": "0571-80723282",
+    "rating": 4.2,
+    "price": 60,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "杭帮菜",
+      "家常",
+      "便宜",
+      "本地",
+      "小菜"
+    ],
+    "ugc_keywords": [
+      "必点菜",
+      "排队久",
+      "味道好"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_178.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_179",
+    "name": "金猪",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路760号",
+    "location": {
+      "lat": 30.270639363985214,
+      "lng": 120.1642023405031
+    },
+    "tel": "0571-82736155",
+    "rating": 4.2,
+    "price": 55,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "杭帮菜",
+      "便宜",
+      "排队",
+      "家常",
+      "武林"
+    ],
+    "ugc_keywords": [
+      "必点菜",
+      "分量足",
+      "提前预约"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_179.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_180",
+    "name": "笑典皇",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路685号",
+    "location": {
+      "lat": 30.26882554520767,
+      "lng": 120.17230509787238
+    },
+    "tel": "0571-82735474",
+    "rating": 4.3,
+    "price": 90,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "绍兴菜",
+      "霉干菜",
+      "老店",
+      "本地",
+      "下酒"
+    ],
+    "ugc_keywords": [
+      "提前预约",
+      "环境好",
+      "性价比高"
+    ],
+    "highlights": "绍兴菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_180.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_181",
+    "name": "宝中宝食府",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路461号",
+    "location": {
+      "lat": 30.24094087349421,
+      "lng": 120.17024984167608
+    },
+    "tel": "0571-83662828",
+    "rating": 4.2,
+    "price": 100,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "杭帮菜",
+      "腰花",
+      "老店",
+      "家常",
+      "本地"
+    ],
+    "ugc_keywords": [
+      "排队久",
+      "必点菜",
+      "性价比高"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_181.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_182",
+    "name": "福缘居",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "餐饮服务",
+    "address": "杭州市拱墅区某某路254号",
+    "location": {
+      "lat": 30.241872431457544,
+      "lng": 120.168829067127
+    },
+    "tel": "0571-87344092",
+    "rating": 4.2,
+    "price": 95,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 60,
+    "tags": [
+      "杭帮菜",
+      "脆皮大肠",
+      "排队",
+      "老店",
+      "河坊街"
+    ],
+    "ugc_keywords": [
+      "味道好",
+      "分量足",
+      "必点菜"
+    ],
+    "highlights": "杭帮菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_182.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_183",
+    "name": "大头隐食",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "餐饮服务",
+    "address": "杭州市西湖区某某路439号",
+    "location": {
+      "lat": 30.215980921236405,
+      "lng": 120.16098787781596
+    },
+    "tel": "0571-80098146",
+    "rating": 4.1,
+    "price": 110,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 75,
+    "tags": [
+      "创意菜",
+      "馒头山",
+      "环境好",
+      "拍照",
+      "私房"
+    ],
+    "ugc_keywords": [
+      "服务一般",
+      "环境好",
+      "分量足"
+    ],
+    "highlights": "创意菜是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_183.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_184",
+    "name": "圈子餐厅",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "餐饮服务",
+    "address": "杭州市上城区某某路649号",
+    "location": {
+      "lat": 30.272345626937163,
+      "lng": 120.15795110589158
+    },
+    "tel": "0571-87089463",
+    "rating": 4.1,
+    "price": 160,
+    "business_hours": "10:30-21:00",
+    "suggested_duration": 90,
+    "tags": [
+      "西餐",
+      "牛排",
+      "约会",
+      "环境好",
+      "拍照"
+    ],
+    "ugc_keywords": [
+      "性价比高",
+      "排队久",
+      "提前预约"
+    ],
+    "highlights": "西餐是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_184.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_185",
+    "name": "青藤茶馆",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "咖啡厅",
+    "address": "杭州市上城区某某路150号",
+    "location": {
+      "lat": 30.254622622686867,
+      "lng": 120.14574784509328
+    },
+    "tel": "0571-80502999",
+    "rating": 4.2,
+    "price": 100,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 120,
+    "tags": [
+      "茶馆",
+      "自助",
+      "传统",
+      "商务",
+      "西湖"
+    ],
+    "ugc_keywords": [
+      "价格偏贵",
+      "咖啡香",
+      "适合办公"
+    ],
+    "highlights": "茶馆是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_185.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_186",
+    "name": "和茶馆",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "咖啡厅",
+    "address": "杭州市拱墅区某某路843号",
+    "location": {
+      "lat": 30.255992673669702,
+      "lng": 120.14296697693135
+    },
+    "tel": "0571-88257894",
+    "rating": 4.3,
+    "price": 80,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "茶馆",
+      "安静",
+      "禅意",
+      "小众",
+      "拍照"
+    ],
+    "ugc_keywords": [
+      "咖啡香",
+      "拍照好看",
+      "座位少"
+    ],
+    "highlights": "茶馆是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_186.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_187",
+    "name": "法云安缦咖啡厅",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "咖啡厅",
+    "address": "杭州市拱墅区某某路875号",
+    "location": {
+      "lat": 30.239271268285226,
+      "lng": 120.09549269388843
+    },
+    "tel": "0571-84409585",
+    "rating": 4.7,
+    "price": 120,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 60,
+    "tags": [
+      "高端",
+      "禅意",
+      "环境好",
+      "隐秘",
+      "品质"
+    ],
+    "ugc_keywords": [
+      "座位少",
+      "咖啡香",
+      "拍照好看"
+    ],
+    "highlights": "高端是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_187.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_188",
+    "name": "纯真年代书吧",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "咖啡厅",
+    "address": "杭州市上城区某某路554号",
+    "location": {
+      "lat": 30.260326772887794,
+      "lng": 120.14860201038161
+    },
+    "tel": "0571-83299992",
+    "rating": 4.5,
+    "price": 50,
+    "business_hours": "08:00-22:00",
+    "suggested_duration": 60,
+    "tags": [
+      "书店",
+      "湖景",
+      "文艺",
+      "安静",
+      "宝石山"
+    ],
+    "ugc_keywords": [
+      "拍照好看",
+      "适合办公",
+      "座位少"
+    ],
+    "highlights": "书店是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_188.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_189",
+    "name": "钟书阁",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "文化",
+    "address": "杭州市上城区某某路514号",
+    "location": {
+      "lat": 30.249012398591148,
+      "lng": 120.2156379148971
+    },
+    "tel": "0571-87172683",
+    "rating": 4.5,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 45,
+    "tags": [
+      "书店",
+      "设计感",
+      "镜面",
+      "拍照",
+      "网红"
+    ],
+    "ugc_keywords": [
+      "文艺",
+      "安静",
+      "适合发呆"
+    ],
+    "highlights": "书店是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_189.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_190",
+    "name": "西西弗书店",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "文化",
+    "address": "杭州市西湖区某某路561号",
+    "location": {
+      "lat": 30.25488989310014,
+      "lng": 120.16584091127014
+    },
+    "tel": "0571-81331976",
+    "rating": 4.1,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 40,
+    "tags": [
+      "书店",
+      "咖啡",
+      "连锁",
+      "文艺",
+      "阅读"
+    ],
+    "ugc_keywords": [
+      "有格调",
+      "适合发呆",
+      "安静"
+    ],
+    "highlights": "书店是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_190.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_191",
+    "name": "网易蜗牛读书馆",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "文化",
+    "address": "杭州市余杭区某某路742号",
+    "location": {
+      "lat": 30.208642514399408,
+      "lng": 120.20565781824668
+    },
+    "tel": "0571-88085341",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 45,
+    "tags": [
+      "书店",
+      "免费",
+      "现代",
+      "滨江",
+      "阅读"
+    ],
+    "ugc_keywords": [
+      "小众",
+      "安静",
+      "适合发呆"
+    ],
+    "highlights": "书店是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_191.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_192",
+    "name": "西湖国宾馆",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "酒店宾馆",
+    "address": "杭州市上城区某某路401号",
+    "location": {
+      "lat": 30.23430453860004,
+      "lng": 120.12962334398482
+    },
+    "tel": "0571-83463622",
+    "rating": 4.7,
+    "price": 1200,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "国宾馆",
+      "西湖",
+      "园林",
+      "高端",
+      "历史"
+    ],
+    "ugc_keywords": [
+      "拍照出片",
+      "人多",
+      "景色美"
+    ],
+    "highlights": "国宾馆是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_192.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_193",
+    "name": "西子湖四季酒店",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "酒店宾馆",
+    "address": "杭州市拱墅区某某路700号",
+    "location": {
+      "lat": 30.24084118921703,
+      "lng": 120.12702716891589
+    },
+    "tel": "0571-84174212",
+    "rating": 4.7,
+    "price": 2500,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "奢华",
+      "园林",
+      "SPA",
+      "西湖",
+      "服务"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "景色美",
+      "门票贵"
+    ],
+    "highlights": "奢华是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_193.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_194",
+    "name": "法云安缦",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "酒店宾馆",
+    "address": "杭州市余杭区某某路492号",
+    "location": {
+      "lat": 30.237047972809002,
+      "lng": 120.09314691797331
+    },
+    "tel": "0571-84858549",
+    "rating": 4.9,
+    "price": 5000,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "顶级",
+      "禅意",
+      "古村落",
+      "隐秘",
+      "奢华"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "门票贵",
+      "景色美"
+    ],
+    "highlights": "顶级是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_194.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_195",
+    "name": "杭州悦榕庄",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "酒店宾馆",
+    "address": "杭州市余杭区某某路163号",
+    "location": {
+      "lat": 30.29799152973415,
+      "lng": 120.15234623274196
+    },
+    "tel": "0571-81859950",
+    "rating": 4.8,
+    "price": 2000,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "奢华",
+      "运河",
+      "SPA",
+      "度假",
+      "静谧"
+    ],
+    "ugc_keywords": [
+      "建议早去",
+      "拍照出片",
+      "值得去"
+    ],
+    "highlights": "奢华是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_195.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_196",
+    "name": "杭州柏悦酒店",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "酒店宾馆",
+    "address": "杭州市余杭区某某路696号",
+    "location": {
+      "lat": 30.246627585945753,
+      "lng": 120.21013548961848
+    },
+    "tel": "0571-84968463",
+    "rating": 4.8,
+    "price": 1800,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "高端",
+      "钱江新城",
+      "云端",
+      "设计",
+      "服务"
+    ],
+    "ugc_keywords": [
+      "值得去",
+      "拍照出片",
+      "景色美"
+    ],
+    "highlights": "高端是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_196.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_197",
+    "name": "杭州康莱德酒店",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "酒店宾馆",
+    "address": "杭州市西湖区某某路426号",
+    "location": {
+      "lat": 30.249049702622987,
+      "lng": 120.20494839589813
+    },
+    "tel": "0571-88940833",
+    "rating": 4.7,
+    "price": 1600,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "高端",
+      "来福士",
+      "设计",
+      "江景",
+      "服务"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "拍照出片",
+      "门票贵"
+    ],
+    "highlights": "高端是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_197.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_198",
+    "name": "杭州洲际酒店",
+    "city": "杭州",
+    "district": "萧山区",
+    "category": "酒店宾馆",
+    "address": "杭州市西湖区某某路561号",
+    "location": {
+      "lat": 30.243461657485057,
+      "lng": 120.20984384402787
+    },
+    "tel": "0571-87842601",
+    "rating": 4.6,
+    "price": 1400,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "地标",
+      "金球",
+      "江景",
+      "商务",
+      "高端"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "空气好",
+      "拍照出片"
+    ],
+    "highlights": "地标是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_198.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_199",
+    "name": "杭州君悦酒店",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "酒店宾馆",
+    "address": "杭州市上城区某某路271号",
+    "location": {
+      "lat": 30.255316646708103,
+      "lng": 120.16262188931168
+    },
+    "tel": "0571-83502046",
+    "rating": 4.8,
+    "price": 1500,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "高端",
+      "湖滨",
+      "湖景",
+      "便利",
+      "服务"
+    ],
+    "ugc_keywords": [
+      "空气好",
+      "拍照出片",
+      "门票贵"
+    ],
+    "highlights": "高端是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_199.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_200",
+    "name": "钱江新城万豪酒店",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "酒店宾馆",
+    "address": "杭州市余杭区某某路273号",
+    "location": {
+      "lat": 30.242506980848056,
+      "lng": 120.21029761395417
+    },
+    "tel": "0571-86333162",
+    "rating": 4.6,
+    "price": 1300,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "高端",
+      "江景",
+      "商务",
+      "现代",
+      "服务"
+    ],
+    "ugc_keywords": [
+      "景色美",
+      "建议早去",
+      "人多"
+    ],
+    "highlights": "高端是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_200.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_201",
+    "name": "木守西溪",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "酒店宾馆",
+    "address": "杭州市拱墅区某某路36号",
+    "location": {
+      "lat": 30.268943433020286,
+      "lng": 120.05908904661192
+    },
+    "tel": "0571-85285022",
+    "rating": 4.8,
+    "price": 2200,
+    "business_hours": "09:00-18:00",
+    "suggested_duration": 30,
+    "tags": [
+      "设计",
+      "西溪",
+      "静谧",
+      "高端",
+      "隐逸"
+    ],
+    "ugc_keywords": [
+      "门票贵",
+      "空气好",
+      "人多"
+    ],
+    "highlights": "设计是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_201.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_202",
+    "name": "響Livehouse",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "休闲娱乐",
+    "address": "杭州市拱墅区某某路860号",
+    "location": {
+      "lat": 30.254960593188947,
+      "lng": 120.16439466619323
+    },
+    "tel": "0571-83195331",
+    "rating": 4.3,
+    "price": 200,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 120,
+    "tags": [
+      "音乐",
+      "酒吧",
+      "现场",
+      "年轻",
+      "氛围"
+    ],
+    "ugc_keywords": [
+      "放松",
+      "好玩",
+      "值得票价"
+    ],
+    "highlights": "音乐是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_202.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_203",
+    "name": "MAO Livehouse",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "休闲娱乐",
+    "address": "杭州市拱墅区某某路422号",
+    "location": {
+      "lat": 30.260146327306146,
+      "lng": 120.17079848378562
+    },
+    "tel": "0571-80530324",
+    "rating": 4.2,
+    "price": 180,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 120,
+    "tags": [
+      "摇滚",
+      "演出",
+      "现场",
+      "年轻",
+      "热血"
+    ],
+    "ugc_keywords": [
+      "推荐",
+      "刺激",
+      "放松"
+    ],
+    "highlights": "摇滚是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_203.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_204",
+    "name": "大麦·66LiveHouse",
+    "city": "杭州",
+    "district": "余杭区",
+    "category": "休闲娱乐",
+    "address": "杭州市拱墅区某某路932号",
+    "location": {
+      "lat": 30.274448625220195,
+      "lng": 120.17485177927708
+    },
+    "tel": "0571-87750596",
+    "rating": 4.2,
+    "price": 160,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 120,
+    "tags": [
+      "演出",
+      "音乐",
+      "现场",
+      "年轻",
+      "潮流"
+    ],
+    "ugc_keywords": [
+      "人不多",
+      "刺激",
+      "值得票价"
+    ],
+    "highlights": "演出是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_204.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_205",
+    "name": "新天地活力Park",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "休闲娱乐",
+    "address": "杭州市西湖区某某路595号",
+    "location": {
+      "lat": 30.310050673507938,
+      "lng": 120.17722205645231
+    },
+    "tel": "0571-86780866",
+    "rating": 4.2,
+    "price": 100,
+    "business_hours": "09:00-21:00",
+    "suggested_duration": 120,
+    "tags": [
+      "夜市",
+      "演艺",
+      "酒吧",
+      "年轻",
+      "活力"
+    ],
+    "ugc_keywords": [
+      "放松",
+      "刺激",
+      "推荐"
+    ],
+    "highlights": "夜市是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_205.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_206",
+    "name": "远洋乐堤港",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "购物服务",
+    "address": "杭州市余杭区某某路346号",
+    "location": {
+      "lat": 30.300080917647964,
+      "lng": 120.14991937534285
+    },
+    "tel": "0571-89727686",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "商场",
+      "艺术",
+      "美食",
+      "运河",
+      "年轻"
+    ],
+    "ugc_keywords": [
+      "停车难",
+      "吃饭方便",
+      "好逛"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_206.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_207",
+    "name": "城西银泰城",
+    "city": "杭州",
+    "district": "滨江区",
+    "category": "购物服务",
+    "address": "杭州市拱墅区某某路470号",
+    "location": {
+      "lat": 30.285880351023632,
+      "lng": 120.11405779175307
+    },
+    "tel": "0571-89963349",
+    "rating": 4.4,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 120,
+    "tags": [
+      "商场",
+      "美食",
+      "亲子",
+      "地铁",
+      "热闹"
+    ],
+    "ugc_keywords": [
+      "吃饭方便",
+      "品牌多",
+      "周末人多"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_207.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_208",
+    "name": "中大银泰城",
+    "city": "杭州",
+    "district": "拱墅区",
+    "category": "购物服务",
+    "address": "杭州市拱墅区某某路389号",
+    "location": {
+      "lat": 30.314937349105655,
+      "lng": 120.17522803314334
+    },
+    "tel": "0571-89403182",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 90,
+    "tags": [
+      "商场",
+      "美食",
+      "亲子",
+      "拱墅",
+      "便利"
+    ],
+    "ugc_keywords": [
+      "品牌多",
+      "吃饭方便",
+      "周末人多"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_208.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_209",
+    "name": "龙湖滨江天街",
+    "city": "杭州",
+    "district": "上城区",
+    "category": "购物服务",
+    "address": "杭州市余杭区某某路471号",
+    "location": {
+      "lat": 30.208738720224044,
+      "lng": 120.20853609308878
+    },
+    "tel": "0571-80314650",
+    "rating": 4.2,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 120,
+    "tags": [
+      "商场",
+      "潮牌",
+      "美食",
+      "滨江",
+      "年轻"
+    ],
+    "ugc_keywords": [
+      "停车难",
+      "好逛",
+      "品牌多"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_209.jpg"
+    ],
+    "source": "mock"
+  },
+  {
+    "poi_id": "mock_hangzhou_210",
+    "name": "萧山万象汇",
+    "city": "杭州",
+    "district": "西湖区",
+    "category": "购物服务",
+    "address": "杭州市上城区某某路497号",
+    "location": {
+      "lat": 30.18530982941549,
+      "lng": 120.26551309222377
+    },
+    "tel": "0571-80378941",
+    "rating": 4.3,
+    "price": 0,
+    "business_hours": "10:00-22:00",
+    "suggested_duration": 120,
+    "tags": [
+      "商场",
+      "美食",
+      "亲子",
+      "萧山",
+      "地铁"
+    ],
+    "ugc_keywords": [
+      "周末人多",
+      "品牌多",
+      "停车难"
+    ],
+    "highlights": "商场是这里的最大特色",
+    "photos": [
+      "images/pois/mock_hangzhou_210.jpg"
+    ],
+    "source": "mock"
+  }
+]

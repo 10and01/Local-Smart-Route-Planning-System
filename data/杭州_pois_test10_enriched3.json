@@ -1,0 +1,418 @@
+[
+  {
+    "poi_id": "B0FFF461C1",
+    "name": "白鸟村文化小广场",
+    "city": "杭州市",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "sub_category": "自然风光",
+    "address": "G25(长深高速公路)",
+    "location": {
+      "lng": 120.109486,
+      "lat": 30.095025
+    },
+    "tel": null,
+    "rating": 4.1,
+    "price": null,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "风景优美",
+      "拍照出片",
+      "值得一去"
+    ],
+    "ugc_keywords": [
+      "体验不错",
+      "值得打卡",
+      "人气很旺"
+    ],
+    "highlights": "白鸟村文化小广场是杭州值得一去的自然风光",
+    "photos": [
+      "https://store.is.autonavi.com/showpic/1de628342d8dde83179ce4b11ad01656",
+      "http://store.is.autonavi.com/showpic/8deaadb6a04c3119ad07b1493c361852"
+    ],
+    "suitable_for": [
+      "情侣",
+      "亲子",
+      "朋友"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B0FFF3YLSH",
+    "name": "渌渚镇孝子湾文化公园",
+    "city": "杭州市",
+    "district": "富阳区",
+    "category": "风景名胜",
+    "sub_category": "自然风光",
+    "address": "下枫线",
+    "location": {
+      "lng": 119.722154,
+      "lat": 29.913261
+    },
+    "tel": null,
+    "rating": 4.1,
+    "price": null,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "风景优美",
+      "拍照出片",
+      "值得一去"
+    ],
+    "ugc_keywords": [
+      "体验不错",
+      "值得打卡",
+      "人气很旺"
+    ],
+    "highlights": "渌渚镇孝子湾文化公园是杭州值得一去的自然风光",
+    "photos": [
+      "http://store.is.autonavi.com/showpic/7380391e1ad80db0ab176b28cc039b1e",
+      "http://store.is.autonavi.com/showpic/96fe4e24dbe600ae72492183d2726bfb"
+    ],
+    "suitable_for": [
+      "情侣",
+      "亲子",
+      "朋友"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B023B0A8IC",
+    "name": "瑞六禅寺",
+    "city": "杭州市",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "sub_category": "自然风光",
+    "address": "黄湖镇青山村自由城大草坪旁",
+    "location": {
+      "lng": 119.850032,
+      "lat": 30.491257
+    },
+    "tel": null,
+    "rating": 3.9,
+    "price": null,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "风景优美",
+      "拍照出片",
+      "值得一去"
+    ],
+    "ugc_keywords": [
+      "体验不错",
+      "值得打卡",
+      "人气很旺"
+    ],
+    "highlights": "瑞六禅寺是杭州值得一去的自然风光",
+    "photos": [
+      "http://store.is.autonavi.com/showpic/eb0b98eacce74be7c7a87fbfd5d39428",
+      "http://store.is.autonavi.com/showpic/70c4dead34ca0b909effae4fbb572385",
+      "http://store.is.autonavi.com/showpic/e8d2da28ce9d6cce4bddaf199ab14b33"
+    ],
+    "suitable_for": [
+      "情侣",
+      "亲子",
+      "朋友"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B023B065OL",
+    "name": "基督教堂",
+    "city": "杭州市",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "sub_category": "自然风光",
+    "address": "南丰路与阳城路交叉口南220米",
+    "location": {
+      "lng": 120.428316,
+      "lat": 30.277039
+    },
+    "tel": null,
+    "rating": 4.0,
+    "price": null,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "风景优美",
+      "拍照出片",
+      "值得一去"
+    ],
+    "ugc_keywords": [
+      "体验不错",
+      "值得打卡",
+      "人气很旺"
+    ],
+    "highlights": "基督教堂是杭州值得一去的自然风光",
+    "photos": [
+      "http://store.is.autonavi.com/showpic/0b74033fd72a2d56a13802c535dc47e9",
+      "http://store.is.autonavi.com/showpic/824de6b6a5a8b1d373576462d07a2048",
+      "https://store.is.autonavi.com/showpic/e4ed0551a34eed9ae8a48e783647648c"
+    ],
+    "suitable_for": [
+      "情侣",
+      "亲子",
+      "朋友"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B0FFH959MW",
+    "name": "永寿寺",
+    "city": "杭州市",
+    "district": "富阳区",
+    "category": "风景名胜",
+    "sub_category": "自然风光",
+    "address": "大山脚(虎啸杏地铁站C口步行290米)",
+    "location": {
+      "lng": 119.973485,
+      "lat": 30.130018
+    },
+    "tel": "13336062206",
+    "rating": 3.9,
+    "price": null,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "风景优美",
+      "拍照出片",
+      "值得一去"
+    ],
+    "ugc_keywords": [
+      "体验不错",
+      "值得打卡",
+      "人气很旺"
+    ],
+    "highlights": "永寿寺是杭州值得一去的自然风光",
+    "photos": [
+      "https://store.is.autonavi.com/showpic/20c1c6d53728a67329ecc6f2e2c3e4c7",
+      "https://store.is.autonavi.com/showpic/a13fb14630a6b4a6956b0da2c2fcc329",
+      "https://store.is.autonavi.com/showpic/fd935d8669d391200f4c80a5616c7dd8"
+    ],
+    "suitable_for": [
+      "情侣",
+      "亲子",
+      "朋友"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B0FFGFQRTW",
+    "name": "黄杜庙",
+    "city": "杭州市",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "sub_category": "寺庙道观",
+    "address": "良渚街道东莲村4组7号",
+    "location": {
+      "lng": 119.989505,
+      "lat": 30.341366
+    },
+    "tel": null,
+    "rating": 3.9,
+    "price": null,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "寺庙祈福",
+      "免费",
+      "小众安静",
+      "适合散步"
+    ],
+    "ugc_keywords": [
+      "环境清静",
+      "地方不大",
+      "适合顺路看看"
+    ],
+    "highlights": "感受乡村古庙的清幽氛围",
+    "photos": [
+      "http://store.is.autonavi.com/showpic/98617aa194f84094975c56f2c816e854",
+      "http://store.is.autonavi.com/showpic/bee61da402fac6a7d813df78afb0d8a8",
+      "http://store.is.autonavi.com/showpic/87e37a6f8c5cef179d7c86edc024c0a0"
+    ],
+    "suitable_for": [
+      "独自",
+      "家庭",
+      "老人"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B0FFG9790K",
+    "name": "和美文化广场",
+    "city": "杭州市",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "sub_category": "城市地标",
+    "address": "川北路与天和路交叉口东南120米",
+    "location": {
+      "lng": 120.525649,
+      "lat": 30.162037
+    },
+    "tel": null,
+    "rating": 3.9,
+    "price": null,
+    "business_hours": "全天开放",
+    "suggested_duration": 60,
+    "tags": [
+      "城市地标",
+      "免费",
+      "适合散步",
+      "亲子友好"
+    ],
+    "ugc_keywords": [
+      "空间开阔",
+      "适合饭后散步",
+      "游玩内容不多"
+    ],
+    "highlights": "周边居民休闲散步的开放广场",
+    "photos": [
+      "http://store.is.autonavi.com/showpic/9a998052dd8ea5c37af4943d0e67afcd",
+      "http://store.is.autonavi.com/showpic/456298dd10967921074f8ead4850e141",
+      "http://store.is.autonavi.com/showpic/a0e4b0023e82e865e93b37652dbb1f52"
+    ],
+    "suitable_for": [
+      "亲子",
+      "朋友",
+      "家庭",
+      "老人"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B0FFFV4GUE",
+    "name": "马一浮纪念馆",
+    "city": "杭州市",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "sub_category": "人文古迹",
+    "address": "西湖街道西湖街道西湖街道西湖街道西湖街道杨公堤10号花港观鱼内杭州西湖风景名胜区-蒋庄附近",
+    "location": {
+      "lng": 120.142059,
+      "lat": 30.23129
+    },
+    "tel": "0571-87963033",
+    "rating": 4.3,
+    "price": null,
+    "business_hours": "09:00-17:00",
+    "suggested_duration": 90,
+    "tags": [
+      "人文古迹",
+      "文化展馆",
+      "西湖周边",
+      "适合散步",
+      "拍照出片"
+    ],
+    "ugc_keywords": [
+      "文化气息浓",
+      "环境雅致",
+      "入口不太显眼"
+    ],
+    "highlights": "在西湖景区了解马一浮文化",
+    "photos": [
+      "http://store.is.autonavi.com/showpic/e85dc696cb0f0694a37fb85c05c2053a",
+      "https://store.is.autonavi.com/showpic/300fee1c5080f14eae2442c34ec63cba",
+      "http://store.is.autonavi.com/showpic/ec0f21f883a6bbe002eae289cf43305e"
+    ],
+    "suitable_for": [
+      "独自",
+      "家庭",
+      "老人",
+      "学生"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B023B194H4",
+    "name": "包公殿",
+    "city": "杭州市",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "sub_category": "寺庙道观",
+    "address": "靖江街道义南村2组34号",
+    "location": {
+      "lng": 120.488092,
+      "lat": 30.245871
+    },
+    "tel": "0571-82993171",
+    "rating": 4.3,
+    "price": null,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "寺庙祈福",
+      "人文古迹",
+      "小众安静",
+      "免费"
+    ],
+    "ugc_keywords": [
+      "香火氛围浓",
+      "位置较偏",
+      "适合安静参观"
+    ],
+    "highlights": "探访乡间包公信仰文化空间",
+    "photos": [
+      "http://store.is.autonavi.com/showpic/14757d7e9c3fd839ded135d0e6ca171c",
+      "http://store.is.autonavi.com/showpic/885a8dd50b04a2dd145beca3bf68a096",
+      "http://store.is.autonavi.com/showpic/f1505ddfd130446e35f3fbcdd419271a"
+    ],
+    "suitable_for": [
+      "家庭",
+      "老人",
+      "独自"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B023B0A7PS",
+    "name": "雷山庙",
+    "city": "杭州市",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "sub_category": "寺庙道观",
+    "address": "南阳镇雷山村",
+    "location": {
+      "lng": 120.45314,
+      "lat": 30.254959
+    },
+    "tel": null,
+    "rating": 4.0,
+    "price": null,
+    "business_hours": "08:00-17:00",
+    "suggested_duration": 60,
+    "tags": [
+      "寺庙祈福",
+      "乡村风光",
+      "小众安静",
+      "适合散步"
+    ],
+    "ugc_keywords": [
+      "环境朴素",
+      "游客不多",
+      "适合顺路参观"
+    ],
+    "highlights": "体验雷山村里的清静庙宇",
+    "photos": [
+      "http://store.is.autonavi.com/showpic/f37cc238aa8ba931d1f3d4e8c544ca9e",
+      "https://store.is.autonavi.com/showpic/55d297ab4971c3056c60db81aa7cff14",
+      "https://store.is.autonavi.com/showpic/2cfa51d8b06879f546a17e0645fa8018"
+    ],
+    "suitable_for": [
+      "独自",
+      "家庭",
+      "老人"
+    ],
+    "source": "amap",
+    "type_name": "风景名胜"
+  }
+]

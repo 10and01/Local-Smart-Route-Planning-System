@@ -1,0 +1,20 @@
+{
+  "city": "杭州",
+  "description": "美团AI Hackthon演示数据集",
+  "files": {
+    "pois": "data/杭州_pois_mock.json",
+    "distance_matrix_haversine": "data/distance_matrix_haversine.json",
+    "distance_matrix_osrm": "data/distance_matrix_osrm_foot.json"
+  },
+  "stats": {
+    "poi_count": 20,
+    "categories": {
+      "风景名胜": 8,
+      "休闲娱乐": 1,
+      "餐饮服务": 6,
+      "咖啡厅": 3,
+      "购物服务": 2
+    },
+    "distance_matrix_size": "20×20"
+  }
+}

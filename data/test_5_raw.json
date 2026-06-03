@@ -1,0 +1,145 @@
+[
+  {
+    "poi_id": "B0FFF461C1",
+    "name": "白鸟村文化小广场",
+    "city": "杭州市",
+    "district": "西湖区",
+    "category": "风景名胜",
+    "sub_category": null,
+    "address": "G25(长深高速公路)",
+    "location": {
+      "lng": 120.109486,
+      "lat": 30.095025
+    },
+    "tel": null,
+    "rating": 4.1,
+    "price": null,
+    "business_hours": null,
+    "suggested_duration": 60,
+    "tags": [],
+    "ugc_keywords": [],
+    "highlights": null,
+    "photos": [
+      "https://store.is.autonavi.com/showpic/1de628342d8dde83179ce4b11ad01656",
+      "http://store.is.autonavi.com/showpic/8deaadb6a04c3119ad07b1493c361852"
+    ],
+    "suitable_for": null,
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B0FFF3YLSH",
+    "name": "渌渚镇孝子湾文化公园",
+    "city": "杭州市",
+    "district": "富阳区",
+    "category": "风景名胜",
+    "sub_category": null,
+    "address": "下枫线",
+    "location": {
+      "lng": 119.722154,
+      "lat": 29.913261
+    },
+    "tel": null,
+    "rating": 4.1,
+    "price": null,
+    "business_hours": null,
+    "suggested_duration": 60,
+    "tags": [],
+    "ugc_keywords": [],
+    "highlights": null,
+    "photos": [
+      "http://store.is.autonavi.com/showpic/7380391e1ad80db0ab176b28cc039b1e",
+      "http://store.is.autonavi.com/showpic/96fe4e24dbe600ae72492183d2726bfb"
+    ],
+    "suitable_for": null,
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B023B0A8IC",
+    "name": "瑞六禅寺",
+    "city": "杭州市",
+    "district": "余杭区",
+    "category": "风景名胜",
+    "sub_category": null,
+    "address": "黄湖镇青山村自由城大草坪旁",
+    "location": {
+      "lng": 119.850032,
+      "lat": 30.491257
+    },
+    "tel": null,
+    "rating": 3.9,
+    "price": null,
+    "business_hours": null,
+    "suggested_duration": 60,
+    "tags": [],
+    "ugc_keywords": [],
+    "highlights": null,
+    "photos": [
+      "http://store.is.autonavi.com/showpic/eb0b98eacce74be7c7a87fbfd5d39428",
+      "http://store.is.autonavi.com/showpic/70c4dead34ca0b909effae4fbb572385",
+      "http://store.is.autonavi.com/showpic/e8d2da28ce9d6cce4bddaf199ab14b33"
+    ],
+    "suitable_for": null,
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B023B065OL",
+    "name": "基督教堂",
+    "city": "杭州市",
+    "district": "萧山区",
+    "category": "风景名胜",
+    "sub_category": null,
+    "address": "南丰路与阳城路交叉口南220米",
+    "location": {
+      "lng": 120.428316,
+      "lat": 30.277039
+    },
+    "tel": null,
+    "rating": 4.0,
+    "price": null,
+    "business_hours": null,
+    "suggested_duration": 60,
+    "tags": [],
+    "ugc_keywords": [],
+    "highlights": null,
+    "photos": [
+      "http://store.is.autonavi.com/showpic/0b74033fd72a2d56a13802c535dc47e9",
+      "http://store.is.autonavi.com/showpic/824de6b6a5a8b1d373576462d07a2048",
+      "https://store.is.autonavi.com/showpic/e4ed0551a34eed9ae8a48e783647648c"
+    ],
+    "suitable_for": null,
+    "source": "amap",
+    "type_name": "风景名胜"
+  },
+  {
+    "poi_id": "B0FFH959MW",
+    "name": "永寿寺",
+    "city": "杭州市",
+    "district": "富阳区",
+    "category": "风景名胜",
+    "sub_category": null,
+    "address": "大山脚(虎啸杏地铁站C口步行290米)",
+    "location": {
+      "lng": 119.973485,
+      "lat": 30.130018
+    },
+    "tel": "13336062206",
+    "rating": 3.9,
+    "price": null,
+    "business_hours": null,
+    "suggested_duration": 60,
+    "tags": [],
+    "ugc_keywords": [],
+    "highlights": null,
+    "photos": [
+      "https://store.is.autonavi.com/showpic/20c1c6d53728a67329ecc6f2e2c3e4c7",
+      "https://store.is.autonavi.com/showpic/a13fb14630a6b4a6956b0da2c2fcc329",
+      "https://store.is.autonavi.com/showpic/fd935d8669d391200f4c80a5616c7dd8"
+    ],
+    "suitable_for": null,
+    "source": "amap",
+    "type_name": "风景名胜"
+  }
+]
