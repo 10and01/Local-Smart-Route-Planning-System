@@ -149,6 +149,9 @@ for i, p in enumerate(plans_c):
 print(f"\n{'='*70}")
 print(f"【D组】完整系统（+Policy Generator）")
 print(f"{'='*70}")
+# 清除可能污染的缓存
+route_engine._dedup_cache.clear()
+generate_planning_policy.__globals__['_policy_cache'].clear()
 start = time.time()
 policy = generate_planning_policy(
     raw_query=request.raw_query,

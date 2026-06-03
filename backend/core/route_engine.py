@@ -178,7 +178,8 @@ def _llm_filter_low_quality_scenic(candidates: List[POI], city: str) -> List[POI
 def _force_insert_meals(
     segments: List[PlanSegment],
     all_candidates: List[POI],
-    constraints: RouteConstraints
+    constraints: RouteConstraints,
+    end_dt: Optional[datetime] = None,
 ) -> List[PlanSegment]:
     """
     强制在路线中插入午餐/晚餐时段的餐饮POI。
@@ -206,16 +207,27 @@ def _force_insert_meals(
     # 获取已使用的POI ID
     used_ids = {seg.poi.poi_id for seg in segments}
     
-    # 筛选可用餐饮POI
+    # 计算当前总花费
+    current_total_cost = sum(seg.poi.price or 0 for seg in segments)
+    budget = constraints.budget
+
+    # 筛选可用餐饮POI，并排除明显超预算的
     food_candidates = [
         p for p in all_candidates
         if p.category == "餐饮服务" and p.poi_id not in used_ids
     ]
     if not food_candidates:
         return segments
+
+    # 【阶段二】预算约束：如果预算有限，优先排除高价餐厅
+    if budget and budget > 0:
+        max_single = budget * 0.35  # 单餐不超过预算35%（500元→175元）
+        food_candidates = [p for p in food_candidates if (p.price or 0) <= max_single]
+        if not food_candidates:
+            return segments
     
     def find_best_restaurant(reference_seg: PlanSegment) -> Optional[POI]:
-        """找到距离reference_seg最近的餐厅"""
+        """找到距离reference_seg最近且符合预算的餐厅"""
         best = None
         best_dist = float('inf')
         for r in food_candidates:
@@ -223,8 +235,10 @@ def _force_insert_meals(
                 reference_seg.poi.location.lat, reference_seg.poi.location.lng,
                 r.location.lat, r.location.lng
             )
-            # 综合距离和rating
+            # 综合距离和rating，预算紧张时额外惩罚高价
             score = dist / max(r.rating or 3.0, 1.0)
+            if budget and budget > 0 and (r.price or 0) > budget * 0.25:
+                score *= 2.0  # 高价餐厅距离惩罚翻倍
             if score < best_dist:
                 best_dist = score
                 best = r
@@ -239,11 +253,22 @@ def _force_insert_meals(
             duration=60,
             transport_to_next=None,
             transport_distance_m=0,
+            transport_mode=transport_mode,
         )
         segments.insert(idx + 1, new_seg)
         return segments
     
     transport_mode = constraints.transport_mode or "步行"
+    
+    # 根据路线长度决定插入策略
+    route_duration_min = 0
+    if segments:
+        first_arrive = parse_time(segments[0].arrive_time)
+        last_leave = parse_time(segments[-1].leave_time)
+        route_duration_min = int((last_leave - first_arrive).total_seconds() / 60)
+    
+    # 短路线（< 4小时）只插入1个餐饮；长路线尝试插入2个
+    skip_dinner = route_duration_min < 240
     
     # 插入午餐
     if not has_lunch:
@@ -259,12 +284,14 @@ def _force_insert_meals(
         
         if best_idx >= 0:
             rest = find_best_restaurant(segments[best_idx])
-            if rest:
+            # 【阶段二】插入前检查总预算
+            if rest and (not budget or current_total_cost + (rest.price or 0) <= budget * 0.9):
                 segments = insert_after(segments, best_idx, rest, transport_mode)
+                current_total_cost += rest.price or 0
                 food_candidates.remove(rest)
     
     # 插入晚餐
-    if not has_dinner:
+    if not has_dinner and not skip_dinner:
         best_idx = -1
         best_diff = float('inf')
         for i, seg in enumerate(segments):
@@ -276,10 +303,43 @@ def _force_insert_meals(
         
         if best_idx >= 0:
             rest = find_best_restaurant(segments[best_idx])
-            if rest:
-                segments = insert_after(segments, best_idx, rest, transport_mode)
+            # 【阶段二】插入前检查总预算
+            if rest and (not budget or current_total_cost + (rest.price or 0) <= budget * 0.9):
+                # 【Phase Four】估算插入晚餐后是否严重超时
+                if end_dt:
+                    # 简化估算：插入晚餐会使后续POI后移约70分钟
+                    poi_after = len(segments) - best_idx - 1
+                    estimated_shift = 70 + poi_after * 5
+                    last_leave = parse_time(segments[-1].leave_time)
+                    if last_leave + timedelta(minutes=estimated_shift) > end_dt + timedelta(minutes=15):
+                        pass  # 预计超时，跳过晚餐
+                    else:
+                        segments = insert_after(segments, best_idx, rest, transport_mode)
+                        current_total_cost += rest.price or 0
+                else:
+                    segments = insert_after(segments, best_idx, rest, transport_mode)
+                    current_total_cost += rest.price or 0
     
     return segments
+
+
+def _pre_filter_by_budget(candidates: List[POI], budget: Optional[int]) -> List[POI]:
+    """
+    候选池预过滤：排除明显超预算的POI
+    【阶段二】预算硬约束：单个POI价格超过预算一定比例时直接排除
+    """
+    if not budget or budget <= 0:
+        return candidates
+    # 宽松阈值：允许单点最多占预算的60%（如500元预算排除>300元的餐厅）
+    # 对于高预算适当放宽
+    threshold = budget * 0.6 if budget < 1000 else budget * 0.4
+    filtered = []
+    for poi in candidates:
+        price = poi.price
+        if price is not None and price > threshold:
+            continue
+        filtered.append(poi)
+    return filtered
 
 
 # ============================================================================
@@ -352,46 +412,15 @@ def estimate_travel_time(
     to_loc: Location, 
     mode: str = "步行",
     city: Optional[str] = None
-) -> Tuple[int, int]:
+) -> Tuple[int, int, str]:
     """
-    估算两点间的交通耗时和距离
+    估算两点间的交通耗时、距离和实际交通方式
     【P1】优先查询OSRM真实距离矩阵
-    【P2】多模式支持：步行用OSRM，其他用高德API+缓存
-    返回: (时间分钟, 距离米)
+    【阶段一】多模式智能降级：步行超时自动切换更快的交通方式
+    返回: (时间分钟, 距离米, 实际交通方式)
     """
-    # 使用 direction_api 服务（自动处理多模式）
-    from backend.data.direction_api import get_travel_info
-    return get_travel_info(from_loc, to_loc, mode, city)
-    # 尝试使用真实距离矩阵
-    plan_city = city or _current_planning_city
-    try:
-        provider = get_matrix_provider(plan_city)
-        if provider:
-            result = provider.estimate_travel(
-                from_loc.lat, from_loc.lng,
-                to_loc.lat, to_loc.lng,
-                mode=mode
-            )
-            if result is not None:
-                return result
-    except Exception:
-        pass
-    
-    # 回退到Haversine估算
-    dist_m = haversine_distance_m(from_loc.lat, from_loc.lng, to_loc.lat, to_loc.lng)
-    # 实际路径通常比直线长30%（城市街道绕行）
-    actual_dist_m = dist_m * 1.3
-    
-    speed_map = {
-        "步行": 80,      # 米/分钟 ≈ 4.8km/h
-        "骑行": 200,     # 米/分钟 ≈ 12km/h
-        "驾车": 500,     # 米/分钟 ≈ 30km/h
-        "公交": 250,     # 米/分钟 ≈ 15km/h（含等待和换乘）
-    }
-    speed = speed_map.get(mode, 80)
-    time_min = max(1, int(actual_dist_m / speed))
-    
-    return time_min, int(actual_dist_m)
+    from backend.data.gaode_direction import select_best_transport
+    return select_best_transport(from_loc, to_loc, mode, city or _current_planning_city)
 
 
 def parse_time(time_str: str) -> datetime:
@@ -459,6 +488,38 @@ def is_within_open_hours(poi: POI, arrive_time: datetime, duration_min: int = 60
     return True
 
 
+def _compute_keyword_match_score(poi: POI, keywords: List[str]) -> float:
+    """
+    计算POI与关键词列表的匹配度 (0.0~1.0)
+    综合考量 name + tags + category + sub_category 的文本匹配
+    【阶段一】泛化性偏好对齐：支持部分匹配，平滑得分
+    """
+    if not keywords:
+        return 0.0
+    texts = [poi.name or ""]
+    texts.extend(poi.tags or [])
+    if poi.category:
+        texts.append(poi.category)
+    if poi.sub_category:
+        texts.append(poi.sub_category)
+    full_text = " ".join(texts).lower()
+    total_score = 0.0
+    for kw in keywords:
+        kw = kw.strip().lower()
+        if not kw:
+            continue
+        if kw in full_text:
+            total_score += 1.0
+        else:
+            # 部分匹配：关键词被包含或包含文本中的某个词
+            for text in texts:
+                text_lower = text.lower()
+                if kw in text_lower or text_lower in kw:
+                    total_score += 0.5
+                    break
+    return min(1.0, total_score / max(1, len(keywords)))
+
+
 def compute_poi_marginal_value(
     poi: POI,
     pref_match: float,
@@ -468,6 +529,7 @@ def compute_poi_marginal_value(
     budget: Optional[int],
     strategy: str = "balanced",
     policy: Optional[PlanningPolicy] = None,
+    selected_categories: Optional[List[str]] = None,
 ) -> float:
     """
     计算POI的边际价值 — 核心评分函数
@@ -547,14 +609,10 @@ def compute_poi_marginal_value(
     
     # ===== 个性化加成（Layer 5）=====
     if policy is not None:
-        # 【P0 重构】动态维度评分：遍历所有维度，用 keyword_map 做匹配
+        # 【阶段一】泛化性偏好对齐：增强 keyword_map 匹配度计算
         for dimension, weight in user_pref.theme_weights.items():
             keywords = policy.theme_keyword_map.get(dimension, [dimension])
-            match_score = 0.0
-            for kw in keywords:
-                if kw in poi.tags or kw in (poi.category or "") or kw in (poi.sub_category or ""):
-                    match_score = 1.0
-                    break
+            match_score = _compute_keyword_match_score(poi, keywords)
             if match_score > 0:
                 scene_weight = get_effective_coefficient(poi, "scene_match_weight", policy)
                 marginal_value += weight * match_score * 25 * scene_weight
@@ -607,6 +665,27 @@ def compute_poi_marginal_value(
                 else:
                     marginal_value += 10
                 break  # 只加一次
+    
+    # 【Phase Four】POI 多样性软惩罚
+    if selected_categories and len(selected_categories) > 0:
+        scenic_count = sum(1 for c in selected_categories if c == "风景名胜")
+        scenic_ratio = scenic_count / len(selected_categories)
+        # 当风景名胜占比超过40%时，新风景名胜POI得分降低（阈值从50%降至40%）
+        if scenic_ratio > 0.4 and poi.category == "风景名胜":
+            penalty = 1.0 + (scenic_ratio - 0.4) * 6.0  # 50%→1.6x, 60%→2.2x, 70%→2.8x
+            marginal_value = marginal_value / penalty
+        
+        # 餐饮多样性奖励：如果餐饮比例过低，大幅提升餐饮POI得分
+        food_count = sum(1 for c in selected_categories if c == "餐饮服务")
+        food_ratio = food_count / len(selected_categories)
+        if food_ratio < 0.2 and poi.category == "餐饮服务":
+            marginal_value *= 1.5  # 从1.25提升到1.5
+        
+        # 购物/文化多样性奖励：如果只有风景名胜和餐饮，也鼓励其他类型
+        other_count = len(selected_categories) - scenic_count - food_count
+        other_ratio = other_count / len(selected_categories)
+        if other_ratio < 0.15 and poi.category in ("购物服务", "科教文化服务"):
+            marginal_value *= 1.3
     
     return marginal_value
 
@@ -691,7 +770,7 @@ def preference_guided_greedy(
         best_dist = 0
         
         for poi in remaining:
-            travel_time, dist_m = estimate_travel_time(
+            travel_time, dist_m, _ = estimate_travel_time(
                 current_location, poi.location, constraints.transport_mode
             )
             
@@ -720,22 +799,36 @@ def preference_guided_greedy(
                 effective_duration = int(poi.suggested_duration * 0.85)
             
             finish_dt = arrive_dt + timedelta(minutes=effective_duration)
-            # 【修复】时间约束弹性：POI不足时允许最后一个POI稍微超出结束时间
-            time_buffer = 45 if len(segments) < min_poi_count - 1 else 0
+            # 【Phase Four】严格时间约束：仅POI严重不足时允许10分钟缓冲
+            time_buffer = 10 if len(segments) < min_poi_count else 0
             if finish_dt > end_dt + timedelta(minutes=time_buffer):
                 continue
             
-            if constraints.budget and poi.price:
-                if total_cost + poi.price > constraints.budget:
+            # 【Phase Four】跳过餐饮POI，餐饮安排完全交给 _force_insert_meals
+            # 避免餐饮因营业时间限制（上午不营业）导致上午只能选风景名胜
+            if poi.category == "餐饮服务":
+                continue
+            
+            # 【阶段二】预算硬约束：加入新POI前检查累计花费
+            if constraints.budget is not None and poi.price is not None:
+                if total_cost + poi.price > constraints.budget * 0.9:
                     continue
             
             # 计算偏好匹配度
             pref_match = compute_preference_match(poi.tags, user_pref.theme_weights)
             
-            # 【策略差异化】计算边际价值时传入策略类型和距离
+            # 【策略差异化 + Phase Four】计算边际价值时传入策略类型、距离和已选类别
+            selected_categories = [s.poi.category for s in segments]
             marginal_value = compute_poi_marginal_value(
-                poi, pref_match, travel_time, dist_m, user_pref, constraints.budget, strategy, policy
+                poi, pref_match, travel_time, dist_m, user_pref, constraints.budget, strategy, policy, selected_categories
             )
+            
+            # 【Phase Four】非餐饮POI数量限制：为餐饮预留时间
+            total_available_min = int((end_dt - parse_time(constraints.start_time)).total_seconds() / 60)
+            # 每2个非餐饮POI预留1个餐饮位（至少预留90分钟）
+            max_non_food_pois = max(min_poi_count, int((total_available_min - 120) / 70))
+            if len(segments) >= max_non_food_pois and poi.category != "餐饮服务":
+                continue
             
             # 必去点强制加分
             if poi.name in must_visit_names:
@@ -761,7 +854,7 @@ def preference_guided_greedy(
             break
         
         # 创建路线节点
-        travel_time, dist_m = estimate_travel_time(
+        travel_time, dist_m, actual_mode = estimate_travel_time(
             current_location, best_poi.location, constraints.transport_mode
         )
         arrive_dt = current_dt + timedelta(minutes=travel_time)
@@ -790,8 +883,9 @@ def preference_guided_greedy(
             arrive_time=format_time(arrive_dt),
             leave_time=format_time(leave_dt),
             duration=seg_duration,
-            transport_to_next=f"{constraints.transport_mode}约{best_travel_time}分钟",
+            transport_to_next=f"{actual_mode}约{best_travel_time}分钟",
             transport_distance_m=best_dist,
+            transport_mode=actual_mode,
             tips=tips,
             selection_reasons=reasons
         )
@@ -946,19 +1040,21 @@ def _update_segment_times(segments: List[PlanSegment], transport_mode: str) -> d
     for i, seg in enumerate(segments):
         if i == 0:
             # 第一个segment：从起点出发，加上交通时间得到到达时间
-            travel_time, dist_m = estimate_travel_time(
+            travel_time, dist_m, actual_mode = estimate_travel_time(
                 start_location, seg.poi.location, transport_mode
             )
             current_dt += timedelta(minutes=travel_time)
+            seg.transport_mode = actual_mode
         elif i > 0:
-            travel_time, dist_m = estimate_travel_time(
+            travel_time, dist_m, actual_mode = estimate_travel_time(
                 segments[i - 1].poi.location,
                 seg.poi.location,
                 transport_mode
             )
             current_dt += timedelta(minutes=travel_time)
-            segments[i - 1].transport_to_next = f"{transport_mode}约{travel_time}分钟"
+            segments[i - 1].transport_to_next = f"{actual_mode}约{travel_time}分钟"
             segments[i - 1].transport_distance_m = dist_m
+            segments[i - 1].transport_mode = actual_mode
         
         seg.arrive_time = format_time(current_dt)
         leave_dt = current_dt + timedelta(minutes=seg.poi.suggested_duration)
@@ -977,9 +1073,11 @@ def build_route_plan(
     segments: List[PlanSegment],
     theme: str,
     description: str,
-    plan_id: str
+    plan_id: str,
+    end_time: Optional[str] = None,
+    user_pref: Optional[UserPreference] = None,
 ) -> RoutePlan:
-    """将路线节点列表构建为RoutePlan对象 【Day 3 增强推荐理由】"""
+    """将路线节点列表构建为RoutePlan对象 【Day 3 增强推荐理由】【阶段三】支持超时检测与删减候选"""
     if not segments:
         return RoutePlan(
             plan_id=plan_id,
@@ -1042,6 +1140,36 @@ def build_route_plan(
             reasoning += "，既探索远方也兼顾效率"
         reasoning += f"。总用时{total_time_str}，是体验与效率的最佳平衡。"
     
+    # 【阶段三】超时检测与删减候选
+    is_overtime = False
+    overtime_minutes = 0
+    overtime_candidates = None
+    if end_time and segments:
+        planned_end = parse_time(segments[-1].leave_time)
+        target_end = parse_time(end_time)
+        if planned_end > target_end:
+            is_overtime = True
+            overtime_minutes = int((planned_end - target_end).total_seconds() / 60)
+            # 生成可删减候选：跳过首尾，按（低匹配度 + 高时间）排序
+            candidates_for_removal = []
+            for idx, seg in enumerate(segments):
+                if idx == 0 or idx == len(segments) - 1:
+                    continue  # 保留首尾
+                pref_match = 0.0
+                if user_pref:
+                    pref_match = compute_preference_match(seg.poi.tags, user_pref.theme_weights)
+                # 分数越高越容易删减：时间长 + 匹配度低
+                removal_score = seg.poi.suggested_duration * (1.1 - pref_match)
+                candidates_for_removal.append({
+                    "name": seg.poi.name,
+                    "category": seg.poi.category,
+                    "duration": seg.poi.suggested_duration,
+                    "match_score": round(pref_match, 2),
+                    "removal_score": round(removal_score, 1),
+                })
+            candidates_for_removal.sort(key=lambda x: -x["removal_score"])
+            overtime_candidates = candidates_for_removal
+
     return RoutePlan(
         plan_id=plan_id,
         theme=theme,
@@ -1050,7 +1178,10 @@ def build_route_plan(
         total_cost=total_cost,
         poi_count=len(segments),
         segments=segments,
-        overall_reasoning=reasoning
+        overall_reasoning=reasoning,
+        is_overtime=is_overtime,
+        overtime_minutes=overtime_minutes,
+        overtime_candidates=overtime_candidates,
     )
 
 
@@ -1258,7 +1389,7 @@ def force_differentiate(
                             ]
                             
                             # 统一使用步行模式，避免外部API调用
-                            last_leave_dt = _update_segment_times(plans[j].segments, "步行")
+                            last_leave_dt = _update_segment_times(plans[j].segments, constraints.transport_mode if constraints else "步行")
                             
                             # 【P1修复】检查替换后是否严重超出时间限制
                             # 使用 _update_segment_times 返回的 datetime 对象，
@@ -1277,7 +1408,7 @@ def force_differentiate(
                                 # 超出时间限制，恢复旧POI
                                 plans[j].segments[replace_idx].poi = old_poi
                                 plans[j].segments[replace_idx].selection_reasons = old_reasons
-                                _update_segment_times(plans[j].segments, "步行")
+                                _update_segment_times(plans[j].segments, constraints.transport_mode if constraints else "步行")
                     
                     plans[j] = build_route_plan(
                         plans[j].segments,
@@ -1312,6 +1443,10 @@ def generate_preference_variants(
     
     # 【P0-fix】对候选POI进行去重/合并，避免灵隐寺+灵隐景区等重复
     candidates = _deduplicate_pois(candidates, constraints.city or "杭州")
+    
+    # 【Phase Four】过滤掉不适合旅游的类别
+    excluded_categories = {"地名地址信息", "商务住宅信息"}
+    candidates = [p for p in candidates if p.category not in excluded_categories]
     
     def _build_plan(cand, pref, cons, strategy_key, plan_id):
         """构建单条路线，带最小POI数量重试"""
@@ -1364,10 +1499,31 @@ def generate_preference_variants(
         # 【修复】2-opt交换后重新计算时间和距离
         _update_segment_times(seg, cons.transport_mode)
         # 【P0-fix】强制插入午餐/晚餐时段的餐饮POI
-        seg = _force_insert_meals(seg, candidates, cons)
+        seg = _force_insert_meals(seg, candidates, cons, parse_time(cons.end_time))
         if seg:
             _update_segment_times(seg, cons.transport_mode)
-        plan = build_route_plan(seg, name, description, plan_id)
+            # 【Phase Four】强制插入餐饮后可能超时，裁剪超出结束时间的POI
+            end_dt_obj = parse_time(cons.end_time)
+            while len(seg) > 1 and parse_time(seg[-1].leave_time) > end_dt_obj + timedelta(minutes=10):
+                # 【Phase Four】优先裁剪风景名胜，保留餐饮和文化/购物多样性
+                if seg[-1].poi.category == "风景名胜":
+                    seg.pop()
+                else:
+                    removed = False
+                    for i in range(len(seg) - 2, 0, -1):
+                        if seg[i].poi.category == "风景名胜":
+                            seg.pop(i)
+                            removed = True
+                            break
+                    if not removed:
+                        seg.pop()
+                if seg:
+                    seg[-1].transport_to_next = None
+                    seg[-1].transport_distance_m = 0
+                    _update_segment_times(seg, cons.transport_mode)
+            if seg:
+                _update_segment_times(seg, cons.transport_mode)
+        plan = build_route_plan(seg, name, description, plan_id, end_time=cons.end_time, user_pref=pref)
         plan.preference_weights_used = pref.poi_score_weights
         return plan
     
@@ -1376,6 +1532,7 @@ def generate_preference_variants(
     if pref_a.theme_weights:
         pref_a.theme_weights = {k: min(1.0, v * 1.5) for k, v in pref_a.theme_weights.items()}
     cand_a = filter_candidates_by_strategy(candidates, "experience", start_location, pref_a, policy=policy)
+    cand_a = _pre_filter_by_budget(cand_a, constraints.budget)
     constraints_a = copy.deepcopy(constraints)
     # 统一使用用户选择的交通方式（默认步行），避免无效的高德API调用
     plan_a = _build_plan(cand_a, pref_a, constraints_a, "experience", "plan_a")
@@ -1386,11 +1543,13 @@ def generate_preference_variants(
     pref_b.pace_preference = "紧凑"
     pref_b.willingness_to_walk = 0.2
     cand_b = filter_candidates_by_strategy(candidates, "efficiency", start_location, pref_b, policy=policy)
+    cand_b = _pre_filter_by_budget(cand_b, constraints.budget)
     plan_b = _build_plan(cand_b, pref_b, constraints, "efficiency", "plan_b")
     plans.append(plan_b)
     
     # ========== 方案C：均衡推荐 ==========
     cand_c = filter_candidates_by_strategy(candidates, "balanced", start_location, user_pref, policy=policy)
+    cand_c = _pre_filter_by_budget(cand_c, constraints.budget)
     plan_c = _build_plan(cand_c, user_pref, constraints, "balanced", "plan_c")
     plans.append(plan_c)
     

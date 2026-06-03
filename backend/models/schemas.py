@@ -4,7 +4,7 @@
 所有API的输入输出数据结构
 """
 
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 
 
@@ -150,6 +150,10 @@ class PlanSegment(BaseModel):
         None,
         description="到下一个POI的距离(米)"
     )
+    transport_mode: Optional[str] = Field(
+        None,
+        description="实际使用的交通方式：步行/骑行/驾车/公交"
+    )
     tips: Optional[str] = Field(
         None,
         description="个性化提示，如 '上午光线适合拍照'"
@@ -176,6 +180,18 @@ class RoutePlan(BaseModel):
     preference_weights_used: Optional[Dict[str, float]] = Field(
         None,
         description="该方案使用的偏好权重（用于解释差异）"
+    )
+    is_overtime: bool = Field(
+        False,
+        description="是否超出结束时间"
+    )
+    overtime_minutes: int = Field(
+        0,
+        description="超出结束时间的分钟数"
+    )
+    overtime_candidates: Optional[List[Dict[str, Any]]] = Field(
+        None,
+        description="可删减的POI候选列表（按优先级排序）"
     )
 
 

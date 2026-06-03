@@ -57,6 +57,54 @@ def load_pois(city: Optional[str] = None) -> List[POI]:
     return []
 
 
+def _infer_suggested_duration(item: dict) -> int:
+    """
+    根据POI类别和名称推断建议停留时长（分钟）
+    【阶段三】动态停留时间：不写死具体POI，按类别+名称关键词泛化推断
+    """
+    category = item.get("category", "")
+    name = item.get("name", "")
+    sub = item.get("sub_category") or ""
+    
+    # 餐饮类
+    if category == "餐饮服务":
+        return 60
+    
+    # 购物类
+    if category == "购物服务":
+        return 45
+    
+    # 风景名胜类：按名称关键词推断
+    if category == "风景名胜":
+        # 寺庙/宗教场所
+        if any(k in name for k in ("寺", "庙", "庵", "院", "阁", "塔")):
+            return 60
+        # 博物馆/纪念馆
+        if any(k in name for k in ("博物馆", "纪念馆", "陈列馆", "故居")):
+            return 90
+        # 观景台/断桥/桥
+        if any(k in name for k in ("观景台", "亭", "台", "断桥", "桥")):
+            return 20
+        # 码头/渡口
+        if any(k in name for k in ("码头", "渡口", "港口")):
+            return 15
+        # 公园/乐园
+        if any(k in name for k in ("公园", "乐园", "湿地", "森林")):
+            return 45
+        # 山洞/洞穴
+        if any(k in name for k in ("洞", "穴")):
+            return 40
+        # 默认景点
+        return 45
+    
+    # 住宿类
+    if category == "住宿服务":
+        return 30
+    
+    # 其他默认
+    return 60
+
+
 def _load_poi_file(filepath: str) -> List[POI]:
     """从JSON文件加载POI列表"""
     with open(filepath, "r", encoding="utf-8") as f:
@@ -71,6 +119,13 @@ def _load_poi_file(filepath: str) -> List[POI]:
                 lng=loc_data.get("lng", 0)
             )
             
+            # 【阶段三】动态停留时间
+            raw_duration = item.get("suggested_duration")
+            if raw_duration is None or raw_duration == 60:
+                inferred = _infer_suggested_duration(item)
+            else:
+                inferred = raw_duration
+            
             poi = POI(
                 poi_id=item.get("poi_id", ""),
                 name=item.get("name", ""),
@@ -84,7 +139,7 @@ def _load_poi_file(filepath: str) -> List[POI]:
                 rating=item.get("rating"),
                 price=item.get("price"),
                 business_hours=item.get("business_hours"),
-                suggested_duration=item.get("suggested_duration", 60),
+                suggested_duration=inferred,
                 tags=item.get("tags", []),
                 ugc_keywords=item.get("ugc_keywords", []),
                 highlights=item.get("highlights"),
