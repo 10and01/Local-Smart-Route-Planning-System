@@ -1,20 +1,30 @@
 {
   "city": "杭州",
-  "description": "美团AI Hackthon演示数据集",
+  "description": "美团AI Hackthon演示数据集（四层优化后）",
   "files": {
-    "pois": "data/杭州_pois_mock.json",
+    "pois": "data/杭州_pois.json",
     "distance_matrix_haversine": "data/distance_matrix_haversine.json",
-    "distance_matrix_osrm": "data/distance_matrix_osrm_foot.json"
+    "distance_matrix_osrm_foot": "data/distance_matrix_osrm_foot.json"
   },
+  "distance_matrix_files": [
+    "data/distance_matrix_haversine.json",
+    "data/distance_matrix_osrm_foot.json",
+    "data/distance_matrix_osrm_foot_北京.json",
+    "data/distance_matrix_osrm_foot_南京.json",
+    "data/distance_matrix_osrm_foot_广州.json",
+    "data/distance_matrix_osrm_foot_成都.json"
+  ],
   "stats": {
-    "poi_count": 20,
+    "poi_count": 219,
     "categories": {
-      "风景名胜": 8,
-      "休闲娱乐": 1,
-      "餐饮服务": 6,
-      "咖啡厅": 3,
-      "购物服务": 2
-    },
-    "distance_matrix_size": "20×20"
-  }
+      "风景名胜": 77,
+      "地名地址信息": 2,
+      "购物服务": 41,
+      "餐饮服务": 55,
+      "住宿服务": 5,
+      "体育休闲服务": 38,
+      "商务住宅": 1
+    }
+  },
+  "optimization_version": "v4_four_layer"
 }

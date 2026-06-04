@@ -67,6 +67,14 @@ SYSTEM_PROMPT = """你是高德地图POI搜索专家。根据用户的自然语�
 5. 如果用户提到"历史/文化/博物馆"，keywords应包含"博物馆"、"古迹"、"历史文化"等
 6. 避开用户明确排除的类别（如酒店、宾馆）
 7. 返回纯JSON数组，不要markdown代码块，不要解释文字
+
+## 关键词生成规则（铁律）
+1. keywords必须是高德地图能搜索到的POI类型词或地名，禁止生成抽象体验词
+2. 禁止生成：安静、浪漫、体验、发呆、治愈、感觉、氛围、心情、放松、当地人
+3. 用户提到抽象体验时，必须映射为具体POI类型：
+   - "安静" → "图书馆", "茶室", "公园", "寺庙"
+   - "浪漫" → "夜景", "江景餐厅", "摩天轮", "露台"
+4. 关键词长度2-8字为佳
 """
 
 
@@ -88,6 +96,9 @@ def _build_fetch_prompt(user_query: str, city: str, avoid: Optional[List[str]]) 
   {{"keywords": "山", "types": "110000", "reason": "用户提到喜欢爬山，搜索山景和登山点"}}
 ]
 """
+
+
+ABSTRACT_WORDS = {"安静", "浪漫", "体验", "发呆", "治愈", "感觉", "氛围", "心情", "放松", "当地人", "生活"}
 
 
 def _parse_search_queries(content: str) -> List[Dict]:
@@ -112,12 +123,16 @@ def _parse_search_queries(content: str) -> List[Dict]:
             valid = []
             for item in parsed:
                 if isinstance(item, dict) and item.get("keywords"):
+                    keywords = str(item.get("keywords", "")).strip()
+                    # 【第三层】过滤抽象体验词和过长关键词
+                    if keywords in ABSTRACT_WORDS or len(keywords) > 10:
+                        continue
                     types_val = str(item.get("types", "")).strip()
                     # 兼容LLM返回中文类型名的情况
                     if types_val and not types_val.isdigit():
                         types_val = TYPE_NAME_TO_CODE.get(types_val, types_val)
                     valid.append({
-                        "keywords": str(item.get("keywords", "")).strip(),
+                        "keywords": keywords,
                         "types": types_val,
                         "reason": str(item.get("reason", "")).strip(),
                     })

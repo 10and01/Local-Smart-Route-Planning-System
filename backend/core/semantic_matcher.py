@@ -22,103 +22,24 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 _DATA_DIR = _PROJECT_ROOT / "data"
 
 # 模型配置
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-EMBEDDING_DIM = 384
+MODEL_NAME = "BAAI/bge-small-zh-v1.5"
+EMBEDDING_DIM = 512
 
-# 【修复】中文关键词 → 英文扩展描述映射
-# all-MiniLM-L6-v2 的 BertTokenizer 对中文短词处理极差（大量[UNK]），
-# 使用英文描述可以获得有意义的embedding区分度
-_KEYWORD_EN_MAP = {
-    # 兴趣维度
-    "拍照": "photography scenic views photo spots",
-    "摄影": "photography scenic views photo spots",
-    "风景": "scenery landscape nature views",
-    "打卡": "instagrammable popular photo spots",
-    "网红": "instagrammable trendy popular",
-    "小众": "hidden gem off beaten path",
-    "夜景": "night view city lights evening",
-    # 美食维度
-    "美食": "delicious food restaurant dining",
-    "餐厅": "restaurant dining food",
-    "吃辣": "spicy food Sichuan cuisine hot pot",
-    "辣": "spicy food chili pepper",
-    "火锅": "hot pot spicy broth",
-    "川菜": "Sichuan cuisine spicy food",
-    "湘菜": "Hunan cuisine spicy food",
-    "日料": "Japanese cuisine sushi ramen",
-    "烧烤": "barbecue grill skewers",
-    "甜品": "dessert sweet cake",
-    "咖啡": "coffee cafe",
-    "茶": "tea teahouse",
-    "小吃": "street food snacks",
-    # 活动维度
-    "运动": "sports fitness exercise gym",
-    "健身": "fitness gym exercise",
-    "户外": "outdoor adventure camping hiking",
-    "爬山": "hiking mountain climbing",
-    "徒步": "hiking trekking walking",
-    "骑行": "cycling biking",
-    "露营": "camping outdoor",
-    # 文化维度
-    "文化": "culture history museum heritage",
-    "历史": "history heritage ancient",
-    "博物馆": "museum exhibition gallery",
-    "古迹": "historic sites ruins",
-    "艺术": "art gallery exhibition",
-    "寺庙": "temple Buddhist religious",
-    # 自然维度
-    "自然": "nature outdoor scenery mountains",
-    "山水": "mountains water scenery",
-    "公园": "park garden green space",
-    "湿地": "wetland marsh ecology",
-    "森林": "forest woodland nature",
-    "湖": "lake waterfront scenery",
-    "海": "sea beach ocean",
-    "赏花": "flower viewing blossom garden",
-    # 娱乐维度
-    "娱乐": "entertainment amusement fun",
-    "游乐园": "amusement park theme park",
-    "逛街": "shopping walking street",
-    "购物": "shopping mall retail",
-    "酒吧": "bar nightlife drinking",
-    "KTV": "karaoke singing entertainment",
-    # 氛围维度
-    "安静": "quiet peaceful serene",
-    "热闹": "lively bustling vibrant",
-    "浪漫": "romantic couples date",
-    "亲子": "family kids children friendly",
-    "情侣": "romantic couples date",
-    "朋友": "friends social gathering",
-    "独自": "solo quiet peaceful",
-    "商务": "business professional",
-    # 人群
-    "家庭": "family friendly",
-    "老人": "senior elderly accessible",
-    "学生": "student budget friendly",
-    "儿童": "children kids friendly",
-}
+# 【保留兜底】关键词扩展映射（中文模型下基本不需要，保留极少数无意义短词兜底）
+_KEYWORD_EN_MAP = {}
 
 
 def _expand_keyword(keyword: str) -> str:
     """
-    将中文关键词扩展为英文描述，以获得更好的embedding区分度。
-    优先精确匹配，再尝试子串匹配，最后返回原词。
+    【方案A】中文模型原生支持中文，直接返回原词，无需英文映射。
+    中文Embedding模型（如BAAI/bge-small-zh-v1.5）对中文短词有良好区分度。
     """
     if not keyword or not isinstance(keyword, str):
         return keyword or ""
     kw = keyword.strip()
-    # 精确匹配
+    # 兜底：极少数情况如果有映射仍可用
     if kw in _KEYWORD_EN_MAP:
         return _KEYWORD_EN_MAP[kw]
-    # 子串匹配（取最长的匹配）
-    best_match = None
-    best_len = 0
-    for cn, en in _KEYWORD_EN_MAP.items():
-        if cn in kw and len(cn) > best_len:
-            best_match = en
-            best_len = len(cn)
-    if best_match:
-        return best_match
     return kw
 
 
@@ -146,13 +67,13 @@ class SemanticMatcher:
         try:
             import torch
             import torch.nn.functional as F
-            from transformers.models.bert import BertModel, BertTokenizer
+            from transformers import AutoModel, AutoTokenizer
 
-            self._tokenizer = BertTokenizer.from_pretrained(
-                MODEL_NAME, local_files_only=True
+            self._tokenizer = AutoTokenizer.from_pretrained(
+                MODEL_NAME, local_files_only=False
             )
-            self._model = BertModel.from_pretrained(
-                MODEL_NAME, local_files_only=True
+            self._model = AutoModel.from_pretrained(
+                MODEL_NAME, local_files_only=False
             )
             self._model.eval()
             self._torch = torch

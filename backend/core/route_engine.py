@@ -452,6 +452,32 @@ def parse_time(time_str: str) -> datetime:
     return datetime.combine(today, datetime.min.time().replace(hour=hour, minute=minute))
 
 
+def compute_category_quota(user_pref, constraints):
+    """根据用户偏好和约束计算各类别POI的推荐配额"""
+    total_minutes = int((parse_time(constraints.end_time) - parse_time(constraints.start_time)).total_seconds() / 60)
+    base_ratio = {
+        "风景名胜": 0.40,
+        "餐饮服务": 0.25,
+        "购物服务": 0.15,
+        "体育休闲服务": 0.10,
+        "科教文化服务": 0.10,
+    }
+    theme_str = str(user_pref.theme_weights).lower()
+    if any(k in theme_str for k in ["美食", "吃", "火锅", "辣", "餐厅"]):
+        base_ratio["餐饮服务"] += 0.10
+        base_ratio["风景名胜"] -= 0.08
+    if any(k in theme_str for k in ["文化", "历史", "博物馆", "古迹", "艺术"]):
+        base_ratio["科教文化服务"] += 0.12
+        base_ratio["风景名胜"] -= 0.08
+    if any(k in theme_str for k in ["购物", "逛街", "买", "商场"]):
+        base_ratio["购物服务"] += 0.10
+        base_ratio["风景名胜"] -= 0.08
+    total = sum(base_ratio.values())
+    base_ratio = {k: v/total for k, v in base_ratio.items()}
+    estimated_count = max(3, int(total_minutes / 70))
+    return {cat: max(0, round(estimated_count * ratio)) for cat, ratio in base_ratio.items()}
+
+
 def format_time(dt: datetime) -> str:
     """datetime → '09:30'"""
     return dt.strftime("%H:%M")
@@ -532,6 +558,7 @@ def compute_poi_marginal_value(
     strategy: str = "balanced",
     policy: Optional[PlanningPolicy] = None,
     selected_categories: Optional[List[str]] = None,
+    category_quota: Optional[Dict[str, int]] = None,
 ) -> float:
     """
     计算POI的边际价值 — 核心评分函数
@@ -688,6 +715,20 @@ def compute_poi_marginal_value(
         if other_ratio < 0.15 and poi.category in ("购物服务", "科教文化服务"):
             marginal_value *= 1.3
     
+    # 【第二层】类别配额软约束
+    if category_quota and selected_categories is not None:
+        cat = poi.category
+        current_count = sum(1 for c in selected_categories if c == cat)
+        target = category_quota.get(cat, 1)
+        if current_count >= target + 1:
+            marginal_value *= 0.5
+        elif current_count >= target:
+            marginal_value *= 0.85
+        elif current_count == 0 and target >= 1 and len(selected_categories) >= 2:
+            marginal_value *= 1.35
+        elif current_count < target * 0.5:
+            marginal_value *= 1.15
+    
     return marginal_value
 
 
@@ -697,6 +738,7 @@ def preference_guided_greedy(
     constraints: RouteConstraints,
     strategy: str = "balanced",
     policy: Optional[PlanningPolicy] = None,
+    skeleton_pois: Optional[List[POI]] = None,
 ) -> List[PlanSegment]:
     """
     偏好引导的贪心路线构造
@@ -710,6 +752,7 @@ def preference_guided_greedy(
     else:
         config = STRATEGY_CONFIG.get(strategy, STRATEGY_CONFIG["balanced"])
     segments: List[PlanSegment] = []
+    category_quota = compute_category_quota(user_pref, constraints)
     remaining = [poi for poi in candidates]
     
     current_dt = parse_time(constraints.start_time)
@@ -723,6 +766,15 @@ def preference_guided_greedy(
     # 优先处理必去点
     must_visit_names = set(constraints.must_visit)
     avoid_keywords = set(constraints.avoid)
+    
+    # 【第四层】LLM骨架规划混合架构
+    skeleton_names = set(p.name for p in (skeleton_pois or []))
+    must_visit_names.update(skeleton_names)
+    if skeleton_pois:
+        skeleton_in_candidates = [p for p in candidates if p.name in skeleton_names]
+        other_candidates = [p for p in candidates if p.name not in skeleton_names]
+        candidates = skeleton_in_candidates + other_candidates
+        remaining = [poi for poi in candidates]
     
     # policy 的 hard_constraint_overrides 可以补充 must_visit / avoid
     if policy is not None:
@@ -821,7 +873,7 @@ def preference_guided_greedy(
             # 【策略差异化 + Phase Four】计算边际价值时传入策略类型、距离和已选类别
             selected_categories = [s.poi.category for s in segments]
             marginal_value = compute_poi_marginal_value(
-                poi, pref_match, travel_time, dist_m, user_pref, constraints.budget, strategy, policy, selected_categories
+                poi, pref_match, travel_time, dist_m, user_pref, constraints.budget, strategy, policy, selected_categories, category_quota
             )
             
             # 【Phase Four】非餐饮POI数量限制：为餐饮预留时间
@@ -1383,6 +1435,7 @@ def generate_preference_variants(
     user_pref: UserPreference,
     constraints: RouteConstraints,
     policy: Optional[PlanningPolicy] = None,
+    skeleton_pois: Optional[List[POI]] = None,
 ) -> List[RoutePlan]:
     global _current_planning_city
     _current_planning_city = constraints.city or "杭州"
@@ -1434,7 +1487,7 @@ def generate_preference_variants(
             config = STRATEGY_CONFIG[strategy_key]
             name = config["name"]
             description = config["description"]
-        seg = preference_guided_greedy(cand, pref, cons, strategy=strategy_key, policy=policy)
+        seg = preference_guided_greedy(cand, pref, cons, strategy=strategy_key, policy=policy, skeleton_pois=skeleton_pois)
         
         # 如果POI不足，放宽限制重试
         retry = 0
@@ -1446,7 +1499,7 @@ def generate_preference_variants(
             original_max_total = config.get("max_total_route_km", 50)
             config["max_travel_km_per_step"] = original_max_step * (1 + retry * 0.5)
             config["max_total_route_km"] = original_max_total * (1 + retry * 0.3)
-            seg = preference_guided_greedy(cand, pref, cons, strategy=strategy_key, policy=policy)
+            seg = preference_guided_greedy(cand, pref, cons, strategy=strategy_key, policy=policy, skeleton_pois=skeleton_pois)
             # 恢复参数
             config["max_travel_km_per_step"] = original_max_step
             config["max_total_route_km"] = original_max_total

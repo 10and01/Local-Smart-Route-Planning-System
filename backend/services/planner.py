@@ -44,6 +44,73 @@ class RoutePlannerService:
         """兼容旧代码：返回内存缓存"""
         return self._hot_cache
     
+    def _llm_skeleton_planning(self, candidate_pool: List[POI], user_pref: UserPreference, raw_query: str, city: str) -> List[POI]:
+        """
+        【第四层】LLM骨架规划：从候选池调用LLM选6-8个POI骨架
+        用于指导后续路线规划，确保核心偏好被满足
+        """
+        if not raw_query or not raw_query.strip():
+            return []
+        if len(candidate_pool) < 10:
+            return []
+        
+        try:
+            from openai import OpenAI
+            import json
+            client = OpenAI(
+                api_key=os.getenv("LLM_API_KEY", ""),
+                base_url=os.getenv("LLM_BASE_URL", "")
+            )
+            model = os.getenv("LLM_MODEL_NAME", "")
+            if not model:
+                return []
+            
+            # 取Top-30候选作为输入，减少LLM上下文长度
+            top_candidates = candidate_pool[:30]
+            poi_list_text = "\n".join([
+                f"{i+1}. {p.name} ({p.category}, 评分{p.rating or '未知'}, 价格¥{p.price or '未知'})"
+                for i, p in enumerate(top_candidates)
+            ])
+            
+            prompt = f"""你是一位资深旅行规划师。用户要去{city}旅行，需求是："{raw_query}"。
+
+请从以下候选POI中，选出6-8个最符合用户需求的POI作为路线骨架（必须包含必去景点和代表性体验）。
+
+要求：
+1. 优先选择与用户query直接相关的POI
+2. 类别尽量多样（不要全是风景名胜）
+3. 必须包含至少1个餐饮POI
+4. 按推荐顺序排列
+
+候选POI：
+{poi_list_text}
+
+请严格按JSON数组输出，只输出POI名称：
+["POI名称1", "POI名称2", ...]
+"""
+            
+            resp = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": "旅行规划专家，严格JSON输出，不要解释。"},
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.2,
+                timeout=20,
+            )
+            content = resp.choices[0].message.content
+            import re
+            m = re.search(r'\[.*\]', content, re.DOTALL)
+            if m:
+                names = json.loads(m.group())
+                name_set = set(names)
+                skeleton = [p for p in candidate_pool if p.name in name_set]
+                print(f"[Planner] LLM骨架规划选中 {len(skeleton)} 个POI: {[p.name for p in skeleton]}")
+                return skeleton
+        except Exception as e:
+            print(f"[Planner] LLM骨架规划失败（非关键）: {e}")
+        return []
+    
     def plan(self, request: PlanRequest, user_id: Optional[int] = None, user_type: Optional[str] = None) -> PlanResponse:
         """
         主规划入口（支持用户画像融合）
@@ -97,12 +164,19 @@ class RoutePlannerService:
         all_pois = get_cached_pois(request.city)
         
         # Step 3.5: 动态抓取补充（根据用户自然语言查询按需抓取精准POI）
-        if request.raw_query and request.raw_query.strip():
+        # 【第三层】无 raw_query 但 preferences 非空时也触发
+        should_dynamic_fetch = bool(request.raw_query and request.raw_query.strip())
+        if not should_dynamic_fetch and request.preferences:
+            should_dynamic_fetch = True
+        
+        if should_dynamic_fetch:
             try:
                 from backend.core.dynamic_fetch_planner import fetch_city_pois_dynamic
+                # 【第三层】有 raw_query 时用 raw_query，否则用 preferences 拼接
+                user_query = request.raw_query if (request.raw_query and request.raw_query.strip()) else "、".join(request.preferences)
                 dynamic_pois = fetch_city_pois_dynamic(
                     city=request.city,
-                    user_query=request.raw_query,
+                    user_query=user_query,
                     avoid=request.avoid,
                     max_pois=80,
                     pages_per_query=3
@@ -143,7 +217,7 @@ class RoutePlannerService:
         candidates, strategy, filter_metadata = self.hybrid_filter.filter(
             all_pois, request, user_pref, constraints
         )
-        print(f"[Planner] 筛选策略: {strategy.value}, 输入{filter_metadata['input_count']} → 输出{filter_metadata['output_count']}, 隐性需求: {filter_metadata['hidden_needs']}")
+        print(f"[Planner] 筛选策略: {strategy.value}, 输入{filter_metadata['input_count']} → 输出{filter_metadata['output_count']}, 隐性需求: {filter_metadata.get('hidden_needs', 'N/A')}")
         
         # Step 4.5: 天气感知调整
         try:
@@ -234,8 +308,21 @@ class RoutePlannerService:
                         except Exception as e:
                             print(f"[Planner] 并发任务失败: {e}")
         
-        # Step 5: 偏好驱动路线规划（传入 policy）
-        plans = route_engine.generate_preference_variants(candidates, user_pref, constraints, policy=policy)
+        # Step 4.95: 【第四层】LLM骨架规划（在筛选之后、路线规划之前）
+        skeleton_pois = []
+        if request.raw_query and request.raw_query.strip():
+            try:
+                skeleton_pois = self._llm_skeleton_planning(
+                    candidate_pool=candidate_pool if candidate_pool else candidates[:30],
+                    user_pref=user_pref,
+                    raw_query=request.raw_query,
+                    city=request.city,
+                )
+            except Exception as e:
+                print(f"[Planner] 骨架规划调用失败（非关键）: {e}")
+        
+        # Step 5: 偏好驱动路线规划（传入 policy 和 skeleton_pois）
+        plans = route_engine.generate_preference_variants(candidates, user_pref, constraints, policy=policy, skeleton_pois=skeleton_pois)
         
         # Step 6: LLM推荐理由生成（P1优化）
         # 只在有raw_query时启用LLM推荐理由，避免无意义调用
