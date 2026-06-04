@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 LLM 意图理解模块
-将自然语言 raw_query 解析为结构化的 UserPreference
+将自然语言 raw_query 解析为结构化的 UserPreference（自由关键词+权重）
 
 使用 OpenAI-compatible API:
   - model: gpt-5.5-xhigh
@@ -15,7 +15,6 @@ from typing import Optional, List, Dict
 from openai import OpenAI
 
 from backend.models.schemas import UserPreference
-
 
 from backend.core.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL_NAME, check_llm_config
 
@@ -38,11 +37,13 @@ def get_client() -> OpenAI:
     return _client
 
 
-SYSTEM_PROMPT = """你是一位专业的本地旅游偏好解析助手。你的任务是从用户的自然语言描述中提取结构化偏好信息。
+SYSTEM_PROMPT = """你是一位专业的本地旅游偏好解析助手。你的任务是从用户的自然语言描述中提取意图关键词和权重。
+
+【核心变化】不再限制固定主题维度，自由提取用户 query 中的意图关键词。
 
 请严格按以下 JSON 格式输出（不要包含任何 markdown 代码块标记，只输出纯 JSON）：
 {
-  "theme_weights": {"美食": 0.0~1.0, "拍照": ..., "文化": ..., "自然": ..., "购物": ..., "娱乐": ...},
+  "theme_weights": {"关键词1": 0.0~1.0, "关键词2": ..., "关键词3": ...},
   "traveler_type": "独自/情侣/亲子/朋友/家庭",
   "pace_preference": "紧凑/适中/悠闲",
   "budget_level": "经济/标准/高端",
@@ -50,16 +51,20 @@ SYSTEM_PROMPT = """你是一位专业的本地旅游偏好解析助手。你的�
   "willingness_to_walk": 0.0~1.0,
   "price_sensitivity": 0.0~1.0,
   "must_visit": ["用户明确想去的POI名称"],
-  "avoid": ["用户明确不想去的POI名称或类别，如辣食、排队、爬山"],
+  "avoid": ["用户明确不想去的POI名称或类别"],
   "transport_mode": "步行/骑行/驾车/公交"
 }
 
-提取规则：
-1. theme_weights 中六个主题（美食、拍照、文化、自然、购物、娱乐）都必须有值，范围 0.0~1.0。
-   - 用户明确提到的正面偏好（"我喜欢...""想..."）给 0.85~0.95
-   - 隐含相关的主题给 0.50~0.70
-   - 用户明确不喜欢的主题（"不喜欢...""不要...""避开..."）给 0.05~0.15
-   - 无关的主题给 0.10~0.25
+提取规则（自由关键词维度）：
+1. theme_weights 自由提取用户query中的意图关键词，不限数量、不限类型，范围 0.0~1.0。
+   - 用户明确提到的正面偏好作为独立关键词，给 0.85~0.95
+   - 隐含相关的关键词给 0.50~0.70
+   - 用户明确不喜欢/排斥的关键词给 0.05~0.15（作为负面过滤信号）
+   - 无关的不列出或给低值
+   - 示例："想吃辣、拍照、不想排队" → {"吃辣":0.9, "拍照":0.85, "排队":0.1}
+   - 示例："想带孩子去游乐园" → {"亲子":0.95, "游乐园":0.9, "儿童":0.85}
+   - 示例："想逛博物馆、吃老字号" → {"博物馆":0.9, "老字号":0.85, "文化":0.75}
+   - 示例："周末带女朋友去杭州玩，喜欢拍照和吃辣" → {"拍照":0.9, "吃辣":0.85, "情侣":0.8, "杭州":0.3}
 2. traveler_type：从描述中推断人群，如"带女朋友"=情侣，"带孩子/小孩"=亲子，"带老人"=家庭，"和朋友"=朋友。
 3. pace_preference："赶时间/多玩几个"=紧凑，"慢慢逛"=悠闲，默认适中。
 4. budget_level：预算<200=经济，>500=高端，中间=标准；也可从描述推断，如"便宜点/省钱"=经济。
@@ -133,8 +138,8 @@ def parse_preference_from_llm(
     transport_mode: str = "步行",
 ) -> Optional[UserPreference]:
     """
-    调用 LLM 解析自然语言偏好。
-    
+    调用 LLM 解析自然语言偏好，输出自由关键词+权重。
+
     返回 UserPreference 对象；若解析失败返回 None，由上层 fallback 到规则解析。
     """
     if not raw_query or not raw_query.strip():
@@ -157,7 +162,7 @@ def parse_preference_from_llm(
         if not check_llm_config():
             print("[LLM Parser Warning] LLM 配置不完整，请检查 .env 文件")
             return None
-        
+
         client = get_client()
         response = client.chat.completions.create(
             model=MODEL_NAME,
@@ -173,7 +178,7 @@ def parse_preference_from_llm(
         content = response.choices[0].message.content
         if not content:
             return None
-        
+
         clean = _extract_first_json(content)
         parsed = json.loads(clean)
         return _build_user_preference(parsed, preferences, travelers, pace, budget)
@@ -203,20 +208,27 @@ def _build_user_preference(
             return None
     if not isinstance(parsed, dict):
         return None
-    
-    all_themes = ["美食", "拍照", "文化", "自然", "购物", "娱乐"]
 
-    # 主题权重：LLM 返回优先，否则 fallback 到规则
+    # 【核心】自由维度关键词权重：直接采纳 LLM 返回的所有维度
     theme_weights = {}
     llm_themes = parsed.get("theme_weights", {})
-    for theme in all_themes:
-        if theme in llm_themes:
-            val = float(llm_themes[theme])
-            theme_weights[theme] = max(0.0, min(1.0, val))
-        elif theme in fallback_preferences:
-            theme_weights[theme] = 0.85
-        else:
-            theme_weights[theme] = 0.25
+
+    if isinstance(llm_themes, dict):
+        for dimension, val in llm_themes.items():
+            try:
+                v = float(val)
+                theme_weights[dimension] = max(0.0, min(1.0, v))
+            except (ValueError, TypeError):
+                continue
+
+    # 前端 fallback_preferences 作为补充（如果LLM没提到但用户勾选了）
+    for pref in fallback_preferences:
+        if pref not in theme_weights:
+            theme_weights[pref] = 0.85
+
+    # 确保至少有基础关键词（兼容旧代码，防止空字典导致后续除零）
+    if not theme_weights:
+        theme_weights = {"通用": 0.5}
 
     # 出行人群
     traveler_type = parsed.get("traveler_type", fallback_travelers)

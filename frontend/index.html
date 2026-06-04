@@ -1281,6 +1281,11 @@
                         <span class="tag-option" data-tag="购物">购物</span>
                         <span class="tag-option" data-tag="娱乐">娱乐</span>
                     </div>
+                    <div class="form-row" style="margin-top:12px;">
+                        <label>自定义关键词（空格或逗号分隔）</label>
+                        <input type="text" id="customKeywords" placeholder="例如：吃辣 安静 老字号 夜景 Citywalk" style="width:100%;padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:13px;">
+                        <div id="keywordChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
+                    </div>
                 </div>
 
                 <div class="form-section">
@@ -2073,7 +2078,8 @@
                 travelers: document.getElementById('travelers').value,
                 pace: document.getElementById('pace').value,
                 rawQuery: document.getElementById('rawQuery').value,
-                preferences: Array.from(document.querySelectorAll('.tag-option.active')).map(t => t.dataset.tag)
+                preferences: Array.from(document.querySelectorAll('.tag-option.active')).map(t => t.dataset.tag),
+                customKeywords: document.getElementById('customKeywords').value
             };
             localStorage.setItem('user_profile', JSON.stringify(profile));
         }
@@ -2092,9 +2098,18 @@
                 if (profile.rawQuery != null) document.getElementById('rawQuery').value = profile.rawQuery;
                 // 恢复偏好标签
                 if (profile.preferences && profile.preferences.length) {
+                    const fixedTags = ['美食','拍照','文化','自然','购物','娱乐'];
+                    const customKws = profile.preferences.filter(p => !fixedTags.includes(p));
+                    const fixedPrefs = profile.preferences.filter(p => fixedTags.includes(p));
                     document.querySelectorAll('.tag-option').forEach(tag => {
-                        tag.classList.toggle('active', profile.preferences.includes(tag.dataset.tag));
+                        tag.classList.toggle('active', fixedPrefs.includes(tag.dataset.tag));
                     });
+                    if (customKws.length) {
+                        document.getElementById('customKeywords').value = customKws.join(' ');
+                    }
+                }
+                if (profile.customKeywords != null) {
+                    document.getElementById('customKeywords').value = profile.customKeywords;
                 }
             } catch (e) {
                 console.error('加载用户画像失败', e);
@@ -2493,6 +2508,11 @@
             document.querySelectorAll('.tag-option.active').forEach(tag => {
                 preferences.push(tag.dataset.tag);
             });
+            
+            // 【重构】合并自定义关键词
+            const customInput = document.getElementById('customKeywords').value;
+            const customKeywords = customInput.split(/[,，\s]+/).filter(k => k.trim());
+            const allPreferences = [...preferences, ...customKeywords];
 
             // 保存用户画像
             saveUserProfile();
@@ -2505,7 +2525,7 @@
                 end_time: document.getElementById('endTime').value,
                 budget: document.getElementById('budget').value ? parseInt(document.getElementById('budget').value) : null,
                 travelers: document.getElementById('travelers').value,
-                preferences: preferences,
+                preferences: allPreferences,
                 pace: document.getElementById('pace').value,
                 transport_mode: '步行'
             };
@@ -2592,13 +2612,14 @@
             document.getElementById('viewNav').style.display = 'flex';
 
             const pref = data.user_preference;
-            const topThemes = Object.entries(pref.theme_weights || {})
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 3)
-                .map(([k, v]) => `${k}(${Math.round(v*100)}%)`)
-                .join('、');
+            const themeEntries = Object.entries(pref.theme_weights || {})
+                .sort((a, b) => b[1] - a[1]);
+            const topThemes = themeEntries
+                .slice(0, 5)
+                .map(([k, v]) => `<span style="display:inline-block;padding:2px 8px;background:#e0e7ff;border-radius:10px;margin:2px;font-size:11px;">${k} ${Math.round(v*100)}%</span>`)
+                .join('');
             document.getElementById('prefDisplay').innerHTML =
-                `<strong>解析偏好：</strong>${topThemes || '综合'} · ${pref.traveler_type || '独自'} · ${pref.pace_preference || '适中'}`;
+                `<strong>解析偏好：</strong>${topThemes || '综合'} <span style="color:#6b7280;font-size:12px;">· ${pref.traveler_type || '独自'} · ${pref.pace_preference || '适中'}</span>`;
 
             renderOverview();
             switchView('overview');

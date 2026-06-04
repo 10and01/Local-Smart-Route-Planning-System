@@ -133,7 +133,7 @@ def _get_amap_direction(
 
     try:
         session = _get_amap_session()
-        resp = session.get(url, params=params, timeout=10)
+        resp = session.get(url, params=params, timeout=3)
         data = resp.json()
 
         if data.get("status") != "1":
@@ -142,6 +142,10 @@ def _get_amap_direction(
             if info == "INSUFFICIENT_PRIVILEGES":
                 _amap_key_invalid = True
                 print(f"[DirectionAPI] 高德 API key 权限不足，后续请求将直接跳过")
+            elif infocode in ("10021", "10019", "10044"):
+                # 10021=QPS超限 10019=日配额超限 10044=并发超限
+                _amap_key_invalid = True
+                print(f"[DirectionAPI] 高德 API 配额已超限 (code:{infocode})，后续请求将直接跳过")
             else:
                 print(f"[DirectionAPI] 高德 API 错误: {info} (code:{infocode})")
             return None
@@ -166,6 +170,7 @@ def get_travel_info(
     策略：
     1. 步行模式 → 优先 OSRM 预计算矩阵 → Haversine 回退
     2. 其他模式 → 查 SQLite 缓存 → 高德 API（仅缓存未命中时） → 估算回退
+    3. API key 无效时直接回退估算，避免超时等待
     """
 
     # 1. 步行模式：优先 OSRM 矩阵（不调用外部 API）
@@ -185,7 +190,21 @@ def get_travel_info(
         time_min = max(1, int(dist_m / 1000 / 5 * 60))
         return time_min, dist_m
 
-    # 2. 非步行模式：查缓存
+    # 2. API key 无效时直接估算回退，不查缓存不调用API
+    if _amap_key_invalid:
+        from backend.core.route_engine import haversine_distance_m
+        dist_m = int(haversine_distance_m(from_loc.lat, from_loc.lng, to_loc.lat, to_loc.lng))
+        speed_kmh = {
+            "步行": 5,
+            "骑行": 15,
+            "驾车": 30,
+            "公交": 20,
+            "电动车": 25,
+        }.get(mode, 5)
+        time_min = max(1, int(dist_m / 1000 / speed_kmh * 60))
+        return time_min, dist_m
+
+    # 3. 非步行模式：查缓存
     cached = DirectionCacheDAO.get(
         from_loc.lat, from_loc.lng,
         to_loc.lat, to_loc.lng,
@@ -195,7 +214,7 @@ def get_travel_info(
         dur_min = max(1, int(cached["duration_sec"] / 60))
         return dur_min, cached["distance_m"]
 
-    # 3. 非步行且无缓存：调用高德 API（单次，带缓存写入）
+    # 4. 非步行且无缓存：调用高德 API（单次，带缓存写入）
     result = _get_amap_direction(from_loc, to_loc, mode, city=city)
     if result:
         distance_m, duration_sec = result
@@ -206,7 +225,7 @@ def get_travel_info(
         )
         return max(1, int(duration_sec / 60)), distance_m
 
-    # 4. 回退到 Haversine 估算
+    # 5. 回退到 Haversine 估算
     from backend.core.route_engine import haversine_distance_m
     dist_m = int(haversine_distance_m(from_loc.lat, from_loc.lng, to_loc.lat, to_loc.lng))
 

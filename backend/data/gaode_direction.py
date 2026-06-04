@@ -38,6 +38,24 @@ def select_best_transport(
     if time_min <= walk_timeout:
         return time_min, dist_m, "步行"
 
+    # 检查API是否已失效，避免超时等待（使用模块属性访问确保同步）
+    import backend.data.direction_api as _direction_api
+    if _direction_api._amap_key_invalid:
+        # API已失效，直接用Haversine距离 + 不同模式速度估算，选择最快的
+        from backend.core.route_engine import haversine_distance_m
+        h_dist = int(haversine_distance_m(from_loc.lat, from_loc.lng, to_loc.lat, to_loc.lng))
+        best_time = time_min
+        best_dist = dist_m
+        best_mode = "步行"
+        speed_map = {"公交": 20, "驾车": 30, "骑行": 15}
+        for fallback, speed in speed_map.items():
+            est_time = max(1, int(h_dist / 1000 / speed * 60))
+            if est_time < best_time:
+                best_time = est_time
+                best_dist = h_dist
+                best_mode = fallback
+        return best_time, best_dist, best_mode
+
     # 步行超时：降级查询其他方式，选择最快的
     best_time = time_min
     best_dist = dist_m

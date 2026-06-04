@@ -323,8 +323,8 @@ _SYSTEM_PROMPT = """你是一位智能旅行规划策略生成专家。根据用
 }
 
 规则：
-1. theme_weights自由提取用户query中的偏好维度，不限于6个固定维度。
-2. theme_keyword_map每个维度至少3个关键词。
+1. theme_weights自由提取用户query中的偏好维度，不限于固定维度。
+2. 【重构】theme_keyword_map直接使用theme_weights中的关键词作为key，value为关键词本身（因为语义匹配不需要额外扩展）。
 3. alpha：用户说"今天想换个风格"则偏低(0.3-0.5)，偏好稳定则偏高(0.6-0.8)。
 4. scoring_coefficients所有系数在[0.1,3.0]范围内。
 5. strategies只输出3个关键config字段，其余字段用默认值。

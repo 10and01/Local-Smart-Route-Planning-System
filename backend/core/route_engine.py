@@ -11,6 +11,7 @@ import math
 import copy
 import os
 import json
+import numpy as np
 from typing import List, Tuple, Optional, Dict, Any
 from datetime import datetime, timedelta
 
@@ -180,6 +181,8 @@ def _force_insert_meals(
     all_candidates: List[POI],
     constraints: RouteConstraints,
     end_dt: Optional[datetime] = None,
+    user_pref: Optional[UserPreference] = None,
+    policy: Optional[Any] = None,
 ) -> List[PlanSegment]:
     """
     强制在路线中插入午餐/晚餐时段的餐饮POI。
@@ -227,20 +230,39 @@ def _force_insert_meals(
             return segments
     
     def find_best_restaurant(reference_seg: PlanSegment) -> Optional[POI]:
-        """找到距离reference_seg最近且符合预算的餐厅"""
+        """找到距离reference_seg最近、符合预算且偏好匹配度最高的餐厅"""
         best = None
-        best_dist = float('inf')
+        best_score = float('inf')
         for r in food_candidates:
             dist = haversine_distance_m(
                 reference_seg.poi.location.lat, reference_seg.poi.location.lng,
                 r.location.lat, r.location.lng
             )
-            # 综合距离和rating，预算紧张时额外惩罚高价
-            score = dist / max(r.rating or 3.0, 1.0)
+            # 基础分数：距离 / rating（越小越好）
+            base_score = dist / max(r.rating or 3.0, 1.0)
             if budget and budget > 0 and (r.price or 0) > budget * 0.25:
-                score *= 2.0  # 高价餐厅距离惩罚翻倍
-            if score < best_dist:
-                best_dist = score
+                base_score *= 2.0  # 高价餐厅距离惩罚翻倍
+            
+            # 【修复】偏好匹配奖励： Policy 自由维度偏好匹配度高的餐厅优先
+            pref_bonus = 0.0
+            if policy is not None and user_pref is not None:
+                effective_theme_weights = dict(user_pref.theme_weights)
+                policy_themes = policy.preference_space.get("theme_weights", {})
+                if policy_themes:
+                    for dimension, weight in policy_themes.items():
+                        effective_theme_weights[dimension] = max(
+                            effective_theme_weights.get(dimension, 0),
+                            float(weight)
+                        )
+                for dimension, weight in effective_theme_weights.items():
+                    keywords = policy.theme_keyword_map.get(dimension, [dimension])
+                    match_score = _compute_keyword_match_score(r, keywords)
+                    if match_score > 0:
+                        pref_bonus -= weight * match_score * 500  # 负值=奖励
+            
+            total_score = base_score + pref_bonus
+            if total_score < best_score:
+                best_score = total_score
                 best = r
         return best
     
@@ -354,38 +376,38 @@ STRATEGY_CONFIG = {
     "experience": {
         "name": "深度体验",
         "description": "专注你最感兴趣的偏好，允许绕路去高体验POI",
-        "max_distance_from_start_km": 50,   # 放宽到50km，覆盖杭州远郊（西溪、宋城、径山等）
-        "candidate_count": 35,               # 保留更多候选，让远距离高体验POI有机会进入
-        "pref_match_boost": 2.0,             # 偏好匹配权重×2
-        "time_penalty_factor": 0.5,          # 时间惩罚降低50%（允许绕路）
-        "max_travel_km_per_step": 15,        # 每步允许最远15km（支持远郊跳跃）
-        "max_total_route_km": 50,            # 总路线距离上限，允许更大范围探索
-        "min_poi_count": 4,                  # 最少POI数量保证
-        "two_opt_pref_weight": 1.0,          # 2-opt强烈考虑偏好匹配度
-        "distance_weight": 0.4,              # 2-opt中距离权重低
+        "max_distance_from_start_km": 100,   # 【重构】大幅放宽，几乎不限制
+        "candidate_count": 35,
+        "pref_match_boost": 2.0,
+        "time_penalty_factor": 0.5,
+        "max_travel_km_per_step": 30,        # 【重构】支持地铁/驾车远郊跳跃
+        "max_total_route_km": 100,
+        "min_poi_count": 4,
+        "two_opt_pref_weight": 1.0,
+        "distance_weight": 0.4,
     },
     "efficiency": {
         "name": "高效省时",
         "description": "严格短距离，用最短时间打卡最多亮点",
-        "max_distance_from_start_km": 15,    # 放宽到15km，覆盖市区+近郊
-        "candidate_count": 25,               # 更多候选
-        "pref_match_boost": 0.5,             # 偏好匹配权重降低（距离优先）
-        "time_penalty_factor": 2.0,          # 时间惩罚提高100%
-        "max_travel_km_per_step": 5,         # 每步最多5km
-        "max_total_route_km": 15,            # 总路线距离上限
-        "min_poi_count": 4,                  # 最少POI数量保证
-        "two_opt_pref_weight": 0.0,          # 2-opt完全不考虑偏好
-        "distance_weight": 1.2,              # 2-opt中距离权重高
+        "max_distance_from_start_km": 100,   # 【重构】候选集不限制距离
+        "candidate_count": 25,
+        "pref_match_boost": 0.5,
+        "time_penalty_factor": 2.0,
+        "max_travel_km_per_step": 15,        # 【重构】由贪心算法自然约束
+        "max_total_route_km": 50,
+        "min_poi_count": 4,
+        "two_opt_pref_weight": 0.0,
+        "distance_weight": 1.2,
     },
     "balanced": {
         "name": "均衡推荐",
         "description": "兼顾体验、时间和预算的综合最优方案",
-        "max_distance_from_start_km": 30,    # 放宽到30km
+        "max_distance_from_start_km": 100,   # 【重构】候选集不限制距离
         "candidate_count": 30,
         "pref_match_boost": 1.0,
         "time_penalty_factor": 1.0,
-        "max_travel_km_per_step": 8,
-        "max_total_route_km": 20,
+        "max_travel_km_per_step": 20,
+        "max_total_route_km": 60,
         "min_poi_count": 4,
         "two_opt_pref_weight": 0.5,
         "distance_weight": 0.7,
@@ -490,34 +512,14 @@ def is_within_open_hours(poi: POI, arrive_time: datetime, duration_min: int = 60
 
 def _compute_keyword_match_score(poi: POI, keywords: List[str]) -> float:
     """
-    计算POI与关键词列表的匹配度 (0.0~1.0)
-    综合考量 name + tags + category + sub_category 的文本匹配
-    【阶段一】泛化性偏好对齐：支持部分匹配，平滑得分
+    计算POI与关键词列表的语义匹配度 (0.0~1.0)
+    【重构】使用本地 Embedding 模型进行语义相似度计算
     """
     if not keywords:
         return 0.0
-    texts = [poi.name or ""]
-    texts.extend(poi.tags or [])
-    if poi.category:
-        texts.append(poi.category)
-    if poi.sub_category:
-        texts.append(poi.sub_category)
-    full_text = " ".join(texts).lower()
-    total_score = 0.0
-    for kw in keywords:
-        kw = kw.strip().lower()
-        if not kw:
-            continue
-        if kw in full_text:
-            total_score += 1.0
-        else:
-            # 部分匹配：关键词被包含或包含文本中的某个词
-            for text in texts:
-                text_lower = text.lower()
-                if kw in text_lower or text_lower in kw:
-                    total_score += 0.5
-                    break
-    return min(1.0, total_score / max(1, len(keywords)))
+    from backend.core.semantic_matcher import semantic_matcher
+    keyword_weights = {kw: 1.0 for kw in keywords}
+    return semantic_matcher.match_keywords_to_poi(keyword_weights, poi)
 
 
 def compute_poi_marginal_value(
@@ -608,35 +610,34 @@ def compute_poi_marginal_value(
                 marginal_value -= (dist_km - 6) * 5
     
     # ===== 个性化加成（Layer 5）=====
+    # 【重构】统一使用语义匹配，删除硬编码主题引用
+    effective_theme_weights = dict(user_pref.theme_weights)
     if policy is not None:
-        # 【阶段一】泛化性偏好对齐：增强 keyword_map 匹配度计算
-        for dimension, weight in user_pref.theme_weights.items():
-            keywords = policy.theme_keyword_map.get(dimension, [dimension])
-            match_score = _compute_keyword_match_score(poi, keywords)
-            if match_score > 0:
-                scene_weight = get_effective_coefficient(poi, "scene_match_weight", policy)
-                marginal_value += weight * match_score * 25 * scene_weight
-        
-        # 排队意愿（系数化）
-        queue_weight = get_effective_coefficient(poi, "queue_bonus_weight", policy)
-        if user_pref.willingness_to_queue > 0.6 and any(t in poi.tags for t in ["人气", "排队"]):
-            marginal_value += 15 * queue_weight
-        
-        # 价格敏感度（系数化）
-        price_weight = get_effective_coefficient(poi, "price_sensitivity_weight", policy)
-        price_threshold = policy.fusion_config.get("price_sensitivity_threshold", 0.7)
-        if user_pref.price_sensitivity > price_threshold and (poi.price or 0) == 0:
-            marginal_value += 10 * price_weight
-    else:
-        # 原有硬编码逻辑（向后兼容）
-        if user_pref.willingness_to_queue > 0.6 and any(t in poi.tags for t in ["人气", "排队"]):
-            marginal_value += 15
-        if user_pref.traveler_type == "情侣" and "浪漫" in poi.tags:
-            marginal_value += 20
-        if user_pref.traveler_type == "亲子" and any(t in poi.tags for t in ["儿童", "亲子", "乐园"]):
-            marginal_value += 20
-        if user_pref.price_sensitivity > 0.7 and (poi.price or 0) == 0:
-            marginal_value += 10
+        policy_themes = policy.preference_space.get("theme_weights", {})
+        if policy_themes:
+            for dimension, weight in policy_themes.items():
+                effective_theme_weights[dimension] = max(
+                    effective_theme_weights.get(dimension, 0),
+                    float(weight)
+                )
+    
+    # 遍历所有有效关键词维度，使用语义匹配计算加分
+    if effective_theme_weights:
+        from backend.core.semantic_matcher import semantic_matcher
+        poi_vec = semantic_matcher.get_poi_embedding(poi)
+        for dimension, weight in effective_theme_weights.items():
+            kw_vec = semantic_matcher.get_keyword_embedding(dimension)
+            sim = float(np.dot(kw_vec, poi_vec))
+            if sim > 0.3:
+                marginal_value += weight * sim * 25
+    
+    # 排队意愿
+    if user_pref.willingness_to_queue > 0.6 and any(t in (poi.tags or []) for t in ["人气", "排队"]):
+        marginal_value += 15
+    
+    # 价格敏感度
+    if user_pref.price_sensitivity > 0.7 and (poi.price or 0) == 0:
+        marginal_value += 10
     
     # UGC情感分加成（范围约-15到+15分）
     if policy is not None:
@@ -815,7 +816,7 @@ def preference_guided_greedy(
                     continue
             
             # 计算偏好匹配度
-            pref_match = compute_preference_match(poi.tags, user_pref.theme_weights)
+            pref_match = compute_preference_match(poi, user_pref.theme_weights)
             
             # 【策略差异化 + Phase Four】计算边际价值时传入策略类型、距离和已选类别
             selected_categories = [s.poi.category for s in segments]
@@ -910,7 +911,7 @@ def compute_route_preference_score(
     """计算整条路线的偏好匹配总分"""
     total = 0.0
     for seg in segments:
-        match = compute_preference_match(seg.poi.tags, user_pref.theme_weights)
+        match = compute_preference_match(seg.poi, user_pref.theme_weights)
         crowd = compute_crowd_match(seg.poi.suitable_for, user_pref.traveler_type)
         total += match * 0.6 + crowd * 0.4
     return total
@@ -988,19 +989,19 @@ def preference_guided_two_opt(
                 if strategy != "efficiency" and preference_weight > 0 and j + 1 < len(segments):
                     # 原相邻关系的偏好协同度
                     old_pref = (
-                        compute_preference_match(segments[i-1].poi.tags, user_pref.theme_weights) *
-                        compute_preference_match(segments[i].poi.tags, user_pref.theme_weights)
+                        compute_preference_match(segments[i-1].poi, user_pref.theme_weights) *
+                        compute_preference_match(segments[i].poi, user_pref.theme_weights)
                     ) + (
-                        compute_preference_match(segments[j].poi.tags, user_pref.theme_weights) *
-                        compute_preference_match(segments[j+1].poi.tags, user_pref.theme_weights)
+                        compute_preference_match(segments[j].poi, user_pref.theme_weights) *
+                        compute_preference_match(segments[j+1].poi, user_pref.theme_weights)
                     )
                     # 新相邻关系的偏好协同度
                     new_pref = (
-                        compute_preference_match(segments[i-1].poi.tags, user_pref.theme_weights) *
-                        compute_preference_match(segments[j].poi.tags, user_pref.theme_weights)
+                        compute_preference_match(segments[i-1].poi, user_pref.theme_weights) *
+                        compute_preference_match(segments[j].poi, user_pref.theme_weights)
                     ) + (
-                        compute_preference_match(segments[i].poi.tags, user_pref.theme_weights) *
-                        compute_preference_match(segments[j+1].poi.tags, user_pref.theme_weights)
+                        compute_preference_match(segments[i].poi, user_pref.theme_weights) *
+                        compute_preference_match(segments[j+1].poi, user_pref.theme_weights)
                     )
                     pref_delta = new_pref - old_pref
                 
@@ -1099,12 +1100,9 @@ def build_route_plan(
     
     total_cost = sum(seg.poi.price or 0 for seg in segments)
     
-    # 【Day 3 增强】生成有策略特色的整体推荐理由
+    # 【重构】生成有策略特色的整体推荐理由（基于用户关键词）
     poi_names = [seg.poi.name for seg in segments]
     categories = [seg.poi.category for seg in segments]
-    tags_flat = []
-    for seg in segments:
-        tags_flat.extend(seg.poi.tags)
     
     # 统计特色
     has_far_poi = any(
@@ -1112,15 +1110,23 @@ def build_route_plan(
         for seg in segments
     )
     free_count = sum(1 for seg in segments if (seg.poi.price or 0) == 0)
-    photo_count = sum(1 for seg in segments if any(t in seg.poi.tags for t in ["拍照", "摄影"]))
-    food_count = sum(1 for seg in segments if any(t in seg.poi.tags for t in ["美食", "小吃", "杭帮菜", "点心", "油爆虾", "西湖醋鱼", "小笼包"]) or seg.poi.category == "餐饮服务")
+    food_count = sum(1 for seg in segments if seg.poi.category == "餐饮服务")
+    
+    # 【重构】基于用户关键词统计高匹配POI数量
+    keyword_high_match_count = 0
+    if user_pref and user_pref.theme_weights:
+        from backend.core.semantic_matcher import semantic_matcher
+        for seg in segments:
+            match = semantic_matcher.match_keywords_to_poi(user_pref.theme_weights, seg.poi)
+            if match > 0.6:
+                keyword_high_match_count += 1
     
     if theme == "深度体验":
         reasoning = f"为你安排了{len(segments)}个精选地点"
         if has_far_poi:
             reasoning += "，特别包含远距离的高体验目的地"
-        if photo_count >= 2:
-            reasoning += f"，{photo_count}个拍照点让你不留遗憾"
+        if keyword_high_match_count >= 2:
+            reasoning += f"，其中{keyword_high_match_count}个地点高度匹配你的偏好"
         if food_count >= 2:
             reasoning += f"，{food_count}处美食体验满足味蕾"
         reasoning += f"。从{poi_names[0]}出发，一路深度探索至{poi_names[-1]}，"
@@ -1134,8 +1140,8 @@ def build_route_plan(
     else:
         reasoning = f"均衡精选{len(segments)}个地点"
         reasoning += f"，从{poi_names[0]}到{poi_names[-1]}"
-        if has_far_poi and photo_count >= 2:
-            reasoning += "，兼顾远距离亮点和拍照需求"
+        if has_far_poi and keyword_high_match_count >= 2:
+            reasoning += "，兼顾远距离亮点和你的偏好需求"
         elif has_far_poi:
             reasoning += "，既探索远方也兼顾效率"
         reasoning += f"。总用时{total_time_str}，是体验与效率的最佳平衡。"
@@ -1157,7 +1163,7 @@ def build_route_plan(
                     continue  # 保留首尾
                 pref_match = 0.0
                 if user_pref:
-                    pref_match = compute_preference_match(seg.poi.tags, user_pref.theme_weights)
+                    pref_match = compute_preference_match(seg.poi, user_pref.theme_weights)
                 # 分数越高越容易删减：时间长 + 匹配度低
                 removal_score = seg.poi.suggested_duration * (1.1 - pref_match)
                 candidates_for_removal.append({
@@ -1193,10 +1199,8 @@ def filter_candidates_by_strategy(
     policy: Optional[PlanningPolicy] = None,
 ) -> List[POI]:
     """
-    【策略差异化 Layer 1】根据策略过滤候选POI集合
-    从源头物理上减少同质化
-    【修复】支持用户偏好感知动态距离调整 + 动态抓取POI豁免
-    【P0 重构】支持 LLM Policy 驱动的动态策略参数
+    【重构】候选集不再按距离硬过滤，所有POI按语义匹配分数排序
+    距离约束后移到路线构造阶段的边际价值计算中
     """
     if policy is not None:
         config = get_strategy_config(policy, strategy)
@@ -1204,64 +1208,16 @@ def filter_candidates_by_strategy(
             config = STRATEGY_CONFIG.get(strategy, STRATEGY_CONFIG["balanced"])
     else:
         config = STRATEGY_CONFIG.get(strategy, STRATEGY_CONFIG["balanced"])
-    max_dist_km = int(config.get("max_distance_from_start_km", 30))
     target_count = int(config.get("candidate_count", 30))
     
-    # 【动态距离调整】如果用户有自然/户外/爬山偏好，进一步放宽距离限制
-    nature_boost = 1.0
-    if user_pref and user_pref.theme_weights:
-        nature_weight = max(
-            user_pref.theme_weights.get("自然", 0),
-            user_pref.theme_weights.get("户外", 0),
-            user_pref.theme_weights.get("爬山", 0),
-        )
-        if nature_weight > 0.4:
-            # 自然偏好强烈时，距离限制增加 30%~60%
-            nature_boost = 1.0 + nature_weight * 0.8
-            max_dist_km = int(max_dist_km * nature_boost)
+    # 【重构】不再按距离过滤，直接按 pre_score 排序取 Top-N
+    candidates.sort(key=lambda p: p.pre_score, reverse=True)
+    result = candidates[:target_count]
     
-    # 计算每个POI到起点的距离
-    scored = []
-    for poi in candidates:
-        dist_m = haversine_distance_m(
-            start_location.lat, start_location.lng,
-            poi.location.lat, poi.location.lng
-        )
-        scored.append((poi, dist_m))
-    
-    # 【修复】按距离过滤，但动态抓取POI（source=amap_dynamic）给予2倍距离豁免
-    filtered = []
-    for poi, dist in scored:
-        effective_limit = max_dist_km * 1000
-        if getattr(poi, 'source', None) == 'amap_dynamic' or poi.source == 'amap_dynamic':
-            effective_limit *= 2.0  # 动态抓取POI距离限制翻倍
-        if dist <= effective_limit:
-            filtered.append((poi, dist))
-    
-    # 如果过滤后太少，先尝试只保留动态抓取POI+放宽到全部候选
-    if len(filtered) < 8:
-        # 优先保留动态抓取POI（用户需求精准匹配）
-        dynamic_pois = [(poi, dist) for poi, dist in scored if getattr(poi, 'source', None) == 'amap_dynamic' or poi.source == 'amap_dynamic']
-        if len(dynamic_pois) >= 5:
-            filtered = dynamic_pois[:target_count]
-        else:
-            filtered = scored[:target_count]
-    
-    # 按预评分排序，保留Top-N
-    filtered.sort(key=lambda x: x[0].pre_score, reverse=True)
-    result = [poi for poi, _ in filtered[:target_count]]
-    
-    # 确保动态抓取的高评分POI至少保留几个（避免全被距离过滤掉）
-    dynamic_in_result = sum(1 for p in result if getattr(p, 'source', None) == 'amap_dynamic' or p.source == 'amap_dynamic')
-    if dynamic_in_result < 3:
-        dynamic_candidates = [(poi, dist) for poi, dist in scored
-                              if (getattr(poi, 'source', None) == 'amap_dynamic' or poi.source == 'amap_dynamic')
-                              and poi not in result]
-        dynamic_candidates.sort(key=lambda x: x[0].pre_score, reverse=True)
-        for poi, _ in dynamic_candidates[:3 - dynamic_in_result]:
-            result.append(poi)
-            if len(result) >= target_count:
-                break
+    # 确保 must_visit 在结果中
+    if user_pref is not None:
+        # 此逻辑由上层处理，这里仅做候选排序
+        pass
     
     return result
 
@@ -1350,7 +1306,7 @@ def force_differentiate(
                             
                             score = cand.pre_score
                             if user_pref:
-                                pref_match = compute_preference_match(cand.tags, user_pref.theme_weights)
+                                pref_match = compute_preference_match(cand, user_pref.theme_weights)
                                 score += pref_match * 20
                             
                             # 【Day 3 修复】全局唯一性奖励：不在任何其他计划中的POI获得加分
@@ -1499,7 +1455,7 @@ def generate_preference_variants(
         # 【修复】2-opt交换后重新计算时间和距离
         _update_segment_times(seg, cons.transport_mode)
         # 【P0-fix】强制插入午餐/晚餐时段的餐饮POI
-        seg = _force_insert_meals(seg, candidates, cons, parse_time(cons.end_time))
+        seg = _force_insert_meals(seg, candidates, cons, parse_time(cons.end_time), pref, policy)
         if seg:
             _update_segment_times(seg, cons.transport_mode)
             # 【Phase Four】强制插入餐饮后可能超时，裁剪超出结束时间的POI

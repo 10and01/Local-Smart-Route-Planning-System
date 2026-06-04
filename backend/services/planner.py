@@ -395,7 +395,7 @@ class RoutePlannerService:
                 continue
             
             # 计算偏好匹配度
-            pref_match = compute_preference_match(poi.tags, user_pref.theme_weights)
+            pref_match = compute_preference_match(poi, user_pref.theme_weights)
             crowd_match = compute_crowd_match(poi.suitable_for, user_pref.traveler_type)
             
             # 综合预评分
