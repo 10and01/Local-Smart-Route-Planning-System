@@ -322,7 +322,7 @@ class RoutePlannerService:
                 print(f"[Planner] 骨架规划调用失败（非关键）: {e}")
         
         # Step 5: 偏好驱动路线规划（传入 policy 和 skeleton_pois）
-        plans = route_engine.generate_preference_variants(candidates, user_pref, constraints, policy=policy, skeleton_pois=skeleton_pois)
+        plans = route_engine.generate_preference_variants(candidates, user_pref, constraints, policy=policy, skeleton_pois=skeleton_pois, raw_query=request.raw_query)
         
         # Step 6: LLM推荐理由生成（P1优化）
         # 只在有raw_query时启用LLM推荐理由，避免无意义调用

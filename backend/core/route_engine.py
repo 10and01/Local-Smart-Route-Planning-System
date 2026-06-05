@@ -452,29 +452,140 @@ def parse_time(time_str: str) -> datetime:
     return datetime.combine(today, datetime.min.time().replace(hour=hour, minute=minute))
 
 
-def compute_category_quota(user_pref, constraints):
+def _llm_generate_category_quota(raw_query: str, city: str, actual_categories: List[str], estimated_count: int) -> Optional[Dict[str, int]]:
+    """
+    调用LLM根据用户query动态生成类别配额。
+    超时10秒，失败返回None。
+    """
+    if not raw_query or not raw_query.strip():
+        return None
+    try:
+        from backend.core.llm_filter import get_client
+        client = get_client()
+        prompt = f"""你是一位旅行规划专家。请根据用户的旅行需求，为以下实际存在的POI类别分配推荐配额数量。
+
+城市：{city}
+实际存在的类别：{', '.join(actual_categories)}
+预计总POI数量：约{estimated_count}个
+
+用户query："{raw_query.strip()}"
+
+要求：
+1. 只输出纯JSON对象，不要任何解释、markdown代码块或其他文字
+2. JSON键必须是上述实际存在的类别
+3. 各配额之和应约等于{estimated_count}
+4. 如果query没有明确偏向某类，按均衡分配
+5. 如果query明确提到某类（如"美食""拍照""购物"），相应增加该类配额
+
+示例输出格式：
+{{"风景名胜": 4, "餐饮服务": 3, "购物服务": 2, "体育休闲服务": 1, "住宿服务": 0}}
+"""
+        import concurrent.futures
+        def _call():
+            resp = client.chat.completions.create(
+                model="MiniMax-M3",
+                messages=[
+                    {"role": "system", "content": "你是一个只输出JSON的旅行规划配额助手。"},
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.3,
+                max_tokens=1024,
+            )
+            content = resp.choices[0].message.content.strip()
+            # 【修复】MiniMax-M3 可能输出 <think>...</think> 包裹内容，先提取JSON部分
+            if "</think>" in content:
+                content = content.split("</think>", 1)[-1].strip()
+            # 尝试提取JSON
+            if content.startswith("```"):
+                content = content.strip("`").strip()
+                if content.lower().startswith("json"):
+                    content = content[4:].strip()
+            data = json.loads(content)
+            # 过滤并归一化到实际类别
+            result = {cat: int(data.get(cat, 0)) for cat in actual_categories}
+            total = sum(result.values())
+            if total == 0:
+                return None
+            # 如果总和与estimated_count差异太大，按比例缩放
+            if total != estimated_count and estimated_count > 0:
+                scale = estimated_count / total
+                result = {cat: max(0, round(v * scale)) for cat, v in result.items()}
+                # 微调确保总和正确
+                diff = estimated_count - sum(result.values())
+                while diff > 0:
+                    for cat in sorted(result, key=lambda c: result[c], reverse=True):
+                        if diff <= 0:
+                            break
+                        result[cat] += 1
+                        diff -= 1
+                while diff < 0:
+                    for cat in sorted(result, key=lambda c: result[c]):
+                        if diff >= 0 or result[cat] <= 0:
+                            break
+                        result[cat] -= 1
+                        diff += 1
+            return result
+
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        future = executor.submit(_call)
+        try:
+            result = future.result(timeout=10)
+        except concurrent.futures.TimeoutError:
+            result = None
+        finally:
+            executor.shutdown(wait=False)
+        return result
+    except Exception as e:
+        print(f"[CategoryQuota] LLM动态配额失败，回退到规则配额: {type(e).__name__}: {e}")
+        return None
+
+
+def compute_category_quota(user_pref, constraints, raw_query: Optional[str] = None):
     """根据用户偏好和约束计算各类别POI的推荐配额"""
     total_minutes = int((parse_time(constraints.end_time) - parse_time(constraints.start_time)).total_seconds() / 60)
+    estimated_count = max(3, int(total_minutes / 70))
+    actual_categories = ["风景名胜", "餐饮服务", "购物服务", "体育休闲服务", "住宿服务"]
+
+    # 第一层：LLM动态配额（有raw_query时优先尝试）
+    if raw_query and raw_query.strip():
+        llm_quota = _llm_generate_category_quota(raw_query, constraints.city or "杭州", actual_categories, estimated_count)
+        if llm_quota is not None:
+            print(f"[CategoryQuota] LLM动态配额: {llm_quota}")
+            return llm_quota
+
+    # 第二层：规则动态配额（基于semantic_matcher关键词-类别相似度加权）
+    if user_pref.theme_weights:
+        from backend.core.semantic_matcher import semantic_matcher
+        cat_weights = {cat: 0.0 for cat in actual_categories}
+        for kw, weight in user_pref.theme_weights.items():
+            for cat in actual_categories:
+                sim = semantic_matcher.compute_similarity(kw, cat)
+                cat_weights[cat] += weight * sim
+        total_weight = sum(cat_weights.values())
+        if total_weight > 0:
+            cat_weights = {cat: v / total_weight for cat, v in cat_weights.items()}
+            return {cat: max(0, round(estimated_count * ratio)) for cat, ratio in cat_weights.items()}
+
+    # 第三层：回退到基础规则配额
     base_ratio = {
         "风景名胜": 0.40,
         "餐饮服务": 0.25,
         "购物服务": 0.15,
         "体育休闲服务": 0.10,
-        "科教文化服务": 0.10,
+        "住宿服务": 0.10,
     }
     theme_str = str(user_pref.theme_weights).lower()
     if any(k in theme_str for k in ["美食", "吃", "火锅", "辣", "餐厅"]):
         base_ratio["餐饮服务"] += 0.10
         base_ratio["风景名胜"] -= 0.08
     if any(k in theme_str for k in ["文化", "历史", "博物馆", "古迹", "艺术"]):
-        base_ratio["科教文化服务"] += 0.12
+        base_ratio["体育休闲服务"] += 0.12
         base_ratio["风景名胜"] -= 0.08
     if any(k in theme_str for k in ["购物", "逛街", "买", "商场"]):
         base_ratio["购物服务"] += 0.10
         base_ratio["风景名胜"] -= 0.08
     total = sum(base_ratio.values())
-    base_ratio = {k: v/total for k, v in base_ratio.items()}
-    estimated_count = max(3, int(total_minutes / 70))
+    base_ratio = {k: v / total for k, v in base_ratio.items()}
     return {cat: max(0, round(estimated_count * ratio)) for cat, ratio in base_ratio.items()}
 
 
@@ -720,10 +831,12 @@ def compute_poi_marginal_value(
         cat = poi.category
         current_count = sum(1 for c in selected_categories if c == cat)
         target = category_quota.get(cat, 1)
-        if current_count >= target + 1:
-            marginal_value *= 0.5
+        if current_count >= target + 2:
+            return -float('inf')
+        elif current_count >= target + 1:
+            marginal_value *= 0.3
         elif current_count >= target:
-            marginal_value *= 0.85
+            marginal_value *= 0.6
         elif current_count == 0 and target >= 1 and len(selected_categories) >= 2:
             marginal_value *= 1.35
         elif current_count < target * 0.5:
@@ -739,6 +852,7 @@ def preference_guided_greedy(
     strategy: str = "balanced",
     policy: Optional[PlanningPolicy] = None,
     skeleton_pois: Optional[List[POI]] = None,
+    raw_query: Optional[str] = None,
 ) -> List[PlanSegment]:
     """
     偏好引导的贪心路线构造
@@ -752,7 +866,7 @@ def preference_guided_greedy(
     else:
         config = STRATEGY_CONFIG.get(strategy, STRATEGY_CONFIG["balanced"])
     segments: List[PlanSegment] = []
-    category_quota = compute_category_quota(user_pref, constraints)
+    category_quota = compute_category_quota(user_pref, constraints, raw_query=raw_query)
     remaining = [poi for poi in candidates]
     
     current_dt = parse_time(constraints.start_time)
@@ -857,11 +971,6 @@ def preference_guided_greedy(
             if finish_dt > end_dt + timedelta(minutes=time_buffer):
                 continue
             
-            # 【Phase Four】跳过餐饮POI，餐饮安排完全交给 _force_insert_meals
-            # 避免餐饮因营业时间限制（上午不营业）导致上午只能选风景名胜
-            if poi.category == "餐饮服务":
-                continue
-            
             # 【阶段二】预算硬约束：加入新POI前检查累计花费
             if constraints.budget is not None and poi.price is not None:
                 if total_cost + poi.price > constraints.budget * 0.9:
@@ -875,13 +984,6 @@ def preference_guided_greedy(
             marginal_value = compute_poi_marginal_value(
                 poi, pref_match, travel_time, dist_m, user_pref, constraints.budget, strategy, policy, selected_categories, category_quota
             )
-            
-            # 【Phase Four】非餐饮POI数量限制：为餐饮预留时间
-            total_available_min = int((end_dt - parse_time(constraints.start_time)).total_seconds() / 60)
-            # 每2个非餐饮POI预留1个餐饮位（至少预留90分钟）
-            max_non_food_pois = max(min_poi_count, int((total_available_min - 120) / 70))
-            if len(segments) >= max_non_food_pois and poi.category != "餐饮服务":
-                continue
             
             # 必去点强制加分
             if poi.name in must_visit_names:
@@ -1436,6 +1538,7 @@ def generate_preference_variants(
     constraints: RouteConstraints,
     policy: Optional[PlanningPolicy] = None,
     skeleton_pois: Optional[List[POI]] = None,
+    raw_query: Optional[str] = None,
 ) -> List[RoutePlan]:
     global _current_planning_city
     _current_planning_city = constraints.city or "杭州"
@@ -1487,7 +1590,7 @@ def generate_preference_variants(
             config = STRATEGY_CONFIG[strategy_key]
             name = config["name"]
             description = config["description"]
-        seg = preference_guided_greedy(cand, pref, cons, strategy=strategy_key, policy=policy, skeleton_pois=skeleton_pois)
+        seg = preference_guided_greedy(cand, pref, cons, strategy=strategy_key, policy=policy, skeleton_pois=skeleton_pois, raw_query=raw_query)
         
         # 如果POI不足，放宽限制重试
         retry = 0
@@ -1499,7 +1602,7 @@ def generate_preference_variants(
             original_max_total = config.get("max_total_route_km", 50)
             config["max_travel_km_per_step"] = original_max_step * (1 + retry * 0.5)
             config["max_total_route_km"] = original_max_total * (1 + retry * 0.3)
-            seg = preference_guided_greedy(cand, pref, cons, strategy=strategy_key, policy=policy, skeleton_pois=skeleton_pois)
+            seg = preference_guided_greedy(cand, pref, cons, strategy=strategy_key, policy=policy, skeleton_pois=skeleton_pois, raw_query=raw_query)
             # 恢复参数
             config["max_travel_km_per_step"] = original_max_step
             config["max_total_route_km"] = original_max_total
