@@ -79,17 +79,19 @@ def register(req: RegisterRequest):
     password_hash = hash_password(req.password)
     user_id = UserDAO.create(req.username, password_hash, req.phone)
     
-    # 【P2-1】若提供了 profile_text，用 LLM 初始化画像
-    if req.profile_text and req.profile_text.strip():
+    # 【P2-1】若提供了 profile_text，用 LLM 初始化画像，同时保存原始描述
+    profile_desc = req.profile_text.strip() if req.profile_text else None
+    if profile_desc:
         try:
-            init_pref = planner_service.personalization.init_profile_from_text(req.profile_text.strip())
+            init_pref = planner_service.personalization.init_profile_from_text(profile_desc)
             if init_pref:
                 planner_service.personalization.save_profile_to_db(
                     user_id=user_id,
                     user_type="registered",
                     preference=init_pref,
                     source="llm_init",
-                    delta={"profile_text": req.profile_text.strip()}
+                    delta={"profile_text": profile_desc},
+                    profile_description=profile_desc
                 )
                 print(f"[Register] 用户 {req.username} 通过 profile_text 初始化画像")
         except Exception as e:
@@ -155,6 +157,7 @@ def get_user_profile(user: dict = Depends(require_user)):
         "user_id": user["user_id"],
         "username": user.get("username"),
         "theme_weights": theme_weights,
+        "profile_description": profile.get("profile_description"),
         "traveler_type": profile.get("traveler_type", "独自"),
         "pace_preference": profile.get("pace_preference", "适中"),
         "budget_level": profile.get("budget_level"),
@@ -209,6 +212,12 @@ def update_user_profile(req: UpdateProfileRequest, user: dict = Depends(require_
         current_pref.theme_weights = req.theme_weights
         delta["theme_weights"] = req.theme_weights
 
+    # 保存画像自然语言描述（不触发LLM解析，直接保存文本）
+    profile_description = None
+    if req.profile_description is not None:
+        profile_description = req.profile_description.strip() or None
+        delta["profile_description"] = profile_description
+
     # 值域校验
     for field in ["price_sensitivity", "willingness_to_queue", "willingness_to_walk"]:
         v = getattr(current_pref, field)
@@ -225,7 +234,8 @@ def update_user_profile(req: UpdateProfileRequest, user: dict = Depends(require_
         user_type=user["user_type"],
         preference=current_pref,
         source="user_manual",
-        delta=delta
+        delta=delta,
+        profile_description=profile_description
     )
 
     return {"status": "ok", "message": "画像已更新"}

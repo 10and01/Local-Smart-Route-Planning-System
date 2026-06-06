@@ -418,7 +418,8 @@ class UserPersonalizationEngine:
         preference: UserPreference,
         source: str = "user_manual",
         delta: Optional[Dict[str, Any]] = None,
-        request_id: Optional[str] = None
+        request_id: Optional[str] = None,
+        profile_description: Optional[str] = None
     ):
         """将UserPreference持久化到数据库画像表，并记录版本历史"""
         update_fields = {
@@ -430,6 +431,8 @@ class UserPersonalizationEngine:
             "willingness_to_queue": preference.willingness_to_queue,
             "willingness_to_walk": preference.willingness_to_walk,
         }
+        if profile_description is not None:
+            update_fields["profile_description"] = profile_description
         UserProfileDAO.update_stats(user_id, user_type, **update_fields)
 
         # 记录版本历史

@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS anonymous_users (
 CREATE TABLE IF NOT EXISTS user_profiles (
     user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     theme_weights_json TEXT NOT NULL DEFAULT '{}',
+    profile_description TEXT,
     traveler_type TEXT DEFAULT '独自',
     pace_preference TEXT DEFAULT '适中',
     budget_level TEXT,
@@ -55,6 +56,7 @@ CREATE TABLE IF NOT EXISTS user_profiles (
 CREATE TABLE IF NOT EXISTS anonymous_profiles (
     user_id INTEGER PRIMARY KEY REFERENCES anonymous_users(id) ON DELETE CASCADE,
     theme_weights_json TEXT NOT NULL DEFAULT '{}',
+    profile_description TEXT,
     traveler_type TEXT DEFAULT '独自',
     pace_preference TEXT DEFAULT '适中',
     budget_level TEXT,
@@ -119,6 +121,7 @@ CREATE TABLE IF NOT EXISTS plan_cache (
     request_json TEXT NOT NULL,
     response_json TEXT NOT NULL,
     filter_metadata_json TEXT,
+    candidate_pool_json TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -161,6 +164,22 @@ def create_tables():
     """创建所有表"""
     with get_db() as conn:
         conn.executescript(CREATE_TABLES_SQL)
+
+
+def run_migrations():
+    """运行数据库迁移（向后兼容增加字段）"""
+    with get_db() as conn:
+        # 用户画像描述字段
+        for table in ("user_profiles", "anonymous_profiles"):
+            try:
+                conn.execute(f"ALTER TABLE {table} ADD COLUMN profile_description TEXT")
+            except sqlite3.OperationalError:
+                pass  # 字段已存在
+        # 方案缓存候选池字段
+        try:
+            conn.execute("ALTER TABLE plan_cache ADD COLUMN candidate_pool_json TEXT")
+        except sqlite3.OperationalError:
+            pass
 
 
 def drop_tables():
@@ -307,7 +326,8 @@ class UserProfileDAO(BaseDAO):
         table = UserProfileDAO._table_name(user_type)
         allowed = {"total_plans_generated", "total_plans_selected", "most_selected_theme",
                    "avg_budget", "traveler_type", "pace_preference", "budget_level",
-                   "price_sensitivity", "willingness_to_queue", "willingness_to_walk"}
+                   "price_sensitivity", "willingness_to_queue", "willingness_to_walk",
+                   "profile_description"}
         fields = {k: v for k, v in kwargs.items() if k in allowed}
         if not fields:
             return
@@ -499,18 +519,20 @@ class PlanCacheDAO(BaseDAO):
         city: str,
         request_json: str,
         response_json: str,
-        filter_metadata_json: Optional[str] = None
+        filter_metadata_json: Optional[str] = None,
+        candidate_pool_json: Optional[str] = None
     ):
         with get_db() as conn:
             conn.execute(
                 """INSERT INTO plan_cache 
-                   (request_id, user_id, user_type, city, request_json, response_json, filter_metadata_json)
-                   VALUES (?, ?, ?, ?, ?, ?, ?)
+                   (request_id, user_id, user_type, city, request_json, response_json, filter_metadata_json, candidate_pool_json)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                    ON CONFLICT(request_id) DO UPDATE SET
                    response_json = excluded.response_json,
                    filter_metadata_json = excluded.filter_metadata_json,
+                   candidate_pool_json = excluded.candidate_pool_json,
                    created_at = CURRENT_TIMESTAMP""",
-                (request_id, user_id, user_type, city, request_json, response_json, filter_metadata_json)
+                (request_id, user_id, user_type, city, request_json, response_json, filter_metadata_json, candidate_pool_json)
             )
     
     @staticmethod

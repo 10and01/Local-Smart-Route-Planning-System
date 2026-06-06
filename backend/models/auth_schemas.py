@@ -33,6 +33,7 @@ class UserProfileResponse(BaseModel):
     user_id: int = Field(..., description="用户ID")
     username: str = Field(..., description="用户名")
     theme_weights: dict = Field(default_factory=dict, description="主题偏好权重")
+    profile_description: Optional[str] = Field(None, description="用户画像自然语言描述")
     traveler_type: str = Field("独自", description="出行人群")
     pace_preference: str = Field("适中", description="节奏偏好")
     budget_level: Optional[str] = Field(None, description="预算级别")
@@ -64,6 +65,7 @@ class SelectPlanRequest(BaseModel):
 class UpdateProfileRequest(BaseModel):
     """更新用户画像请求"""
     profile_text: Optional[str] = Field(None, description="画像自然语言描述（可选，提供时会触发LLM解析）")
+    profile_description: Optional[str] = Field(None, description="画像自然语言描述（直接保存，不触发LLM解析）")
     theme_weights: Optional[dict] = Field(None, description="主题权重字典")
     traveler_type: Optional[str] = Field(None, description="出行人群")
     pace_preference: Optional[str] = Field(None, description="节奏偏好")

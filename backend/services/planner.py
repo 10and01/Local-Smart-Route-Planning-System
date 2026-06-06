@@ -128,6 +128,16 @@ class RoutePlannerService:
         
         request_id = str(uuid.uuid4())[:8]
         
+        # 【P2-4】若用户有长期画像描述，拼接到 raw_query 中作为 LLM 上下文
+        if user_id is not None:
+            profile_row = self.personalization.load_profile(user_id, user_type or "registered")
+            if profile_row and profile_row.get("profile_description"):
+                desc = profile_row["profile_description"].strip()
+                if desc:
+                    original_query = request.raw_query or ""
+                    request.raw_query = f"我的长期旅行偏好：{desc}。本次需求：{original_query}"
+                    print(f"[Planner] 拼接画像描述到 raw_query，长度={len(request.raw_query)}")
+        
         # Step 1: 解析用户偏好（有 raw_query 时优先走 LLM，失败 fallback 规则解析）
         current_pref = None
         if request.raw_query and request.raw_query.strip():
@@ -377,6 +387,24 @@ class RoutePlannerService:
                 plans=plans,
                 candidate_pois_count=len(candidates)
             ).model_dump()
+            # 序列化候选池（精简字段以控制大小）
+            candidate_pool_json = None
+            if candidate_pool:
+                slim_pool = []
+                for p in candidate_pool:
+                    slim = {
+                        "poi_id": p.poi_id,
+                        "name": p.name,
+                        "city": p.city,
+                        "category": p.category,
+                        "rating": p.rating,
+                        "price": p.price,
+                        "location": p.location.model_dump() if p.location else None,
+                        "pre_score": p.pre_score,
+                    }
+                    slim_pool.append(slim)
+                candidate_pool_json = json.dumps(slim_pool, ensure_ascii=False)
+            
             PlanCacheDAO.create(
                 request_id=request_id,
                 user_id=user_id,
@@ -384,7 +412,8 @@ class RoutePlannerService:
                 city=request.city,
                 request_json=json.dumps(request.model_dump(), ensure_ascii=False),
                 response_json=json.dumps(response_dict, ensure_ascii=False),
-                filter_metadata_json=json.dumps(filter_metadata, ensure_ascii=False)
+                filter_metadata_json=json.dumps(filter_metadata, ensure_ascii=False),
+                candidate_pool_json=candidate_pool_json
             )
         except Exception as e:
             print(f"[Planner] 方案持久化失败（非关键）: {e}")
@@ -515,8 +544,45 @@ class RoutePlannerService:
         """
         获取某次规划的备选池（Top-40 候选 POI + 精排结果）
         【P1】备选池API支持
+        【修复】支持从数据库回退恢复（历史记录场景）
         """
         cached = self._hot_cache.get(request_id)
+        
+        # 回退到数据库
+        if not cached:
+            from backend.db.models import PlanCacheDAO
+            db_entry = PlanCacheDAO.get(request_id)
+            if db_entry and db_entry.get("candidate_pool_json"):
+                try:
+                    pool_data = json.loads(db_entry["candidate_pool_json"])
+                    from backend.models.schemas import POI, Location
+                    candidate_pool = []
+                    for p in pool_data:
+                        loc = None
+                        if p.get("location"):
+                            loc = Location(**p["location"])
+                        poi = POI(
+                            poi_id=p.get("poi_id", ""),
+                            name=p["name"],
+                            city=p.get("city", ""),
+                            category=p["category"],
+                            rating=p.get("rating"),
+                            price=p.get("price"),
+                            location=loc,
+                        )
+                        poi.pre_score = p.get("pre_score", 0.5)
+                        candidate_pool.append(poi)
+                    resp_data = json.loads(db_entry["response_json"])
+                    cached = {
+                        "candidate_pool": candidate_pool,
+                        "plans": resp_data.get("plans", []),
+                        "rerank_results": {},
+                    }
+                    self._hot_cache[request_id] = cached
+                    print(f"[Planner] 从数据库恢复候选池: {request_id}, {len(candidate_pool)} 个POI")
+                except Exception as e:
+                    print(f"[Planner] 从数据库恢复候选池失败: {e}")
+        
         if not cached:
             return None
         

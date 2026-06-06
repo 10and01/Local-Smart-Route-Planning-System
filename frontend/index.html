@@ -1282,8 +1282,11 @@
                         <span class="tag-option" data-tag="娱乐">娱乐</span>
                     </div>
                     <div class="form-row" style="margin-top:12px;">
-                        <label>自定义关键词（空格或逗号分隔）</label>
-                        <input type="text" id="customKeywords" placeholder="例如：吃辣 安静 老字号 夜景 Citywalk" style="width:100%;padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:13px;">
+                        <label>自定义偏好标签</label>
+                        <div style="display:flex;gap:6px;">
+                            <input type="text" id="customKeywords" placeholder="例如：吃辣、博物馆、老字号" style="flex:1;padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:13px;" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomTag();}">
+                            <button type="button" onclick="addCustomTag()" style="padding:8px 14px;background:var(--color-primary);color:white;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;">+</button>
+                        </div>
                         <div id="keywordChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
                     </div>
                 </div>
@@ -1452,7 +1455,7 @@
     </div>
 
     <!-- 历史记录面板 -->
-    <div class="history-panel" id="historyPanel">
+    <div class="history-panel" id="historyPanel" style="z-index:601;">
         <div class="history-panel-header">
             <h3>我的历史规划</h3>
             <button class="poi-panel-close" onclick="toggleHistoryPanel()">&times;</button>
@@ -1463,7 +1466,7 @@
     </div>
 
     <!-- 【P2-4】备选池面板 -->
-    <div class="history-panel" id="candidatePanel" style="width:380px;">
+    <div class="history-panel" id="candidatePanel" style="width:380px;z-index:602;">
         <div class="history-panel-header">
             <h3>🎯 备选池（Top-40）</h3>
             <button class="poi-panel-close" onclick="toggleCandidatePanel()">&times;</button>
@@ -1480,7 +1483,7 @@
     </div>
 
     <!-- 【P2-4】画像雷达图面板 -->
-    <div class="history-panel" id="profilePanel" style="width:380px;">
+    <div class="history-panel" id="profilePanel" style="width:380px;z-index:603;">
         <div class="history-panel-header">
             <h3>📊 我的画像</h3>
             <button class="poi-panel-close" onclick="toggleProfilePanel()">&times;</button>
@@ -1624,10 +1627,20 @@
             } catch (e) {}
         }
         
+        // ===== 面板互斥管理 =====
+        function closeAllPanels() {
+            document.getElementById('historyPanel').classList.remove('show');
+            document.getElementById('candidatePanel').classList.remove('show');
+            document.getElementById('profilePanel').classList.remove('show');
+        }
+
         // ===== 历史记录面板 =====
         function toggleHistoryPanel() {
-            document.getElementById('historyPanel').classList.toggle('show');
-            if (document.getElementById('historyPanel').classList.contains('show')) {
+            const panel = document.getElementById('historyPanel');
+            const wasOpen = panel.classList.contains('show');
+            closeAllPanels();
+            if (!wasOpen) {
+                panel.classList.add('show');
                 loadHistory();
             }
         }
@@ -1660,6 +1673,7 @@
                 const resp = await apiCall(`/api/plan/${requestId}`);
                 const data = await resp.json();
                 if (resp.ok) {
+                    STATE.lastRequestId = requestId;
                     STATE.plans = data.plans || [];
                     STATE.activePlanIndex = 0;
                     STATE.compareSelection.clear();
@@ -1771,8 +1785,10 @@
         // ===== 【P2-4】备选池面板 =====
         function toggleCandidatePanel() {
             const panel = document.getElementById('candidatePanel');
-            panel.classList.toggle('show');
-            if (panel.classList.contains('show')) {
+            const wasOpen = panel.classList.contains('show');
+            closeAllPanels();
+            if (!wasOpen) {
+                panel.classList.add('show');
                 loadCandidatePool();
             }
         }
@@ -1814,9 +1830,9 @@
                 const isSelected = STATE.selectedCandidates.has(poi.name);
                 const isInPlan = c.is_in_plan;
                 return `
-                <div class="candidate-item ${isInPlan ? '' : 'not-recommended'}" style="border-bottom:1px solid #f3f4f6;">
+                <div class="candidate-item ${isInPlan ? '' : 'not-recommended'}" style="border-bottom:1px solid #f3f4f6;cursor:pointer;" onclick="focusCandidatePoi(${i})">
                     <input type="checkbox" ${isSelected ? 'checked' : ''} ${isInPlan ? 'disabled' : ''}
-                        onchange="toggleCandidateSelection('${poi.name}', this.checked)"
+                        onclick="event.stopPropagation();toggleCandidateSelection('${poi.name}', this.checked)"
                         style="margin-top:4px;cursor:pointer;">
                     <div class="candidate-info" style="flex:1;min-width:0;">
                         <div class="candidate-name">
@@ -1834,6 +1850,42 @@
                 `;
             }).join('');
             updateCandidateFooter();
+        }
+
+        function focusCandidatePoi(index) {
+            const c = STATE.candidatePool[index];
+            const poi = c.poi;
+            if (!poi || !poi.location) {
+                alert('该POI暂无位置信息');
+                return;
+            }
+            // 关闭备选池面板
+            document.getElementById('candidatePanel').classList.remove('show');
+            // 地图定位
+            const lat = poi.location.lat;
+            const lng = poi.location.lng;
+            map.flyTo([lat, lng], 16, { duration: 1 });
+            // 构建配图popup
+            const imgUrl = poi.photos && poi.photos.length > 0 ? poi.photos[0] : '';
+            const emoji = getCategoryEmoji(poi.category);
+            const gradStyle = getCategoryGradient(poi.category);
+            const popupContent = `
+                <div style="width:220px;">
+                    <div style="width:100%;height:120px;border-radius:8px;background:${gradStyle};position:relative;overflow:hidden;margin-bottom:8px;">
+                        ${imgUrl ? `<img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">` : ''}
+                        <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.95);text-shadow:0 1px 3px rgba(0,0,0,0.2);">
+                            <div style="font-size:36px;">${emoji}</div>
+                        </div>
+                    </div>
+                    <div style="font-weight:600;font-size:14px;margin-bottom:4px;">${poi.name}</div>
+                    <div style="font-size:12px;color:#6b7280;">${poi.category} ${poi.rating ? '· ' + poi.rating + '分' : ''}</div>
+                    ${c.recommendation_reason ? `<div style="font-size:11px;color:var(--color-primary);margin-top:4px;">${c.recommendation_reason}</div>` : ''}
+                </div>
+            `;
+            L.popup({ maxWidth: 240, className: 'candidate-popup' })
+                .setLatLng([lat, lng])
+                .setContent(popupContent)
+                .openOn(map);
         }
 
         function toggleCandidateSelection(name, checked) {
@@ -1883,10 +1935,39 @@
         // ===== 【P2-4】画像雷达图面板 =====
         function toggleProfilePanel() {
             const panel = document.getElementById('profilePanel');
-            panel.classList.toggle('show');
-            if (panel.classList.contains('show')) {
+            const wasOpen = panel.classList.contains('show');
+            closeAllPanels();
+            if (!wasOpen) {
+                panel.classList.add('show');
                 loadUserProfileRadar();
             }
+        }
+
+        // ===== 自定义偏好标签 =====
+        function addCustomTag() {
+            const input = document.getElementById('customKeywords');
+            const chipsContainer = document.getElementById('keywordChips');
+            const value = input.value.trim();
+            if (!value) return;
+            // 支持逗号/空格分隔批量添加
+            const tags = value.split(/[,，\s]+/).filter(t => t.trim());
+            tags.forEach(tag => {
+                if ([...chipsContainer.querySelectorAll('.custom-tag')].some(el => el.dataset.tag === tag)) return;
+                const chip = document.createElement('span');
+                chip.className = 'custom-tag';
+                chip.dataset.tag = tag;
+                chip.style.cssText = 'display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:var(--color-primary);color:white;border-radius:20px;font-size:12px;cursor:pointer;';
+                chip.innerHTML = `${tag} <span style="font-weight:bold;" onclick="event.stopPropagation();removeCustomTag(this.parentElement)">&times;</span>`;
+                chip.onclick = function() { this.classList.toggle('active'); saveUserProfile(); };
+                chip.classList.add('active');
+                chipsContainer.appendChild(chip);
+            });
+            input.value = '';
+            saveUserProfile();
+        }
+        function removeCustomTag(chip) {
+            chip.remove();
+            saveUserProfile();
         }
 
         async function loadUserProfileRadar() {
@@ -1923,7 +2004,15 @@
             const radius = 100;
             const angleStep = (Math.PI * 2) / themeNames.length;
 
+            const desc = profile.profile_description || '';
             const canvasHtml = `
+                <div style="margin-bottom:16px;">
+                    <div style="font-size:12px;color:#6b7280;margin-bottom:6px;">我的旅行偏好描述</div>
+                    <textarea id="profileDescInput" placeholder="例如：我喜欢摄影和小众景点，不太爱排队，对美食要求高" 
+                        style="width:100%;padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:12px;resize:vertical;min-height:60px;box-sizing:border-box;">${desc}</textarea>
+                    <button onclick="saveProfileDescription()" style="margin-top:6px;padding:6px 14px;background:var(--color-primary);color:white;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;">保存描述</button>
+                    <span id="profileDescMsg" style="font-size:12px;color:#10b981;margin-left:8px;display:none;">已保存</span>
+                </div>
                 <div style="text-align:center;margin-bottom:16px;">
                     <canvas id="radarCanvas" width="${canvasSize}" height="${canvasSize}" style="max-width:100%;"></canvas>
                 </div>
@@ -2038,6 +2127,30 @@
             }, 50);
         }
         
+        async function saveProfileDescription() {
+            const input = document.getElementById('profileDescInput');
+            const msg = document.getElementById('profileDescMsg');
+            if (!input) return;
+            const desc = input.value.trim() || null;
+            try {
+                const resp = await apiCall('/api/user/profile', {
+                    method: 'PUT',
+                    body: JSON.stringify({ profile_description: desc })
+                });
+                if (resp.ok) {
+                    if (msg) {
+                        msg.style.display = 'inline';
+                        setTimeout(() => msg.style.display = 'none', 2000);
+                    }
+                    if (STATE.userProfile) STATE.userProfile.profile_description = desc;
+                } else {
+                    alert('保存失败');
+                }
+            } catch (e) {
+                alert('保存请求失败');
+            }
+        }
+        
         // ===== 全局状态 =====
         const STATE = {
             currentView: 'overview',
@@ -2065,11 +2178,12 @@
         // ===== 初始化 =====
         document.getElementById('date').value = new Date().toISOString().split('T')[0];
         document.querySelectorAll('.tag-option').forEach(tag => {
-            tag.addEventListener('click', () => tag.classList.toggle('active'));
+            tag.addEventListener('click', () => { tag.classList.toggle('active'); saveUserProfile(); });
         });
 
         // ===== 用户画像持久化（localStorage）=====
         function saveUserProfile() {
+            const customTags = [...document.querySelectorAll('#keywordChips .custom-tag')].map(el => el.dataset.tag);
             const profile = {
                 city: document.getElementById('city').value,
                 startTime: document.getElementById('startTime').value,
@@ -2079,7 +2193,7 @@
                 pace: document.getElementById('pace').value,
                 rawQuery: document.getElementById('rawQuery').value,
                 preferences: Array.from(document.querySelectorAll('.tag-option.active')).map(t => t.dataset.tag),
-                customKeywords: document.getElementById('customKeywords').value
+                customTags: customTags
             };
             localStorage.setItem('user_profile', JSON.stringify(profile));
         }
@@ -2104,12 +2218,21 @@
                     document.querySelectorAll('.tag-option').forEach(tag => {
                         tag.classList.toggle('active', fixedPrefs.includes(tag.dataset.tag));
                     });
+                    // 恢复自定义标签chips
                     if (customKws.length) {
-                        document.getElementById('customKeywords').value = customKws.join(' ');
+                        customKws.forEach(tag => {
+                            const input = document.getElementById('customKeywords');
+                            input.value = tag;
+                            addCustomTag();
+                        });
                     }
                 }
-                if (profile.customKeywords != null) {
-                    document.getElementById('customKeywords').value = profile.customKeywords;
+                if (profile.customTags && profile.customTags.length) {
+                    profile.customTags.forEach(tag => {
+                        const input = document.getElementById('customKeywords');
+                        input.value = tag;
+                        addCustomTag();
+                    });
                 }
             } catch (e) {
                 console.error('加载用户画像失败', e);
@@ -2509,10 +2632,11 @@
                 preferences.push(tag.dataset.tag);
             });
             
-            // 【重构】合并自定义关键词
+            // 【重构】合并自定义关键词（从chips和输入框读取）
+            const chips = [...document.querySelectorAll('#keywordChips .custom-tag.active')].map(el => el.dataset.tag);
             const customInput = document.getElementById('customKeywords').value;
-            const customKeywords = customInput.split(/[,，\s]+/).filter(k => k.trim());
-            const allPreferences = [...preferences, ...customKeywords];
+            const inputTags = customInput.split(/[,，\s]+/).filter(k => k.trim());
+            const allPreferences = [...preferences, ...chips, ...inputTags];
 
             // 保存用户画像
             saveUserProfile();
@@ -2684,8 +2808,8 @@
                         </div>
                         <div class="plan-card-desc">${plan.description}</div>
                         <div class="plan-card-preview">
-                            ${preview.map(s => `
-                                <div class="preview-poi">
+                            ${preview.map((s, sIdx) => `
+                                <div class="preview-poi" onclick="openPoiPanel(${idx}, ${sIdx})" style="cursor:pointer;">
                                     <div class="preview-poi-thumb" style="background:${getCategoryGradient(s.poi.category)};">
                                         <img src="${s.poi.photos && s.poi.photos[0] ? s.poi.photos[0] : ''}" alt="" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;">
                                         <span style="position:absolute;z-index:2;pointer-events:none;">${getCategoryEmoji(s.poi.category)}</span>
@@ -3045,7 +3169,7 @@
                 const isEnd = idx === plan.segments.length - 1;
 
                 const marker = L.marker([lat, lng], { icon: createNumberMarker(idx + 1, isEnd) }).addTo(map);
-                marker.bindPopup(`<b>${idx + 1}. ${seg.poi.name}</b><br>${seg.poi.category} · ${seg.arrive_time}-${seg.leave_time}`);
+                marker.on('click', () => openPoiPanel(planIndex, idx));
                 markers.push(marker);
 
                 return [lat, lng];

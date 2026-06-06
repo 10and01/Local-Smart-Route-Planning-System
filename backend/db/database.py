@@ -47,9 +47,10 @@ def get_db() -> Generator[sqlite3.Connection, None, None]:
 
 
 def init_db():
-    """初始化数据库：创建所有表"""
-    from backend.db.models import create_tables
+    """初始化数据库：创建所有表并运行迁移"""
+    from backend.db.models import create_tables, run_migrations
     create_tables()
+    run_migrations()
     print(f"[DB] 数据库已初始化: {DB_PATH}")
 
 
