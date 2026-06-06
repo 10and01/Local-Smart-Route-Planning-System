@@ -981,7 +981,7 @@
         .map-toggle-btn {
             position: absolute;
             top: 12px;
-            right: 12px;
+            right: 160px;
             z-index: 400;
             padding: 8px 14px;
             background: white;
@@ -996,6 +996,10 @@
 
         .leaflet-tile-container img {
             transition: opacity 0.3s;
+        }
+        .tile-btn.active {
+            background: var(--color-primary) !important;
+            color: white !important;
         }
 
         /* 地图加载失败占位 */
@@ -1367,6 +1371,11 @@
                 </div>
             </div>
             <button class="map-toggle-btn" id="mapToggle" onclick="toggleMap()">收起地图</button>
+            <div class="tile-switcher" style="position:absolute;top:8px;right:8px;z-index:500;display:flex;gap:4px;background:rgba(255,255,255,0.9);padding:4px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.15);">
+                <button class="tile-btn active" data-type="vector" onclick="switchTileLayer('vector')" style="padding:4px 10px;border:none;border-radius:6px;background:transparent;cursor:pointer;font-size:12px;color:#6b7280;">🗺️ 地图</button>
+                <button class="tile-btn" data-type="satellite" onclick="switchTileLayer('satellite')" style="padding:4px 10px;border:none;border-radius:6px;background:transparent;cursor:pointer;font-size:12px;color:#6b7280;">🛰️ 卫星</button>
+                <button class="tile-btn" data-type="simple" onclick="switchTileLayer('simple')" style="padding:4px 10px;border:none;border-radius:6px;background:transparent;cursor:pointer;font-size:12px;color:#6b7280;">📍 简图</button>
+            </div>
             <div id="map"></div>
             <div class="map-fallback" id="mapFallback">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -1872,8 +1881,8 @@
             const popupContent = `
                 <div style="width:220px;">
                     <div style="width:100%;height:120px;border-radius:8px;background:${gradStyle};position:relative;overflow:hidden;margin-bottom:8px;">
-                        ${imgUrl ? `<img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">` : ''}
-                        <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.95);text-shadow:0 1px 3px rgba(0,0,0,0.2);">
+                        ${imgUrl ? `<img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:1;" onload="const fb=this.parentElement.querySelector('.candidate-fallback');if(fb)fb.style.display='none';" onerror="this.style.display='none'">` : ''}
+                        <div class="candidate-fallback" style="${imgUrl?'':'display:flex;'}position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.95);text-shadow:0 1px 3px rgba(0,0,0,0.2);z-index:2;">
                             <div style="font-size:36px;">${emoji}</div>
                         </div>
                     </div>
@@ -2378,76 +2387,47 @@
         // 国内 CDN 瓦片配置（高德）
         const AMAP_SUBDOMAINS = ['1', '2', '3', '4'];
 
+        // 底图类型：vector=矢量, simple=简图, satellite=卫星
+        let currentTileType = 'vector';
+        const TILE_URLS = {
+            vector: 'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+            simple: 'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',
+            satellite: 'https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}'
+        };
+
         function initTiles() {
-            // 主瓦片：高德矢量底图
-            currentTileLayer = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+            currentTileLayer = L.tileLayer(TILE_URLS.vector, {
                 attribution: '&copy; 高德地图',
                 maxZoom: 19,
                 subdomains: AMAP_SUBDOMAINS,
                 crossOrigin: true
             });
-            currentTileLayer.on('tileerror', () => {
-                if (!tileFailed) {
-                    tileFailed = true;
-                    switchToCarto();
-                }
-            });
-            currentTileLayer.addTo(map);
-
-            // 3秒超时自动切换
-            STATE.tileTimeout = setTimeout(() => {
-                if (!tileFailed) {
-                    const container = document.querySelector('.leaflet-tile-container');
-                    const imgs = container ? container.querySelectorAll('img') : [];
-                    let loaded = 0;
-                    imgs.forEach(img => { if (img.complete && img.naturalWidth > 0) loaded++; });
-                    if (loaded === 0 && imgs.length > 0) {
-                        tileFailed = true;
-                        switchToCarto();
-                    }
-                }
-            }, 3000);
-        }
-
-        function switchToCarto() {
-            if (currentTileLayer) map.removeLayer(currentTileLayer);
-            // Fallback1：高德简图
-            currentTileLayer = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}', {
-                attribution: '&copy; 高德地图',
-                maxZoom: 19,
-                subdomains: AMAP_SUBDOMAINS
-            });
-            currentTileLayer.on('tileerror', () => {
-                if (tileFailed !== 'stamen') {
-                    tileFailed = 'stamen';
-                    switchToStamen();
-                }
-            });
             currentTileLayer.addTo(map);
         }
 
-        function switchToStamen() {
+        function switchTileLayer(type) {
+            if (type === currentTileType) return;
+            currentTileType = type;
             if (currentTileLayer) map.removeLayer(currentTileLayer);
-            // Fallback2：高德卫星图
-            currentTileLayer = L.tileLayer('https://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}', {
+            currentTileLayer = L.tileLayer(TILE_URLS[type], {
                 attribution: '&copy; 高德地图',
                 maxZoom: 19,
                 subdomains: AMAP_SUBDOMAINS
             });
             currentTileLayer.addTo(map);
+            // 更新按钮状态
+            document.querySelectorAll('.tile-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.type === type);
+            });
         }
 
-        // 无tiles时灰色底图处理（通过CSS和检测）
         function ensureMapBackground() {
-            const mapEl = document.getElementById('map');
             const fallback = document.getElementById('mapFallback');
-            mapEl.style.background = '#e5e7eb';
             // 检测tile加载情况
             let checkInterval = setInterval(() => {
                 const tiles = document.querySelectorAll('.leaflet-tile');
                 const loadedTiles = Array.from(tiles).filter(t => t.complete && t.naturalWidth > 0);
                 if (tiles.length > 0 && loadedTiles.length > 0) {
-                    // 有tile成功加载，隐藏fallback
                     fallback.classList.remove('show');
                     clearInterval(checkInterval);
                 }
@@ -3317,7 +3297,7 @@
         });
 
         // ===== 分享卡片生成（Canvas 9:16长图）=====
-        function generateShareCard(planIndex) {
+        async function generateShareCard(planIndex) {
             const plan = STATE.plans[planIndex];
             if (!plan) return;
             const meta = STRATEGY_META[plan.theme] || STRATEGY_META['均衡推荐'];
@@ -3326,6 +3306,22 @@
             canvas.width = W;
             canvas.height = H;
             const ctx = canvas.getContext('2d');
+
+            // 预加载所有POI图片
+            const imagePromises = plan.segments.map(seg => {
+                const url = seg.poi.photos && seg.poi.photos.length > 0 ? seg.poi.photos[0] : '';
+                if (!url) return Promise.resolve(null);
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => resolve(img);
+                    img.onerror = () => resolve(null);
+                    img.src = url;
+                    // 3秒超时
+                    setTimeout(() => resolve(null), 3000);
+                });
+            });
+            const images = await Promise.all(imagePromises);
 
             // 背景渐变
             const grd = ctx.createLinearGradient(0, 0, 0, H);
@@ -3357,13 +3353,16 @@
             ctx.lineTo(W-60, 140);
             ctx.stroke();
 
-            // 时间轴
-            let y = 180;
+            // 时间轴（含配图）
+            let y = 170;
+            const ITEM_H = 110;
             plan.segments.forEach((seg, idx) => {
+                const img = images[idx];
+                
                 // 节点圆点
                 ctx.fillStyle = meta.color;
                 ctx.beginPath();
-                ctx.arc(60, y, 8, 0, Math.PI*2);
+                ctx.arc(60, y + 20, 8, 0, Math.PI*2);
                 ctx.fill();
 
                 // 连接线
@@ -3371,38 +3370,73 @@
                     ctx.strokeStyle = 'rgba(255,255,255,0.3)';
                     ctx.lineWidth = 2;
                     ctx.beginPath();
-                    ctx.moveTo(60, y + 8);
-                    ctx.lineTo(60, y + 70);
+                    ctx.moveTo(60, y + 28);
+                    ctx.lineTo(60, y + ITEM_H - 10);
                     ctx.stroke();
                 }
 
+                // 配图（左侧小图）
+                if (img) {
+                    const imgSize = 70;
+                    const imgX = 85;
+                    const imgY = y;
+                    // 圆角裁剪
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.roundRect(imgX, imgY, imgSize, imgSize, 8);
+                    ctx.clip();
+                    ctx.drawImage(img, imgX, imgY, imgSize, imgSize);
+                    ctx.restore();
+                } else {
+                    // 无图时显示emoji占位
+                    const imgSize = 70;
+                    const imgX = 85;
+                    const imgY = y;
+                    ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                    ctx.beginPath();
+                    ctx.roundRect(imgX, imgY, imgSize, imgSize, 8);
+                    ctx.fill();
+                    ctx.font = '28px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(getCategoryEmoji(seg.poi.category), imgX + imgSize/2, imgY + imgSize/2 + 10);
+                }
+
                 // POI名称
+                const textX = img ? 170 : 85;
+                ctx.textAlign = 'left';
                 ctx.fillStyle = '#fff';
                 ctx.font = 'bold 16px sans-serif';
-                ctx.textAlign = 'left';
-                ctx.fillText(seg.poi.name, 85, y + 5);
+                ctx.fillText(seg.poi.name, textX, y + 20);
 
                 // 时间
                 ctx.fillStyle = 'rgba(255,255,255,0.75)';
                 ctx.font = '13px sans-serif';
-                ctx.fillText(`${seg.arrive_time} - ${seg.leave_time} · ${seg.duration}分钟`, 85, y + 24);
+                ctx.fillText(`${seg.arrive_time} - ${seg.leave_time} · ${seg.duration}分钟`, textX, y + 40);
 
-                // 类别标签背景
+                // 类别标签
                 const catText = seg.poi.category;
                 ctx.font = '11px sans-serif';
                 const catW = ctx.measureText(catText).width + 12;
                 ctx.fillStyle = 'rgba(255,255,255,0.2)';
                 ctx.beginPath();
-                ctx.roundRect(85, y + 32, catW, 18, 4);
+                ctx.roundRect(textX, y + 50, catW, 18, 4);
                 ctx.fill();
                 ctx.fillStyle = 'rgba(255,255,255,0.9)';
-                ctx.fillText(catText, 91, y + 45);
+                ctx.fillText(catText, textX + 6, y + 63);
 
-                y += 85;
+                // 评分
+                if (seg.poi.rating) {
+                    const starText = `★ ${seg.poi.rating}`;
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.font = 'bold 12px sans-serif';
+                    ctx.fillText(starText, textX + catW + 10, y + 63);
+                }
+
+                y += ITEM_H;
             });
 
             // 底部统计
-            const statsY = Math.min(y + 30, H - 120);
+            const statsY = Math.min(y + 20, H - 120);
             ctx.strokeStyle = 'rgba(255,255,255,0.3)';
             ctx.beginPath();
             ctx.moveTo(60, statsY);

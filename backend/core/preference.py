@@ -54,15 +54,80 @@ def parse_preference_from_request(
     )
 
 
+def _rule_based_match(poi: POI, keyword: str) -> float:
+    """基于名称/分类/标签的硬规则匹配（作为语义匹配的回退）"""
+    name = (poi.name or "").lower()
+    category = (poi.category or "").lower()
+    tags = [t.lower() for t in (getattr(poi, "tags", None) or [])]
+    kw = keyword.lower()
+    
+    # 爬山 → 名称含"山"且为风景名胜
+    if kw in ("爬山", "登山", "山"):
+        if "山" in name and "风景名胜" in category:
+            return 0.75
+        if "峰" in name and "风景名胜" in category:
+            return 0.70
+    
+    # 西湖醋鱼 → 知名杭帮菜餐厅
+    if kw in ("西湖醋鱼", "杭帮菜", "醋鱼"):
+        famous = ["知味观", "楼外楼", "外婆家", "新白鹿", "绿茶", "弄堂里", "老头儿"]
+        if any(f in poi.name for f in famous):
+            return 0.80
+        if any(t in ("杭帮菜", "浙菜", "西湖醋鱼") for t in tags):
+            return 0.70
+    
+    # 美食/吃 → 餐饮类
+    if kw in ("美食", "吃", "餐厅", "吃饭", "小吃", "吃辣"):
+        if "餐饮" in category:
+            return 0.55
+    
+    # 拍照/风景 → 风景名胜
+    if kw in ("拍照", "摄影", "风景", "打卡"):
+        if "风景名胜" in category:
+            return 0.50
+    
+    # 购物 → 购物服务
+    if kw in ("购物", "买", "逛街"):
+        if "购物" in category:
+            return 0.55
+    
+    # 运动/体育 → 体育休闲
+    if kw in ("运动", "体育", "健身"):
+        if "体育" in category:
+            return 0.55
+    
+    # 文化/历史 → 风景名胜或文化场所
+    if kw in ("文化", "历史", "博物馆"):
+        if "风景名胜" in category or "博物馆" in name:
+            return 0.50
+    
+    return 0.0
+
+
 def compute_preference_match(poi: POI, theme_weights: Dict[str, float]) -> float:
     """
     计算 POI 与关键词权重的语义匹配度（0~1）
     【重构】使用本地 Embedding 模型进行语义相似度计算
+    【修复】当语义匹配极低时，使用规则回退匹配
     """
     if not theme_weights:
         return 0.0
 
-    return semantic_matcher.match_keywords_to_poi(theme_weights, poi)
+    semantic_match = semantic_matcher.match_keywords_to_poi(theme_weights, poi)
+    
+    # 当语义匹配器失败（返回接近0）时，使用规则回退
+    if semantic_match < 0.15:
+        rule_matches = []
+        for kw in theme_weights:
+            rm = _rule_based_match(poi, kw)
+            if rm > 0:
+                rule_matches.append(rm * theme_weights[kw])
+        if rule_matches:
+            total_weight = sum(theme_weights.values())
+            rule_match = sum(rule_matches) / max(total_weight * 0.8, 0.1)
+            return max(semantic_match, min(rule_match, 1.0))
+    
+    return semantic_match
 
 
 def compute_keyword_matches(poi: POI, theme_weights: Dict[str, float]) -> Dict[str, float]:

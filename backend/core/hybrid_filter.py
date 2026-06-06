@@ -79,6 +79,43 @@ class RuleBasedFilter:
             candidates.append(poi)
         return candidates
 
+    # 【泛化】关键词→类别偏好加分规则配置表
+    # 当用户query中包含某类关键词时，自动给对应类别的POI加分
+    CATEGORY_BOOST_RULES = [
+        {"name": "餐饮", "keywords": ["美食", "吃", "餐厅", "火锅", "小吃", "吃辣", "西湖醋鱼", "杭帮菜"],
+         "categories": ["餐饮服务"], "boost": 0.03, "name_contains": None},
+        {"name": "山景", "keywords": ["爬山", "登山", "山", "徒步"],
+         "categories": ["风景名胜"], "boost": 0.05, "name_contains": ["山", "峰", "岭"]},
+        {"name": "拍照", "keywords": ["拍照", "摄影", "打卡", "风景"],
+         "categories": ["风景名胜"], "boost": 0.04, "name_contains": None},
+        {"name": "购物", "keywords": ["购物", "买", "逛街", "商场"],
+         "categories": ["购物服务"], "boost": 0.03, "name_contains": None},
+        {"name": "运动", "keywords": ["运动", "体育", "健身", "球"],
+         "categories": ["体育休闲服务"], "boost": 0.03, "name_contains": None},
+        {"name": "文化", "keywords": ["文化", "历史", "博物馆", "古迹"],
+         "categories": ["风景名胜", "科教文化服务"], "boost": 0.03, "name_contains": None},
+        {"name": "自然", "keywords": ["自然", "公园", "湖", "河", "森林"],
+         "categories": ["风景名胜"], "boost": 0.04, "name_contains": None},
+    ]
+
+    def _apply_category_boost(self, poi: POI, user_pref: UserPreference, match: float) -> float:
+        """根据用户偏好关键词，给对应类别的POI加分（泛化规则）"""
+        boost = 0.0
+        for rule in self.CATEGORY_BOOST_RULES:
+            # 检查用户偏好中是否包含该规则的关键词
+            has_kw = any(kw in user_pref.theme_weights for kw in rule["keywords"])
+            if not has_kw:
+                continue
+            # 检查POI是否属于目标类别
+            if poi.category not in rule["categories"]:
+                continue
+            # 检查名称过滤（可选）
+            if rule["name_contains"]:
+                if not any(nc in poi.name for nc in rule["name_contains"]):
+                    continue
+            boost += rule["boost"]
+        return boost
+
     def score_by_preference(
         self,
         pois: List[POI],
@@ -87,7 +124,7 @@ class RuleBasedFilter:
         """
         根据用户偏好对 POI 打分
         【重构】使用语义匹配替代同义词表匹配
-        【第一层优化】权重调整：偏好匹配 65% + 人群适配 15% + 评分 20%
+        【泛化】使用CATEGORY_BOOST_RULES替代硬编码加分规则
         """
         scored = []
         for poi in pois:
@@ -105,18 +142,8 @@ class RuleBasedFilter:
             if match > 0.25 and base_score < 0.80:
                 score += 0.06
             
-            # 【中文模型优化】拍照场景下，西湖相关POI精准加分
-            has_photo_kw = any(kw in user_pref.theme_weights for kw in ["拍照", "摄影", "打卡", "风景"])
-            if has_photo_kw and poi.category == "风景名胜" and match > 0.30:
-                score += 0.04
-            # 西湖核心景点额外加分（精准提升，不影响其他风景名胜）
-            if has_photo_kw and "西湖" in poi.name and match > 0.35:
-                score += 0.04
-            
-            # 【中文模型优化】纯美食场景（无拍照）下，餐饮类POI适度加分
-            has_food_kw = any(kw in user_pref.theme_weights for kw in ["美食", "吃", "餐厅", "火锅", "小吃"])
-            if has_food_kw and not has_photo_kw and poi.category == "餐饮服务":
-                score += 0.03
+            # 【泛化】应用类别偏好加分
+            score += self._apply_category_boost(poi, user_pref, match)
 
             # 【第三层追加】动态抓取POI关键词匹配加分
             if getattr(poi, "source", "") == "amap_dynamic":
@@ -143,20 +170,59 @@ class RuleBasedFilter:
     ) -> List[POI]:
         """
         纯规则筛选完整流程：硬约束过滤 → 语义匹配打分 → 取 TopK
+        【泛化】通用类别上限+下限控制，防止单一类别垄断候选池
         """
         candidates = self.loose_filter(pois, constraints)
         scored = self.score_by_preference(candidates, user_pref)
 
+        # 通用类别多样性策略：上限+下限控制
+        categories = ["风景名胜", "餐饮服务", "购物服务", "体育休闲服务"]
+        max_per_cat = max(5, top_k // 3)   # 每个类别最多占1/3
+        min_per_cat = 3                     # 每个主要类别至少3个
+        
+        result = []
+        used_names = set()
+        cat_counts = {}
+        
+        # 第一轮：按全局排序取Top，但限制每类上限
+        for p, s in scored:
+            if len(result) >= top_k:
+                break
+            cat = p.category
+            if cat_counts.get(cat, 0) >= max_per_cat:
+                continue
+            result.append(p)
+            used_names.add(p.name)
+            cat_counts[cat] = cat_counts.get(cat, 0) + 1
+        
+        # 第二轮：为不足的类别补充（从剩余POI中按排序取）
+        for cat in categories:
+            need = min_per_cat - cat_counts.get(cat, 0)
+            if need <= 0:
+                continue
+            cat_scored = [(p, s) for p, s in scored if p.category == cat and p.name not in used_names]
+            for p, _ in cat_scored[:need]:
+                if len(result) >= top_k:
+                    break
+                result.append(p)
+                used_names.add(p.name)
+                cat_counts[cat] = cat_counts.get(cat, 0) + 1
+        
+        # 第三轮：如果还有空位，继续按全局排序补充
+        for p, _ in scored:
+            if p.name not in used_names:
+                if len(result) >= top_k:
+                    break
+                result.append(p)
+                used_names.add(p.name)
+                cat_counts[p.category] = cat_counts.get(p.category, 0) + 1
+
         # 确保 must_visit 在结果中
         must_names = set(constraints.must_visit or [])
-        result = [p for p, _ in scored[:top_k]]
-        result_names = {p.name for p in result}
-
         for p, _ in scored:
-            if p.name in must_names and p.name not in result_names:
+            if p.name in must_names and p.name not in used_names:
                 result.append(p)
-                result_names.add(p.name)
-
+                used_names.add(p.name)
         return result
 
 

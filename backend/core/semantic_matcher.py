@@ -69,11 +69,12 @@ class SemanticMatcher:
             import torch.nn.functional as F
             from transformers import AutoModel, AutoTokenizer
 
+            # 【修复】优先使用本地缓存，避免网络超时导致模型加载失败
             self._tokenizer = AutoTokenizer.from_pretrained(
-                MODEL_NAME, local_files_only=False
+                MODEL_NAME, local_files_only=True
             )
             self._model = AutoModel.from_pretrained(
-                MODEL_NAME, local_files_only=False
+                MODEL_NAME, local_files_only=True
             )
             self._model.eval()
             self._torch = torch
