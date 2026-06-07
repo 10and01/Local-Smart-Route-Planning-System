@@ -92,6 +92,8 @@ dmypy.json
 # Data files (large / generated)
 data/*.db
 data/*.cache
+# ML models (large, download on demand)
+data/models/
 
 # Distance matrices can be regenerated
 data/distance_matrix_*.json

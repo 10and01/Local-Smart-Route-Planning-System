@@ -1,0 +1,25 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e5]
+      - generic [ref=e11]
+    - generic [ref=e68]:
+      - generic [ref=e69]
+      - generic [ref=e73]
+      - generic
+  - generic [ref=e84]:
+    - heading "POI详情" [level=3] [ref=e85]
+    - button "×" [ref=e86] [cursor=pointer]
+  - generic [ref=e89]:
+    - heading "我的历史规划" [level=3] [ref=e90]
+    - button "×" [ref=e91] [cursor=pointer]
+  - generic [ref=e93]:
+    - generic [ref=e94]:
+      - heading "🎯 备选池（Top-40）" [level=3] [ref=e95]
+      - button "×" [ref=e96] [cursor=pointer]
+    - generic [ref=e98]: 请先生成路线方案
+  - generic [ref=e99]:
+    - generic [ref=e100]:
+      - heading "📊 我的画像" [level=3] [ref=e101]
+      - button "×" [ref=e102] [cursor=pointer]
+    - generic [ref=e104]: 请先登录查看画像

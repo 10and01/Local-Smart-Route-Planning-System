@@ -25,6 +25,9 @@ _DATA_DIR = _PROJECT_ROOT / "data"
 MODEL_NAME = "BAAI/bge-small-zh-v1.5"
 EMBEDDING_DIM = 512
 
+# 【项目内模型路径】优先从项目目录加载，不依赖系统缓存
+_LOCAL_MODEL_DIR = _PROJECT_ROOT / "data" / "models" / "bge-small-zh-v1.5"
+
 # 【保留兜底】关键词扩展映射（中文模型下基本不需要，保留极少数无意义短词兜底）
 _KEYWORD_EN_MAP = {}
 
@@ -61,7 +64,7 @@ class SemanticMatcher:
         return cls._instance
 
     def _ensure_initialized(self):
-        """延迟初始化模型"""
+        """延迟初始化模型（优先项目内路径，其次系统缓存）"""
         if self._initialized:
             return
         try:
@@ -69,18 +72,33 @@ class SemanticMatcher:
             import torch.nn.functional as F
             from transformers import AutoModel, AutoTokenizer
 
-            # 【修复】优先使用本地缓存，避免网络超时导致模型加载失败
-            self._tokenizer = AutoTokenizer.from_pretrained(
-                MODEL_NAME, local_files_only=True
-            )
-            self._model = AutoModel.from_pretrained(
-                MODEL_NAME, local_files_only=True
-            )
-            self._model.eval()
-            self._torch = torch
-            self._F = F
-            self._initialized = True
-            print(f"[SemanticMatcher] 模型加载成功: {MODEL_NAME}")
+            # 【项目内加载】优先从项目目录加载模型，完全不依赖网络和系统缓存
+            if _LOCAL_MODEL_DIR.exists():
+                model_path = str(_LOCAL_MODEL_DIR)
+                self._tokenizer = AutoTokenizer.from_pretrained(
+                    model_path, local_files_only=True
+                )
+                self._model = AutoModel.from_pretrained(
+                    model_path, local_files_only=True
+                )
+                self._model.eval()
+                self._torch = torch
+                self._F = F
+                self._initialized = True
+                print(f"[SemanticMatcher] 模型加载成功（项目内）: {model_path}")
+            else:
+                # 回退：尝试系统缓存
+                self._tokenizer = AutoTokenizer.from_pretrained(
+                    MODEL_NAME, local_files_only=True
+                )
+                self._model = AutoModel.from_pretrained(
+                    MODEL_NAME, local_files_only=True
+                )
+                self._model.eval()
+                self._torch = torch
+                self._F = F
+                self._initialized = True
+                print(f"[SemanticMatcher] 模型加载成功（系统缓存）: {MODEL_NAME}")
         except Exception as e:
             print(f"[SemanticMatcher] 模型加载失败，将回退到规则匹配: {e}")
             self._initialized = False

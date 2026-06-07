@@ -2003,9 +2003,20 @@
         function renderProfileRadar(profile, versions) {
             const body = document.getElementById('profilePanelBody');
             const themes = profile.theme_weights || {};
-            const themeNames = Object.keys(themes).length ? Object.keys(themes) : ['美食','拍照','文化','自然','购物','娱乐'];
+            // 按权重排序，Top-8用于雷达图，避免过多关键词导致拥挤
+            const sortedThemes = Object.entries(themes).sort((a, b) => b[1] - a[1]);
+            const topThemes = sortedThemes.slice(0, 8);
+            const themeNames = topThemes.length ? topThemes.map(t => t[0]) : ['美食','拍照','文化','自然','购物','娱乐'];
             const themeValues = themeNames.map(t => (themes[t] || 0.25) * 100);
             const maxVal = 100;
+
+            // 检查最近5分钟是否有更新
+            const now = Date.now();
+            const recentUpdates = (versions || []).filter(v => {
+                const t = new Date(v.created_at).getTime();
+                return now - t < 5 * 60 * 1000;
+            });
+            const hasRecentUpdate = recentUpdates.length > 0;
 
             // Canvas 绘制雷达图
             const canvasSize = 300;
@@ -2014,7 +2025,35 @@
             const angleStep = (Math.PI * 2) / themeNames.length;
 
             const desc = profile.profile_description || '';
+            const sourceLabels = {
+                'llm_delta': '🤖 LLM智能分析',
+                'rule_fallback': '📋 关键词提取',
+                'behavior_ema': '📊 行为学习',
+                'user_manual': '✏️ 手动设置'
+            };
+
+            // 生成关键词权重条形图HTML
+            const barChartHtml = sortedThemes.slice(0, 12).map(([name, val]) => {
+                const pct = Math.round(val * 100);
+                const barColor = val > 0.6 ? 'var(--color-primary)' : (val > 0.35 ? '#818cf8' : '#c7d2fe');
+                return `
+                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:11px;">
+                        <span style="width:40px;text-align:right;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${name}</span>
+                        <div style="flex:1;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;">
+                            <div style="width:${pct}%;height:100%;background:${barColor};border-radius:4px;transition:width 0.5s ease;"></div>
+                        </div>
+                        <span style="width:28px;color:#374151;font-weight:500;">${pct}%</span>
+                    </div>
+                `;
+            }).join('');
+
             const canvasHtml = `
+                ${hasRecentUpdate ? `
+                <div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;gap:6px;">
+                    <span style="font-size:14px;">✨</span>
+                    <span style="font-size:12px;color:#065f46;font-weight:500;">画像刚刚更新：${recentUpdates[0].source ? (sourceLabels[recentUpdates[0].source] || recentUpdates[0].source) : '系统更新'}</span>
+                </div>
+                ` : ''}
                 <div style="margin-bottom:16px;">
                     <div style="font-size:12px;color:#6b7280;margin-bottom:6px;">我的旅行偏好描述</div>
                     <textarea id="profileDescInput" placeholder="例如：我喜欢摄影和小众景点，不太爱排队，对美食要求高" 
@@ -2022,9 +2061,16 @@
                     <button onclick="saveProfileDescription()" style="margin-top:6px;padding:6px 14px;background:var(--color-primary);color:white;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;">保存描述</button>
                     <span id="profileDescMsg" style="font-size:12px;color:#10b981;margin-left:8px;display:none;">已保存</span>
                 </div>
-                <div style="text-align:center;margin-bottom:16px;">
+                <div style="text-align:center;margin-bottom:12px;">
                     <canvas id="radarCanvas" width="${canvasSize}" height="${canvasSize}" style="max-width:100%;"></canvas>
                 </div>
+                ${sortedThemes.length > 0 ? `
+                <div style="margin-bottom:16px;">
+                    <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:8px;">偏好关键词权重</div>
+                    ${barChartHtml}
+                    ${sortedThemes.length > 12 ? `<div style="font-size:11px;color:#9ca3af;text-align:center;margin-top:4px;">还有 ${sortedThemes.length - 12} 个关键词...</div>` : ''}
+                </div>
+                ` : ''}
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
                     <div style="background:#f9fafb;padding:10px;border-radius:8px;font-size:12px;">
                         <div style="color:#6b7280;margin-bottom:2px;">出行人群</div>
@@ -2046,15 +2092,29 @@
                 ${versions.length ? `
                 <div style="font-size:13px;font-weight:600;margin-bottom:8px;">画像更新历史</div>
                 <div style="max-height:200px;overflow-y:auto;">
-                    ${versions.slice(0, 5).map(v => `
+                    ${versions.slice(0, 5).map(v => {
+                        let deltaText = '';
+                        try {
+                            const d = v.delta_json || {};
+                            if (d.theme_weights) {
+                                const keys = Object.keys(d.theme_weights);
+                                deltaText = '偏好更新: ' + keys.join(', ');
+                            } else {
+                                deltaText = JSON.stringify(d).slice(0, 60);
+                            }
+                        } catch(e) {
+                            deltaText = '更新详情...';
+                        }
+                        return `
                         <div style="padding:8px 10px;background:#f9fafb;border-radius:6px;margin-bottom:6px;font-size:11px;">
-                            <div style="display:flex;justify-content:space-between;">
-                                <span style="color:var(--color-primary);font-weight:600;">${v.source || 'manual'}</span>
-                                <span style="color:#9ca3af;">${new Date(v.created_at).toLocaleString()}</span>
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <span style="color:var(--color-primary);font-weight:600;">${sourceLabels[v.source] || (v.source || 'manual')}</span>
+                                <span style="color:#9ca3af;font-size:10px;">${new Date(v.created_at).toLocaleString()}</span>
                             </div>
-                            <div style="color:#6b7280;margin-top:2px;">${JSON.stringify(v.delta_json).slice(0, 80)}...</div>
+                            <div style="color:#6b7280;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${deltaText}</div>
                         </div>
-                    `).join('')}
+                        `;
+                    }).join('')}
                 </div>
                 ` : ''}
             `;
@@ -2065,6 +2125,12 @@
                 const canvas = document.getElementById('radarCanvas');
                 if (!canvas) return;
                 const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = canvasSize * dpr;
+                canvas.height = canvasSize * dpr;
+                canvas.style.width = canvasSize + 'px';
+                canvas.style.height = canvasSize + 'px';
+                ctx.scale(dpr, dpr);
                 ctx.clearRect(0, 0, canvasSize, canvasSize);
 
                 // 绘制网格
@@ -2653,6 +2719,11 @@
                     showPlanOnMap(0);
                     // 加载天气
                     updateWeather(requestBody.city);
+                    // 如果画像面板打开，自动刷新（显示最新更新）
+                    const profilePanel = document.getElementById('profilePanel');
+                    if (profilePanel && profilePanel.classList.contains('show')) {
+                        loadUserProfileRadar();
+                    }
                 } else {
                     showError('规划失败: ' + (data.detail || '未知错误'));
                 }

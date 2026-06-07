@@ -327,7 +327,7 @@ class UserProfileDAO(BaseDAO):
         allowed = {"total_plans_generated", "total_plans_selected", "most_selected_theme",
                    "avg_budget", "traveler_type", "pace_preference", "budget_level",
                    "price_sensitivity", "willingness_to_queue", "willingness_to_walk",
-                   "profile_description"}
+                   "profile_description", "theme_weights_json"}
         fields = {k: v for k, v in kwargs.items() if k in allowed}
         if not fields:
             return

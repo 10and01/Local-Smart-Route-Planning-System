@@ -11,6 +11,60 @@ from backend.models.schemas import UserPreference, PlanRequest, RouteConstraints
 from backend.db.models import UserProfileDAO, UserHistoryDAO, UserFeedbackDAO
 from backend.data.loader import get_cached_pois
 from backend.core.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL_NAME
+import re
+
+
+# ===================================================================
+# 规则关键词映射表（不依赖LLM，从文本/POI中推断偏好）
+# ===================================================================
+RULE_KEYWORD_MAP = {
+    # 关键词模式 -> (推断出的偏好关键词, 权重)
+    # 美食
+    "西湖醋鱼": ("美食", 0.6), "火锅": ("美食", 0.6), "烧烤": ("美食", 0.5),
+    "餐厅": ("美食", 0.5), "小吃": ("美食", 0.5), "吃": ("美食", 0.5),
+    "美食": ("美食", 0.7), "好吃": ("美食", 0.6), "味道": ("美食", 0.5),
+    "辣": ("美食", 0.4),
+    # 拍照
+    "拍照": ("拍照", 0.7), "摄影": ("拍照", 0.7), "打卡": ("拍照", 0.6),
+    "出片": ("拍照", 0.6), "美景": ("拍照", 0.5),
+    # 爬山/自然
+    "爬山": ("爬山", 0.7), "登山": ("爬山", 0.7), "徒步": ("爬山", 0.6),
+    "山": ("爬山", 0.4), "峰": ("爬山", 0.4), "岭": ("爬山", 0.4),
+    "自然": ("自然", 0.6), "公园": ("自然", 0.5), "森林": ("自然", 0.5),
+    "湖": ("自然", 0.4), "河": ("自然", 0.4),
+    # 文化
+    "文化": ("文化", 0.6), "历史": ("文化", 0.6), "博物馆": ("文化", 0.7),
+    "古迹": ("文化", 0.6), "文物": ("文化", 0.5), "寺庙": ("文化", 0.5),
+    "寺": ("文化", 0.4), "塔": ("文化", 0.4), "遗址": ("文化", 0.5),
+    # 购物
+    "购物": ("购物", 0.6), "逛街": ("购物", 0.6), "商场": ("购物", 0.5),
+    "买": ("购物", 0.4), "特产": ("购物", 0.5),
+    # 娱乐
+    "娱乐": ("娱乐", 0.6), "好玩": ("娱乐", 0.5), "放松": ("娱乐", 0.4),
+    # 运动
+    "运动": ("运动", 0.6), "体育": ("运动", 0.5), "健身": ("运动", 0.5),
+    # 风景
+    "风景": ("风景", 0.6), "风光": ("风景", 0.5), "景观": ("风景", 0.5),
+}
+
+# POI Category -> 偏好关键词映射
+CATEGORY_TO_THEME = {
+    "餐饮服务": ("美食", 0.4),
+    "风景名胜": ("风景", 0.3),
+    "购物服务": ("购物", 0.3),
+    "体育休闲服务": ("运动", 0.3),
+    "科教文化服务": ("文化", 0.3),
+}
+
+# POI Name 子串 -> 偏好关键词映射
+NAME_TO_THEME = {
+    "山": ("爬山", 0.3), "峰": ("爬山", 0.3), "岭": ("爬山", 0.3),
+    "寺": ("文化", 0.25), "庙": ("文化", 0.25), "塔": ("文化", 0.25),
+    "博物馆": ("文化", 0.3), "故居": ("文化", 0.25), "纪念馆": ("文化", 0.25),
+    "湖": ("自然", 0.25), "公园": ("自然", 0.25),
+    "火锅": ("美食", 0.3), "餐厅": ("美食", 0.2), "店": ("美食", 0.15),
+    "商场": ("购物", 0.25), "街": ("购物", 0.2),
+}
 
 
 # 画像初始化 Prompt（自由关键词维度）
@@ -202,30 +256,34 @@ class UserPersonalizationEngine:
             for key, delta in boosts.items():
                 current_weights[key] = current_weights.get(key, 0.5) + gamma * delta
 
-        # 2. 隐式学习：POI 级别标签
+        # 2. 隐式学习：POI 级别标签（重构：使用name+category+tags综合推断）
         if selected_poi_names and city:
             pois = get_cached_pois(city)
             poi_map = {p.name: p for p in pois}
             for poi_name in selected_poi_names:
                 poi = poi_map.get(poi_name)
-                if poi and poi.tags:
-                    for tag in poi.tags:
-                        current_weights[tag] = current_weights.get(tag, 0.25) + gamma * 0.05
+                if poi:
+                    inferred = self._infer_themes_from_poi(poi)
+                    for theme, boost in inferred.items():
+                        current_weights[theme] = current_weights.get(theme, 0.25) + gamma * boost
 
-        # 3. 显式反馈
+        # 3. 显式反馈（重构：使用name+category+tags综合推断）
         feedbacks = UserFeedbackDAO.get_by_user(user_id, user_type)
         for fb in feedbacks:
             poi_name = fb["poi_name"]
             fb_type = fb["feedback_type"]
-            delta = gamma * 0.1 if fb_type == "like" else -gamma * 0.1
+            delta_sign = 1.0 if fb_type == "like" else -1.0
+            delta_val = gamma * 0.15 * delta_sign  # 提升反馈权重
 
-            # 找到该 POI 的标签来传播反馈
-            if city:
-                pois = get_cached_pois(city)
+            # 找到该POI并用综合推断传播反馈
+            target_city = city or fb.get("city")
+            if target_city:
+                pois = get_cached_pois(target_city)
                 for poi in pois:
-                    if poi.name == poi_name and poi.tags:
-                        for tag in poi.tags:
-                            current_weights[tag] = current_weights.get(tag, 0.25) + delta
+                    if poi.name == poi_name:
+                        inferred = self._infer_themes_from_poi(poi)
+                        for theme, _ in inferred.items():
+                            current_weights[theme] = current_weights.get(theme, 0.25) + delta_val
                         break
 
         # 4. 归一化到 [0.05, 1.0]
@@ -372,6 +430,52 @@ class UserPersonalizationEngine:
             return None
 
     @staticmethod
+    def _rule_extract_keywords(text: str) -> Dict[str, float]:
+        """
+        不调用LLM，直接从文本中提取偏好关键词。
+        用于LLM 429失败时的回退提取，以及POI name/category推断。
+        """
+        if not text:
+            return {}
+        text = text.strip()
+        result = {}
+        for pattern, (theme, weight) in RULE_KEYWORD_MAP.items():
+            if pattern in text:
+                # 多个关键词命中同一theme时，取最大权重
+                result[theme] = max(result.get(theme, 0.0), weight)
+        return result
+
+    @staticmethod
+    def _infer_themes_from_poi(poi) -> Dict[str, float]:
+        """
+        从POI的name、category、tags推断偏好关键词。
+        解决tags稀疏导致的行为更新失效问题。
+        """
+        result = {}
+        name = poi.name or ""
+        category = poi.category or ""
+        tags = getattr(poi, 'tags', None) or []
+
+        # 1. 从tags推断（原有逻辑）
+        for tag in tags:
+            result[tag] = max(result.get(tag, 0.0), 0.25)
+
+        # 2. 从category推断
+        if category in CATEGORY_TO_THEME:
+            theme, weight = CATEGORY_TO_THEME[category]
+            result[theme] = max(result.get(theme, 0.0), weight)
+
+        # 3. 从name推断（最长匹配优先）
+        matched = set()
+        for pattern in sorted(NAME_TO_THEME.keys(), key=len, reverse=True):
+            if pattern in name and pattern not in matched:
+                theme, weight = NAME_TO_THEME[pattern]
+                result[theme] = max(result.get(theme, 0.0), weight)
+                matched.add(pattern)
+
+        return result
+
+    @staticmethod
     def _parsed_to_user_preference(parsed: dict) -> UserPreference:
         """将LLM返回的JSON转换为UserPreference对象（支持自由关键词）"""
         theme_weights = {}
@@ -435,14 +539,17 @@ class UserPersonalizationEngine:
             update_fields["profile_description"] = profile_description
         UserProfileDAO.update_stats(user_id, user_type, **update_fields)
 
-        # 记录版本历史
+        # 记录版本历史（source需要映射到DB允许的枚举值）
         from backend.db.models import ProfileVersionDAO
+        db_source = source
+        if db_source not in ("llm_init", "llm_delta", "user_manual", "behavior_ema"):
+            db_source = "behavior_ema"  # rule_fallback 等映射到行为学习
         snapshot = {k: v for k, v in update_fields.items()}
         snapshot["theme_weights_json"] = json.loads(snapshot["theme_weights_json"])
         ProfileVersionDAO.create(
             user_id=user_id,
             user_type=user_type,
-            source=source,
+            source=db_source,
             delta=delta or {},
             profile_snapshot=snapshot,
             request_id=request_id
@@ -606,32 +713,43 @@ class UserPersonalizationEngine:
             except Exception as e:
                 print(f"[DualTrack] 行为驱动更新失败: {e}")
 
-        # Track 2: 对话驱动 LLM增量
+        # Track 2: 对话驱动 LLM增量 + 规则回退
         if raw_query:
+            delta = None
+            delta_source = "llm_delta"
             try:
                 delta = self.extract_profile_delta(
                     raw_query=raw_query,
                     generated_plan=generated_plan,
                     user_pref=self.profile_to_preference(self.load_profile(user_id, user_type))
                 )
-                if delta:
-                    updated_pref = self.apply_delta_to_profile(
+            except Exception as e:
+                print(f"[DualTrack] LLM增量提取失败，启用规则回退: {e}")
+
+            # 规则回退：LLM失败或无增量时，直接从query中提取关键词
+            if not delta:
+                rule_keywords = self._rule_extract_keywords(raw_query)
+                if rule_keywords:
+                    delta = {"theme_weights": rule_keywords}
+                    delta_source = "rule_fallback"
+                    print(f"[DualTrack] 规则回退提取到关键词: {rule_keywords}")
+
+            if delta:
+                updated_pref = self.apply_delta_to_profile(
+                    user_id=user_id,
+                    user_type=user_type,
+                    delta=delta,
+                    gamma=0.3
+                )
+                if updated_pref:
+                    self.save_profile_to_db(
                         user_id=user_id,
                         user_type=user_type,
+                        preference=updated_pref,
+                        source=delta_source,
                         delta=delta,
-                        gamma=0.3
+                        request_id=request_id
                     )
-                    if updated_pref:
-                        self.save_profile_to_db(
-                            user_id=user_id,
-                            user_type=user_type,
-                            preference=updated_pref,
-                            source="llm_delta",
-                            delta=delta,
-                            request_id=request_id
-                        )
-                        print(f"[DualTrack] 对话驱动更新完成 (user_id={user_id}), delta={delta}")
-                else:
-                    print(f"[DualTrack] 对话驱动无增量 (user_id={user_id})")
-            except Exception as e:
-                print(f"[DualTrack] 对话驱动更新失败: {e}")
+                    print(f"[DualTrack] 对话驱动更新完成 (user_id={user_id}), source={delta_source}, delta={delta}")
+            else:
+                print(f"[DualTrack] 对话驱动无增量 (user_id={user_id})")
