@@ -263,8 +263,6 @@ python -m http.server 8080
 
 ## 📸 项目效果
 
-> 将截图放入 `docs/screenshots/` 目录即可在README中直接展示。
-
 ### 1. 分享卡片
 真实POI图片 + Canvas手绘路线图 + 动态高度，生成9:16分享卡片。
 
