@@ -24,6 +24,7 @@ from backend.data.city_builder import (
     get_available_cities, get_city_status, start_city_build
 )
 from backend.data.loader import get_city_center
+import base64
 
 
 app = FastAPI(
@@ -486,6 +487,27 @@ def city_status(city: str):
         "center": center,
         **status
     }
+
+
+@app.get("/api/proxy-image")
+def proxy_image(url: str):
+    """
+    图片代理：下载外部图片并返回base64，供前端canvas绕过CORS使用。
+    """
+    try:
+        import requests
+        resp = requests.get(url, timeout=10, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        })
+        resp.raise_for_status()
+        b64 = base64.b64encode(resp.content).decode('utf-8')
+        content_type = resp.headers.get('content-type', 'image/jpeg')
+        return {
+            "data": f"data:{content_type};base64,{b64}",
+            "content_type": content_type
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"图片下载失败: {str(e)}")
 
 
 @app.post("/api/_reload")

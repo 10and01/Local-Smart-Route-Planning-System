@@ -3052,6 +3052,7 @@
 
         // ===== POI详情面板 =====
         function openPoiPanel(planIndex, segIndex) {
+            closeAllPanels(); // 关闭右侧面板，避免覆盖 POI 详情
             const plan = STATE.plans[planIndex];
             if (!plan) return;
             const seg = plan.segments[segIndex];
@@ -3372,160 +3373,327 @@
             const plan = STATE.plans[planIndex];
             if (!plan) return;
             const meta = STRATEGY_META[plan.theme] || STRATEGY_META['均衡推荐'];
-            const W = 600, H = 1067;
+            const W = 600;
+            const MAP_H = 300;
+            const HEADER_H = 85;
+            const ITEM_H = 120;
+            const FOOTER_H = 90;
+            const PAD = 24;
+            // 动态高度：避免大量空白
+            const H = HEADER_H + MAP_H + PAD + plan.segments.length * ITEM_H + PAD + FOOTER_H + 20;
+
             const canvas = document.createElement('canvas');
             canvas.width = W;
             canvas.height = H;
             const ctx = canvas.getContext('2d');
 
-            // 预加载所有POI图片
-            const imagePromises = plan.segments.map(seg => {
-                const url = seg.poi.photos && seg.poi.photos.length > 0 ? seg.poi.photos[0] : '';
-                if (!url) return Promise.resolve(null);
-                return new Promise((resolve) => {
-                    const img = new Image();
-                    img.crossOrigin = 'anonymous';
-                    img.onload = () => resolve(img);
-                    img.onerror = () => resolve(null);
-                    img.src = url;
-                    // 3秒超时
-                    setTimeout(() => resolve(null), 3000);
-                });
-            });
-            const images = await Promise.all(imagePromises);
-
-            // 背景渐变
+            // ========== 1. 背景 ==========
             const grd = ctx.createLinearGradient(0, 0, 0, H);
-            grd.addColorStop(0, '#667eea');
-            grd.addColorStop(1, '#764ba2');
+            grd.addColorStop(0, '#1a1a2e');
+            grd.addColorStop(0.5, '#16213e');
+            grd.addColorStop(1, '#0f3460');
             ctx.fillStyle = grd;
             ctx.fillRect(0, 0, W, H);
 
-            // 顶部装饰
-            ctx.fillStyle = 'rgba(255,255,255,0.15)';
-            ctx.beginPath();
-            ctx.arc(W/2, -80, 220, 0, Math.PI*2);
-            ctx.fill();
+            // ========== 2. 精美手绘路线图 ==========
+            const mapY = HEADER_H;
+            const validSegs = plan.segments.filter(s => s.poi.location);
 
-            // 标题
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 28px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('杭州一日游', W/2, 80);
-            ctx.font = '18px sans-serif';
-            ctx.fillStyle = 'rgba(255,255,255,0.9)';
-            ctx.fillText(`方案${String.fromCharCode(65+planIndex)} · ${plan.theme}`, W/2, 115);
+            // 地图背景（深色 +  subtle grid）
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, mapY, W, MAP_H);
 
-            // 分隔线
-            ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+            // 绘制 subtle 网格线
+            ctx.strokeStyle = 'rgba(100,116,139,0.08)';
             ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(60, 140);
-            ctx.lineTo(W-60, 140);
-            ctx.stroke();
+            for (let gx = 0; gx < W; gx += 40) {
+                ctx.beginPath(); ctx.moveTo(gx, mapY); ctx.lineTo(gx, mapY + MAP_H); ctx.stroke();
+            }
+            for (let gy = mapY; gy < mapY + MAP_H; gy += 40) {
+                ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+            }
 
-            // 时间轴（含配图）
-            let y = 170;
-            const ITEM_H = 110;
-            plan.segments.forEach((seg, idx) => {
-                const img = images[idx];
-                
-                // 节点圆点
-                ctx.fillStyle = meta.color;
-                ctx.beginPath();
-                ctx.arc(60, y + 20, 8, 0, Math.PI*2);
-                ctx.fill();
+            if (validSegs.length >= 1) {
+                // 坐标转换：将经纬度映射到 canvas 区域
+                const lats = validSegs.map(s => s.poi.location.lat);
+                const lngs = validSegs.map(s => s.poi.location.lng);
+                const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+                const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+                const latPad = (maxLat - minLat) * 0.3 || 0.02;
+                const lngPad = (maxLng - minLng) * 0.3 || 0.02;
+                const padMap = 50;
+                const toX = (lng) => padMap + (lng - (minLng - lngPad)) / ((maxLng + lngPad) - (minLng - lngPad)) * (W - padMap * 2);
+                const toY = (lat) => mapY + MAP_H - padMap - (lat - (minLat - latPad)) / ((maxLat + latPad) - (minLat - latPad)) * (MAP_H - padMap * 2);
 
-                // 连接线
-                if (idx < plan.segments.length - 1) {
-                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-                    ctx.lineWidth = 2;
+                const nodeColors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD'];
+                const points = validSegs.map((seg, i) => ({
+                    x: toX(seg.poi.location.lng),
+                    y: toY(seg.poi.location.lat),
+                    name: seg.poi.name,
+                    label: String.fromCharCode(65 + i),
+                    color: nodeColors[i % nodeColors.length]
+                }));
+
+                // 绘制发光路线（贝塞尔曲线连接）
+                if (points.length >= 2) {
+                    // 外发光
+                    ctx.shadowColor = 'rgba(102,126,234,0.4)';
+                    ctx.shadowBlur = 15;
+                    ctx.strokeStyle = 'rgba(102,126,234,0.5)';
+                    ctx.lineWidth = 4;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    ctx.setLineDash([10, 5]);
                     ctx.beginPath();
-                    ctx.moveTo(60, y + 28);
-                    ctx.lineTo(60, y + ITEM_H - 10);
+                    ctx.moveTo(points[0].x, points[0].y);
+                    for (let i = 1; i < points.length; i++) {
+                        const prev = points[i - 1];
+                        const curr = points[i];
+                        const cpX = (prev.x + curr.x) / 2 + (curr.y - prev.y) * 0.15;
+                        const cpY = (prev.y + curr.y) / 2 - (curr.x - prev.x) * 0.15;
+                        ctx.quadraticCurveTo(cpX, cpY, curr.x, curr.y);
+                    }
                     ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.shadowBlur = 0;
+
+                    // 绘制中间小箭头（表示方向）
+                    for (let i = 1; i < points.length; i++) {
+                        const prev = points[i - 1];
+                        const curr = points[i];
+                        const midX = (prev.x + curr.x) / 2;
+                        const midY = (prev.y + curr.y) / 2;
+                        const angle = Math.atan2(curr.y - prev.y, curr.x - prev.x);
+                        ctx.fillStyle = 'rgba(102,126,234,0.7)';
+                        ctx.beginPath();
+                        ctx.moveTo(midX + Math.cos(angle) * 6, midY + Math.sin(angle) * 6);
+                        ctx.lineTo(midX + Math.cos(angle + 2.5) * 4, midY + Math.sin(angle + 2.5) * 4);
+                        ctx.lineTo(midX + Math.cos(angle - 2.5) * 4, midY + Math.sin(angle - 2.5) * 4);
+                        ctx.fill();
+                    }
                 }
 
-                // 配图（左侧小图）
+                // 绘制节点（发光圆点 + 标签 + 名称）
+                points.forEach((p, i) => {
+                    // 外圈发光
+                    ctx.shadowColor = p.color;
+                    ctx.shadowBlur = 20;
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+
+                    // 内圈白色
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // 标签字母
+                    ctx.fillStyle = p.color;
+                    ctx.font = 'bold 13px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(p.label, p.x, p.y + 1);
+
+                    // POI名称（节点上方或下方，避免重叠）
+                    const nameY = i % 2 === 0 ? p.y - 28 : p.y + 36;
+                    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+                    ctx.font = '12px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(p.name.length > 8 ? p.name.slice(0, 7) + '…' : p.name, p.x, nameY);
+                });
+
+                // 绘制装饰性"道路"（随机几条虚线，增加地图感）
+                ctx.strokeStyle = 'rgba(148,163,184,0.06)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([4, 8]);
+                for (let i = 0; i < 3; i++) {
+                    ctx.beginPath();
+                    const startY = mapY + 40 + i * 80;
+                    ctx.moveTo(0, startY);
+                    ctx.bezierCurveTo(W * 0.3, startY - 20, W * 0.7, startY + 20, W, startY);
+                    ctx.stroke();
+                }
+                ctx.setLineDash([]);
+            }
+
+            // 地图底部渐变遮罩（过渡到下方内容）
+            const mapFadeBottom = ctx.createLinearGradient(0, mapY + MAP_H - 40, 0, mapY + MAP_H);
+            mapFadeBottom.addColorStop(0, 'rgba(15,23,42,0)');
+            mapFadeBottom.addColorStop(1, 'rgba(15,23,42,0.95)');
+            ctx.fillStyle = mapFadeBottom;
+            ctx.fillRect(0, mapY + MAP_H - 40, W, 40);
+
+            // ========== 3. 标题区（覆盖在地图上方）==========
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 26px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`${plan.city || '杭州'}一日游`, PAD, 45);
+            ctx.font = '14px sans-serif';
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.fillText(`方案${String.fromCharCode(65+planIndex)} · ${plan.theme}`, PAD, 68);
+
+            // ========== 4. 预加载POI真实图片（通过后端代理绕过CORS）==========
+            const imagePromises = plan.segments.map(async seg => {
+                const url = seg.poi.photos && seg.poi.photos.length > 0 ? seg.poi.photos[0] : '';
+                if (!url) return null;
+                try {
+                    const proxyResp = await apiCall(`/api/proxy-image?url=${encodeURIComponent(url)}`);
+                    if (!proxyResp.ok) return null;
+                    const proxyData = await proxyResp.json();
+                    if (!proxyData.data) return null;
+                    return await new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = () => resolve(img);
+                        img.onerror = () => resolve(null);
+                        img.src = proxyData.data;
+                        setTimeout(() => resolve(null), 5000);
+                    });
+                } catch (e) {
+                    return null;
+                }
+            });
+            const images = await Promise.all(imagePromises);
+
+            // ========== 5. POI时间轴列表 ==========
+            let y = mapY + MAP_H + PAD;
+            plan.segments.forEach((seg, idx) => {
+                const img = images[idx];
+                const imgSize = 90;
+                const imgX = PAD;
+                const imgY = y;
+
+                // --- 左侧图片区 ---
                 if (img) {
-                    const imgSize = 70;
-                    const imgX = 85;
-                    const imgY = y;
-                    // 圆角裁剪
+                    // 真实图片：圆角 + 阴影效果
                     ctx.save();
                     ctx.beginPath();
-                    ctx.roundRect(imgX, imgY, imgSize, imgSize, 8);
+                    ctx.roundRect(imgX, imgY, imgSize, imgSize, 10);
                     ctx.clip();
                     ctx.drawImage(img, imgX, imgY, imgSize, imgSize);
                     ctx.restore();
-                } else {
-                    // 无图时显示emoji占位
-                    const imgSize = 70;
-                    const imgX = 85;
-                    const imgY = y;
-                    ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                    // 图片边框
+                    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                    ctx.lineWidth = 1;
                     ctx.beginPath();
-                    ctx.roundRect(imgX, imgY, imgSize, imgSize, 8);
+                    ctx.roundRect(imgX, imgY, imgSize, imgSize, 10);
+                    ctx.stroke();
+                } else {
+                    // Fallback：类别渐变色块 + 大emoji + 名称首字
+                    const catGradients = {
+                        '风景名胜': ['#1a5f3c', '#2d8a5e'],
+                        '餐饮服务': ['#7c2d12', '#c2410c'],
+                        '购物服务': ['#701a75', '#a21caf'],
+                        '体育休闲服务': ['#1e3a8a', '#3b82f6'],
+                    };
+                    const gradColors = catGradients[seg.poi.category] || ['#334155', '#64748b'];
+                    const fgrd = ctx.createLinearGradient(imgX, imgY, imgX + imgSize, imgY + imgSize);
+                    fgrd.addColorStop(0, gradColors[0]);
+                    fgrd.addColorStop(1, gradColors[1]);
+                    ctx.fillStyle = fgrd;
+                    ctx.beginPath();
+                    ctx.roundRect(imgX, imgY, imgSize, imgSize, 10);
                     ctx.fill();
-                    ctx.font = '28px sans-serif';
+                    // emoji
+                    ctx.font = '32px sans-serif';
                     ctx.textAlign = 'center';
-                    ctx.fillText(getCategoryEmoji(seg.poi.category), imgX + imgSize/2, imgY + imgSize/2 + 10);
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(getCategoryEmoji(seg.poi.category), imgX + imgSize / 2, imgY + imgSize / 2 - 8);
+                    // 首字
+                    ctx.font = 'bold 14px sans-serif';
+                    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                    ctx.fillText(seg.poi.name.slice(0, 2), imgX + imgSize / 2, imgY + imgSize / 2 + 18);
                 }
 
-                // POI名称
-                const textX = img ? 170 : 85;
-                ctx.textAlign = 'left';
+                // --- 节点标记（A/B/C... 叠加在图片右上角） ---
+                const badgeSize = 22;
+                const badgeX = imgX + imgSize - badgeSize + 4;
+                const badgeY = imgY - 4;
+                ctx.fillStyle = meta.color;
+                ctx.beginPath();
+                ctx.arc(badgeX + badgeSize/2, badgeY + badgeSize/2, badgeSize/2, 0, Math.PI*2);
+                ctx.fill();
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 16px sans-serif';
-                ctx.fillText(seg.poi.name, textX, y + 20);
+                ctx.font = 'bold 12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(String.fromCharCode(65 + idx), badgeX + badgeSize/2, badgeY + badgeSize/2 + 1);
+
+                // --- 右侧文字区（与图片完全分离，不重叠） ---
+                const textX = imgX + imgSize + 16;
+                const textY = imgY + 6;
+
+                // POI名称
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'alphabetic';
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 17px sans-serif';
+                ctx.fillText(seg.poi.name, textX, textY + 16);
 
                 // 时间
-                ctx.fillStyle = 'rgba(255,255,255,0.75)';
+                ctx.fillStyle = 'rgba(255,255,255,0.65)';
                 ctx.font = '13px sans-serif';
-                ctx.fillText(`${seg.arrive_time} - ${seg.leave_time} · ${seg.duration}分钟`, textX, y + 40);
+                ctx.fillText(`${seg.arrive_time} - ${seg.leave_time} · ${seg.duration}分钟`, textX, textY + 38);
 
-                // 类别标签
+                // 类别标签 + 评分（同一行）
+                let tagX = textX;
                 const catText = seg.poi.category;
                 ctx.font = '11px sans-serif';
-                const catW = ctx.measureText(catText).width + 12;
-                ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                const catW = ctx.measureText(catText).width + 14;
+                ctx.fillStyle = 'rgba(255,255,255,0.12)';
                 ctx.beginPath();
-                ctx.roundRect(textX, y + 50, catW, 18, 4);
+                ctx.roundRect(tagX, textY + 50, catW, 20, 6);
                 ctx.fill();
-                ctx.fillStyle = 'rgba(255,255,255,0.9)';
-                ctx.fillText(catText, textX + 6, y + 63);
+                ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                ctx.fillText(catText, tagX + 7, textY + 64);
+                tagX += catW + 8;
 
-                // 评分
                 if (seg.poi.rating) {
                     const starText = `★ ${seg.poi.rating}`;
+                    ctx.fillStyle = 'rgba(251,191,36,0.15)';
+                    const starW = ctx.measureText(starText).width + 14;
+                    ctx.beginPath();
+                    ctx.roundRect(tagX, textY + 50, starW, 20, 6);
+                    ctx.fill();
                     ctx.fillStyle = '#fbbf24';
-                    ctx.font = 'bold 12px sans-serif';
-                    ctx.fillText(starText, textX + catW + 10, y + 63);
+                    ctx.font = 'bold 11px sans-serif';
+                    ctx.fillText(starText, tagX + 7, textY + 64);
+                }
+
+                // 价格
+                if (seg.poi.price) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+                    ctx.font = '12px sans-serif';
+                    ctx.fillText(`¥${seg.poi.price}/人`, textX, textY + 86);
                 }
 
                 y += ITEM_H;
             });
 
-            // 底部统计
-            const statsY = Math.min(y + 20, H - 120);
-            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            // ========== 6. 底部统计 ==========
+            const statsY = y + 10;
+            ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+            ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(60, statsY);
-            ctx.lineTo(W-60, statsY);
+            ctx.moveTo(PAD, statsY);
+            ctx.lineTo(W - PAD, statsY);
             ctx.stroke();
 
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 20px sans-serif';
+            ctx.font = 'bold 18px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(`${plan.poi_count}个地点 · ${plan.total_time} · ¥${plan.total_cost}`, W/2, statsY + 35);
+            ctx.textBaseline = 'alphabetic';
+            ctx.fillText(`${plan.poi_count}个地点 · ${plan.total_time} · ¥${plan.total_cost}`, W / 2, statsY + 35);
 
-            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.fillStyle = 'rgba(255,255,255,0.4)';
             ctx.font = '12px sans-serif';
-            ctx.fillText('由 本地智能路线规划系统 生成', W/2, H - 40);
+            ctx.fillText('由 本地智能路线规划系统 生成', W / 2, statsY + 58);
 
-            // 下载
+            // ========== 7. 下载 ==========
             const link = document.createElement('a');
-            link.download = `杭州路线_${plan.theme}_${new Date().toISOString().slice(0,10)}.png`;
+            link.download = `${plan.city || '杭州'}路线_${plan.theme}_${new Date().toISOString().slice(0,10)}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         }
