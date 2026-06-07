@@ -1,3 +1,0 @@
-time=64
-distance=9620
-mode=公交

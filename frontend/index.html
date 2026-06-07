@@ -1074,6 +1074,28 @@
             color: var(--color-danger);
         }
 
+        /* 多方案路线标记 */
+        .plan-dot-marker {
+            border-radius: 50%;
+            width: 22px !important;
+            height: 22px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            border: 2px solid white;
+        }
+        .plan-dot-marker.end {
+            border-radius: 4px;
+            transform: rotate(45deg);
+        }
+        .plan-dot-marker.end span {
+            transform: rotate(-45deg);
+        }
+
         /* ===== 响应式 ===== */
         @media (max-width: 768px) {
             :root { --sidebar-width: 100vw; }
@@ -2786,7 +2808,7 @@
             document.getElementById('prefDisplay').style.display = 'block';
             document.getElementById('viewNav').style.display = 'flex';
 
-            const pref = data.user_preference;
+            const pref = data.user_preference || {};
             const themeEntries = Object.entries(pref.theme_weights || {})
                 .sort((a, b) => b[1] - a[1]);
             const topThemes = themeEntries
@@ -2822,7 +2844,7 @@
                 renderCompare();
             } else if (viewName === 'overview') {
                 renderOverview();
-                showPlanOnMap(STATE.activePlanIndex);
+                showAllPlansOnMap();
             }
         }
 
@@ -3099,7 +3121,7 @@
                     </div>
                     <div class="poi-pills">
                         ${(poi.tags || []).map(t => `<span class="poi-pill">${t}</span>`).join('')}
-                        ${(poi.suitable_for || []).map(t => `<span class="poi-pill poi-pill-crowd">${t}</span>`).join('')}
+                        ${(Array.isArray(poi.suitable_for) ? poi.suitable_for : []).map(t => `<span class="poi-pill poi-pill-crowd">${t}</span>`).join('')}
                     </div>
                 </div>
 
@@ -3257,6 +3279,144 @@
             map.fitBounds(routeLayer.getBounds(), { padding: [60, 60], maxZoom: 15 });
         }
 
+        function createDotMarker(color, label, isEnd) {
+            return L.divIcon({
+                className: 'custom-marker-wrapper',
+                html: `<div class="plan-dot-marker ${isEnd ? 'end' : ''}" style="background:${color};"><span>${label}</span></div>`,
+                iconSize: [22, 22],
+                iconAnchor: [11, 11],
+                popupAnchor: [0, -11]
+            });
+        }
+
+        // 在地图上同时绘制所有方案路线（总览视图）
+        function showAllPlansOnMap() {
+            if (!STATE.plans || !STATE.plans.length) return;
+            clearMap();
+
+            const routeLayers = [];
+            routeLayer = L.layerGroup().addTo(map);
+            arrowLayer = L.layerGroup().addTo(map);
+
+            STATE.plans.forEach((plan, planIdx) => {
+                if (!plan.segments || !plan.segments.length) return;
+                const meta = STRATEGY_META[plan.theme] || STRATEGY_META['均衡推荐'];
+                const color = meta.color;
+                const label = String.fromCharCode(65 + planIdx); // A/B/C
+
+                const points = plan.segments.map((seg, idx) => {
+                    const lat = seg.poi.location.lat;
+                    const lng = seg.poi.location.lng;
+                    return [lat, lng];
+                });
+
+                // 绘制路线
+                const poly = L.polyline(points, {
+                    color: color,
+                    weight: 4,
+                    opacity: 0.85,
+                    lineJoin: 'round',
+                    dashArray: planIdx === 2 ? '6,6' : null // 第三套方案用虚线区分
+                });
+                routeLayer.addLayer(poly);
+                routeLayers.push(poly);
+
+                // 只标记起点和终点，避免中间点重叠
+                const start = points[0];
+                const end = points[points.length - 1];
+                const startMarker = L.marker(start, { icon: createDotMarker(color, label, false) }).addTo(map);
+                startMarker.on('click', () => openPoiPanel(planIdx, 0));
+                markers.push(startMarker);
+
+                const endMarker = L.marker(end, { icon: createDotMarker(color, '终', true) }).addTo(map);
+                endMarker.on('click', () => openPoiPanel(planIdx, plan.segments.length - 1));
+                markers.push(endMarker);
+
+                // 方向箭头
+                if (points.length >= 2) {
+                    for (let i = 0; i < points.length - 1; i++) {
+                        const p1 = points[i];
+                        const p2 = points[i + 1];
+                        const mid = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
+                        const angle = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]) * 180 / Math.PI;
+                        const arrowIcon = L.divIcon({
+                            className: 'arrow-icon',
+                            html: `<svg width="10" height="10" viewBox="0 0 24 24" fill="${color}" style="transform: rotate(${angle + 90}deg);transform-origin:center;"><path d="M12 2L2 22h20L12 2z"/></svg>`,
+                            iconSize: [10, 10],
+                            iconAnchor: [5, 5]
+                        });
+                        arrowLayer.addLayer(L.marker(mid, { icon: arrowIcon, interactive: false }));
+                    }
+                }
+            });
+
+            if (routeLayers.length) {
+                const group = L.featureGroup(routeLayers);
+                map.fitBounds(group.getBounds(), { padding: [80, 80], maxZoom: 15 });
+            }
+        }
+
+        // 在地图上同时绘制对比方案路线
+        function showCompareOnMap(indices) {
+            if (!indices || indices.length < 2) return;
+            clearMap();
+
+            const routeLayers = [];
+            routeLayer = L.layerGroup().addTo(map);
+            arrowLayer = L.layerGroup().addTo(map);
+
+            indices.forEach((planIdx, order) => {
+                const plan = STATE.plans[planIdx];
+                if (!plan || !plan.segments || !plan.segments.length) return;
+                const meta = STRATEGY_META[plan.theme] || STRATEGY_META['均衡推荐'];
+                const color = meta.color;
+                const label = String.fromCharCode(65 + planIdx);
+
+                const points = plan.segments.map(seg => [seg.poi.location.lat, seg.poi.location.lng]);
+
+                const poly = L.polyline(points, {
+                    color: color,
+                    weight: 5,
+                    opacity: 0.9,
+                    lineJoin: 'round',
+                    dashArray: order === 1 ? '6,6' : null
+                });
+                routeLayer.addLayer(poly);
+                routeLayers.push(poly);
+
+                const start = points[0];
+                const end = points[points.length - 1];
+                const startMarker = L.marker(start, { icon: createDotMarker(color, label, false) }).addTo(map);
+                startMarker.on('click', () => openPoiPanel(planIdx, 0));
+                markers.push(startMarker);
+
+                const endMarker = L.marker(end, { icon: createDotMarker(color, '终', true) }).addTo(map);
+                endMarker.on('click', () => openPoiPanel(planIdx, plan.segments.length - 1));
+                markers.push(endMarker);
+
+                if (points.length >= 2) {
+                    for (let i = 0; i < points.length - 1; i++) {
+                        const p1 = points[i];
+                        const p2 = points[i + 1];
+                        const mid = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
+                        const angle = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]) * 180 / Math.PI;
+                        const arrowIcon = L.divIcon({
+                            className: 'arrow-icon',
+                            html: `<svg width="11" height="11" viewBox="0 0 24 24" fill="${color}" style="transform: rotate(${angle + 90}deg);transform-origin:center;"><path d="M12 2L2 22h20L12 2z"/></svg>`,
+                            iconSize: [11, 11],
+                            iconAnchor: [5, 5]
+                        });
+                        arrowLayer.addLayer(L.marker(mid, { icon: arrowIcon, interactive: false }));
+                    }
+                }
+            });
+
+            if (routeLayers.length) {
+                const group = L.featureGroup(routeLayers);
+                map.fitBounds(group.getBounds(), { padding: [80, 80], maxZoom: 15 });
+            }
+        }
+
         // ===== 渲染双方案对比 =====
         function renderCompare() {
             const container = document.getElementById('viewCompare');
@@ -3349,8 +3509,8 @@
                 </div>
             `;
 
-            // 在地图上同时显示两条路线（简化：只显示第一条）
-            showPlanOnMap(indices[0]);
+            // 在地图上同时显示两条对比路线
+            showCompareOnMap(indices);
         }
 
         // ===== 响应式：地图折叠 =====
