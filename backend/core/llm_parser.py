@@ -8,11 +8,9 @@ LLM 意图理解模块
   - base_url: https://dxb.huifei.net/v1
 """
 
+import functools
 import json
-import os
 from typing import Optional, List, Dict
-
-from openai import OpenAI
 
 from backend.models.schemas import UserPreference
 
@@ -22,19 +20,6 @@ from backend.core.config import LLM_API_KEY, LLM_BASE_URL, LLM_MODEL_NAME, check
 API_KEY = LLM_API_KEY
 BASE_URL = LLM_BASE_URL
 MODEL_NAME = LLM_MODEL_NAME
-
-# 初始化 client（模块级单例，延迟加载）
-_client: Optional[OpenAI] = None
-
-
-def get_client() -> OpenAI:
-    global _client
-    if _client is None:
-        _client = OpenAI(
-            api_key=API_KEY,
-            base_url=BASE_URL,
-        )
-    return _client
 
 
 SYSTEM_PROMPT = """你是一位专业的本地旅游偏好解析助手。你的任务是从用户的自然语言描述中提取意图关键词和权重。
@@ -127,6 +112,66 @@ def _extract_first_json(text: str) -> str:
     return text[start:]
 
 
+@functools.lru_cache(maxsize=128)
+def _parse_preference_from_llm_cached(
+    raw_query: str,
+    preferences: tuple,
+    travelers: str,
+    pace: str,
+    budget: Optional[int],
+    must_visit: tuple,
+    avoid: tuple,
+    transport_mode: str,
+) -> Optional[UserPreference]:
+    """
+    调用 LLM 解析自然语言偏好，输出自由关键词+权重（已缓存版本）。
+    参数必须为可 hash 类型。
+    """
+    if not raw_query or not raw_query.strip():
+        return None
+
+    # 组装用户上下文，把已有的结构化字段也提供给 LLM，让它知道哪些已经明确
+    user_context = f"""用户自然语言描述：{raw_query}
+
+已有的结构化字段（供参考，自然语言优先）：
+- 偏好标签：{list(preferences)}
+- 出行人群：{travelers}
+- 节奏：{pace}
+- 预算：{budget if budget is not None else '未指定'} 元
+- 必去：{list(must_visit) if must_visit else '未指定'}
+- 不想去：{list(avoid) if avoid else '未指定'}
+- 交通方式：{transport_mode}
+"""
+
+    try:
+        if not check_llm_config():
+            print("[LLM Parser Warning] LLM 配置不完整，请检查 .env 文件")
+            return None
+
+        from backend.core.llm_client import safe_llm_chat_completion
+        content = safe_llm_chat_completion(
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": user_context},
+            ],
+            temperature=0.2,
+            timeout_seconds=15,
+            extra_body={"instructions": "请严格按JSON格式输出，不要添加任何解释或markdown代码块。"},
+        )
+
+        if not content:
+            return None
+
+        clean = _extract_first_json(content)
+        parsed = json.loads(clean)
+        return _build_user_preference(parsed, list(preferences), travelers, pace, budget)
+
+    except Exception as e:
+        # 生产环境可打印日志；这里静默 fallback
+        print(f"[LLM Parser Warning] 解析失败，fallback 到规则解析。错误: {e}")
+        return None
+
+
 def parse_preference_from_llm(
     raw_query: str,
     preferences: List[str],
@@ -142,51 +187,16 @@ def parse_preference_from_llm(
 
     返回 UserPreference 对象；若解析失败返回 None，由上层 fallback 到规则解析。
     """
-    if not raw_query or not raw_query.strip():
-        return None
-
-    # 组装用户上下文，把已有的结构化字段也提供给 LLM，让它知道哪些已经明确
-    user_context = f"""用户自然语言描述：{raw_query}
-
-已有的结构化字段（供参考，自然语言优先）：
-- 偏好标签：{preferences}
-- 出行人群：{travelers}
-- 节奏：{pace}
-- 预算：{budget if budget is not None else '未指定'} 元
-- 必去：{must_visit if must_visit else '未指定'}
-- 不想去：{avoid if avoid else '未指定'}
-- 交通方式：{transport_mode}
-"""
-
-    try:
-        if not check_llm_config():
-            print("[LLM Parser Warning] LLM 配置不完整，请检查 .env 文件")
-            return None
-
-        client = get_client()
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": user_context},
-            ],
-            temperature=0.2,
-            timeout=15,
-            extra_body={"instructions": "请严格按JSON格式输出，不要添加任何解释或markdown代码块。"},
-        )
-
-        content = response.choices[0].message.content
-        if not content:
-            return None
-
-        clean = _extract_first_json(content)
-        parsed = json.loads(clean)
-        return _build_user_preference(parsed, preferences, travelers, pace, budget)
-
-    except Exception as e:
-        # 生产环境可打印日志；这里静默 fallback
-        print(f"[LLM Parser Warning] 解析失败，fallback 到规则解析。错误: {e}")
-        return None
+    return _parse_preference_from_llm_cached(
+        raw_query,
+        tuple(preferences) if preferences else (),
+        travelers,
+        pace,
+        budget,
+        tuple(must_visit) if must_visit else (),
+        tuple(avoid) if avoid else (),
+        transport_mode,
+    )
 
 
 def _build_user_preference(

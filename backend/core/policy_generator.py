@@ -19,6 +19,7 @@ LLM 策略生成器 (Policy Generator)
 
 from __future__ import annotations
 
+import functools
 import json
 import math
 from typing import List, Optional, Dict, Any
@@ -458,26 +459,22 @@ def _build_policy_from_json(data: dict) -> PlanningPolicy:
     return clamp_policy_coefficients(policy)
 
 
-def generate_planning_policy(
+@functools.lru_cache(maxsize=64)
+def _generate_planning_policy_cached(
     raw_query: Optional[str],
-    user_pref: UserPreference,
-    candidates: List[POI],
-    constraints: RouteConstraints,
-    timeout: int = 25,
+    user_pref_json: str,
+    candidates_json: str,
+    constraints_json: str,
+    timeout: int,
 ) -> PlanningPolicy:
     """
-    调用 LLM 生成 PlanningPolicy。
-
-    Args:
-        raw_query: 用户原始自然语言 query
-        user_pref: 当前融合后的用户画像
-        candidates: 候选 POI 列表（用于构建统计摘要）
-        constraints: 路线约束条件
-        timeout: LLM 调用超时（秒）
-
-    Returns:
-        PlanningPolicy 对象；若 LLM 调用失败或解析失败，返回 DEFAULT_POLICY。
+    调用 LLM 生成 PlanningPolicy（参数为可 hash 的 JSON 字符串）。
     """
+    # 反序列化对象
+    user_pref = UserPreference.model_validate_json(user_pref_json)
+    candidates = [POI.model_validate(c) for c in json.loads(candidates_json)]
+    constraints = RouteConstraints.model_validate_json(constraints_json)
+
     if not check_llm_config():
         print("[Policy Generator] LLM 配置不完整，回退到默认策略")
         return DEFAULT_POLICY
@@ -556,6 +553,38 @@ def generate_planning_policy(
     except Exception as e:
         print(f"[Policy Generator] 策略生成失败，回退到默认策略。错误：{e}")
         return DEFAULT_POLICY
+
+
+def generate_planning_policy(
+    raw_query: Optional[str],
+    user_pref: UserPreference,
+    candidates: List[POI],
+    constraints: RouteConstraints,
+    timeout: int = 25,
+) -> PlanningPolicy:
+    """
+    调用 LLM 生成 PlanningPolicy。
+
+    Args:
+        raw_query: 用户原始自然语言 query
+        user_pref: 当前融合后的用户画像
+        candidates: 候选 POI 列表（用于构建统计摘要）
+        constraints: 路线约束条件
+        timeout: LLM 调用超时（秒）
+
+    Returns:
+        PlanningPolicy 对象；若 LLM 调用失败或解析失败，返回 DEFAULT_POLICY。
+    """
+    user_pref_json = json.dumps(user_pref.model_dump(exclude_none=True), sort_keys=True, ensure_ascii=False)
+    candidates_json = json.dumps([c.model_dump() for c in candidates], sort_keys=True, ensure_ascii=False)
+    constraints_json = json.dumps(constraints.model_dump(exclude_none=True), sort_keys=True, ensure_ascii=False)
+    return _generate_planning_policy_cached(
+        raw_query,
+        user_pref_json,
+        candidates_json,
+        constraints_json,
+        timeout,
+    )
 
 
 def _fallback_strategies() -> List[StrategyConfig]:

@@ -217,9 +217,19 @@ class SemanticMatcher:
         return result
 
     def batch_compute_poi_embeddings(self, pois: List):
-        """批量预计算 POI 嵌入（用于城市数据初始化）"""
-        descs = []
+        """批量预计算 POI 嵌入（跳过已缓存的 POI）"""
+        # 筛选出未缓存的 POI
+        uncached_pois = []
         for poi in pois:
+            poi_id = getattr(poi, "poi_id", None)
+            if not poi_id or poi_id not in self._poi_embedding_cache:
+                uncached_pois.append(poi)
+
+        if not uncached_pois:
+            return []
+
+        descs = []
+        for poi in uncached_pois:
             texts = [getattr(poi, "name", "") or ""]
             tags = getattr(poi, "tags", None) or []
             texts.extend(tags)
@@ -232,7 +242,7 @@ class SemanticMatcher:
             descs.append("，".join(t for t in texts if t))
 
         embeddings = self.embed_texts(descs)
-        for poi, vec in zip(pois, embeddings):
+        for poi, vec in zip(uncached_pois, embeddings):
             poi_id = getattr(poi, "poi_id", None)
             if poi_id:
                 self._poi_embedding_cache[poi_id] = vec
@@ -254,19 +264,38 @@ class SemanticMatcher:
             print(f"[SemanticMatcher] 保存失败: {e}")
 
     def load_poi_embeddings(self, city: str) -> bool:
-        """从磁盘加载 POI 嵌入"""
+        """从磁盘加载 POI 嵌入（合并到现有缓存，支持多城市）"""
         cache_file = _DATA_DIR / f"{city}_poi_embeddings.pkl"
         if not cache_file.exists():
             return False
         try:
             with open(cache_file, "rb") as f:
-                self._poi_embedding_cache = pickle.load(f)
+                loaded = pickle.load(f)
+            self._poi_embedding_cache.update(loaded)
             print(
-                f"[SemanticMatcher] POI 嵌入已加载: {len(self._poi_embedding_cache)} 个"
+                f"[SemanticMatcher] POI 嵌入已加载: {len(loaded)} 个 (city={city}, 总缓存 {len(self._poi_embedding_cache)} 个)"
             )
             return True
         except Exception as e:
             print(f"[SemanticMatcher] 加载失败: {e}")
+            return False
+
+    def precompute_city(self, city: str) -> bool:
+        """为指定城市预计算 POI 嵌入（带持久化缓存）"""
+        if self.load_poi_embeddings(city):
+            return True
+        try:
+            from backend.data.loader import get_cached_pois
+            pois = get_cached_pois(city)
+            if not pois:
+                print(f"[SemanticMatcher] {city} 无 POI 数据，跳过预计算")
+                return False
+            self.batch_compute_poi_embeddings(pois)
+            self.save_poi_embeddings(city)
+            print(f"[SemanticMatcher] {city} 预计算完成: {len(pois)} 个 POI")
+            return True
+        except Exception as e:
+            print(f"[SemanticMatcher] {city} 预计算失败: {e}")
             return False
 
 

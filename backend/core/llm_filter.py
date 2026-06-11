@@ -295,18 +295,18 @@ class LLMBasedFilter:
         prompt = _build_user_prompt(pois, user_query, context, focus)
         
         try:
-            client = get_client()
-            response = client.chat.completions.create(
-                model=MODEL_NAME,
+            from backend.core.llm_client import safe_llm_chat_completion
+            content = safe_llm_chat_completion(
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": prompt},
                 ],
                 temperature=0.3,
-                timeout=90,
+                timeout_seconds=90,
             )
+            if content is None:
+                raise RuntimeError("LLM client returned None")
             
-            content = response.choices[0].message.content
             results = _parse_llm_response(content)
             
             # 验证结果完整性

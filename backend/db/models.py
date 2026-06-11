@@ -157,6 +157,20 @@ CREATE TABLE IF NOT EXISTS dynamic_fetch_cache (
 
 CREATE INDEX IF NOT EXISTS idx_dynamic_fetch_lookup 
 ON dynamic_fetch_cache(city, query_hash);
+
+-- 异步任务表
+CREATE TABLE IF NOT EXISTS plan_tasks (
+    task_id TEXT PRIMARY KEY,
+    status TEXT NOT NULL DEFAULT 'queued',
+    step TEXT DEFAULT '',
+    progress INTEGER DEFAULT 0,
+    result_json TEXT,
+    error_msg TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_plan_tasks_status ON plan_tasks(status, created_at);
 """
 
 
@@ -636,3 +650,64 @@ class DynamicFetchCacheDAO(BaseDAO):
             conn.execute(
                 "DELETE FROM dynamic_fetch_cache WHERE created_at < datetime('now', '-{} days')".format(days)
             )
+
+
+# ============================================================================
+# 异步规划任务 DAO
+# ============================================================================
+
+class TaskDAO(BaseDAO):
+    """路线规划异步任务 DAO"""
+    
+    @staticmethod
+    def create_task(task_id: str) -> None:
+        with get_db() as conn:
+            conn.execute(
+                "INSERT INTO plan_tasks (task_id, status, step, progress) VALUES (?, 'queued', '', 0)",
+                (task_id,)
+            )
+    
+    @staticmethod
+    def update_task(
+        task_id: str,
+        status: Optional[str] = None,
+        step: Optional[str] = None,
+        progress: Optional[int] = None,
+        result_json: Optional[str] = None,
+        error_msg: Optional[str] = None
+    ) -> None:
+        fields = []
+        values = []
+        if status is not None:
+            fields.append("status = ?")
+            values.append(status)
+        if step is not None:
+            fields.append("step = ?")
+            values.append(step)
+        if progress is not None:
+            fields.append("progress = ?")
+            values.append(progress)
+        if result_json is not None:
+            fields.append("result_json = ?")
+            values.append(result_json)
+        if error_msg is not None:
+            fields.append("error_msg = ?")
+            values.append(error_msg)
+        if not fields:
+            return
+        fields.append("updated_at = CURRENT_TIMESTAMP")
+        set_clause = ", ".join(fields)
+        values.append(task_id)
+        with get_db() as conn:
+            conn.execute(
+                f"UPDATE plan_tasks SET {set_clause} WHERE task_id = ?",
+                values
+            )
+    
+    @staticmethod
+    def get_task(task_id: str) -> Optional[Dict[str, Any]]:
+        with get_db() as conn:
+            row = conn.execute(
+                "SELECT * FROM plan_tasks WHERE task_id = ?", (task_id,)
+            ).fetchone()
+            return TaskDAO._row_to_dict(row)

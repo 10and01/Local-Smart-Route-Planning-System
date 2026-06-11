@@ -4,8 +4,9 @@ FastAPI 入口
 提供路线规划API服务
 """
 
-from fastapi import FastAPI, HTTPException, Depends, Header
+from fastapi import FastAPI, HTTPException, Depends, Header, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+import uuid
 
 from backend.models.schemas import PlanRequest, PlanResponse, AdjustRequest
 from backend.models.auth_schemas import (
@@ -19,7 +20,7 @@ from backend.services.auth import (
     hash_password, verify_password, create_access_token
 )
 from backend.db.database import init_db
-from backend.db.models import UserDAO, UserProfileDAO, UserHistoryDAO, UserFeedbackDAO, ProfileVersionDAO
+from backend.db.models import UserDAO, UserProfileDAO, UserHistoryDAO, UserFeedbackDAO, ProfileVersionDAO, TaskDAO
 from backend.data.city_builder import (
     get_available_cities, get_city_status, start_city_build
 )
@@ -46,6 +47,17 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_event():
     init_db()
+    # 预计算所有已加载城市的 POI 嵌入
+    try:
+        from backend.data.city_builder import get_available_cities
+        from backend.core.semantic_matcher import semantic_matcher
+        cities = get_available_cities()
+        if not cities:
+            cities = ["杭州"]
+        for city in cities:
+            semantic_matcher.precompute_city(city)
+    except Exception as e:
+        print(f"[Startup] 语义匹配器预计算失败: {e}")
 
 
 
@@ -337,23 +349,70 @@ def plan_feedback(req: PlanFeedbackRequest, user: dict = Depends(require_user)):
 # 规划路由（改造：支持用户注入）
 # ============================================================================
 
-@app.post("/api/plan", response_model=PlanResponse)
-def create_plan(
-    request: PlanRequest,
-    user: dict = Depends(get_current_user)
-):
-    """
-    创建路线规划（支持用户画像融合）
-    """
+# ============================================================================
+# 异步规划任务辅助函数
+# ============================================================================
+
+def _run_plan_task(task_id, request, user):
     try:
+        TaskDAO.update_task(task_id, status='running', step='parsing', progress=5)
         user_id = user["user_id"] if user else None
         user_type = user["user_type"] if user else None
-        response = planner_service.plan(request, user_id=user_id, user_type=user_type)
-        return response
+        response = planner_service.plan(request, user_id=user_id, user_type=user_type, task_id=task_id)
+        TaskDAO.update_task(task_id, status='completed', step='completed', progress=100, result_json=response.model_dump_json())
+        print(f"[Task] {task_id} 规划任务完成")
     except Exception as e:
         import traceback
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"规划失败: {str(e)}")
+        TaskDAO.update_task(task_id, status='failed', error_msg=str(e))
+        print(f"[Task] {task_id} 规划任务失败: {e}")
+
+
+@app.post("/api/plan")
+async def create_plan_async(
+    request: PlanRequest,
+    background_tasks: BackgroundTasks,
+    user: dict = Depends(get_current_user)
+):
+    """
+    创建路线规划（异步任务模式）
+    立即返回 task_id，后台执行完整规划（含LLM Filter）
+    """
+    task_id = str(uuid.uuid4())[:8]
+    TaskDAO.create_task(task_id)
+    background_tasks.add_task(_run_plan_task, task_id, request, user)
+    return {"task_id": task_id, "status": "queued"}
+
+
+@app.get("/api/plan/task/{task_id}")
+def get_plan_task(task_id: str):
+    """查询异步规划任务状态和结果"""
+    task = TaskDAO.get_task(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="任务不存在")
+    import json
+    result = dict(task)
+    if result.get("result_json"):
+        try:
+            result["result"] = json.loads(result["result_json"])
+        except Exception:
+            result["result"] = None
+    result.pop("result_json", None)
+    return result
+
+
+@app.get("/api/plan/task/{task_id}/progress")
+def get_plan_task_progress(task_id: str):
+    """查询异步规划任务进度"""
+    task = TaskDAO.get_task(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="任务不存在")
+    return {
+        "task_id": task_id,
+        "status": task.get("status"),
+        "step": task.get("step"),
+        "progress": task.get("progress")
+    }
 
 
 @app.post("/api/plan/{request_id}/adjust", response_model=PlanResponse)

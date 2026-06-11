@@ -111,7 +111,12 @@ class RoutePlannerService:
             print(f"[Planner] LLM骨架规划失败（非关键）: {e}")
         return []
     
-    def plan(self, request: PlanRequest, user_id: Optional[int] = None, user_type: Optional[str] = None) -> PlanResponse:
+    def _update_progress(self, task_id: Optional[str], step: str, progress: int):
+        if task_id:
+            from backend.db.models import TaskDAO
+            TaskDAO.update_task(task_id, status='running', step=step, progress=progress)
+    
+    def plan(self, request: PlanRequest, user_id: Optional[int] = None, user_type: Optional[str] = None, task_id: Optional[str] = None) -> PlanResponse:
         """
         主规划入口（支持用户画像融合）
         """
@@ -127,6 +132,8 @@ class RoutePlannerService:
         importlib.reload(_re_config)
         
         request_id = str(uuid.uuid4())[:8]
+        
+        self._update_progress(task_id, 'parsing', 5)
         
         # 【P2-4】若用户有长期画像描述，拼接到 raw_query 中作为 LLM 上下文
         if user_id is not None:
@@ -170,6 +177,8 @@ class RoutePlannerService:
         user_pref = self.personalization.fuse_preferences(current_pref, historical_pref)
         print(f"[Planner] 偏好融合: 当前请求 + {'历史画像' if historical_pref else '无历史'} → 融合完成")
         
+        self._update_progress(task_id, 'parsing', 15)
+        
         # Step 3: POI召回（缓存城市数据）
         all_pois = get_cached_pois(request.city)
         
@@ -179,11 +188,12 @@ class RoutePlannerService:
         if not should_dynamic_fetch and request.preferences:
             should_dynamic_fetch = True
         
-        if should_dynamic_fetch:
+        if should_dynamic_fetch and len(all_pois) < 100:
             try:
                 from backend.core.dynamic_fetch_planner import fetch_city_pois_dynamic
                 # 【第三层】有 raw_query 时用 raw_query，否则用 preferences 拼接
                 user_query = request.raw_query if (request.raw_query and request.raw_query.strip()) else "、".join(request.preferences)
+                print(f"[Planner] 本地POI不足({len(all_pois)}个)，触发DynamicFetch")
                 dynamic_pois = fetch_city_pois_dynamic(
                     city=request.city,
                     user_query=user_query,
@@ -202,6 +212,10 @@ class RoutePlannerService:
                     print(f"[Planner] 动态抓取补充 {added} 个新POI，候选池共 {len(all_pois)} 个")
             except Exception as e:
                 print(f"[Planner] 动态抓取失败（非关键）: {e}")
+        elif should_dynamic_fetch:
+            print(f"[Planner] 本地POI充足({len(all_pois)}个)，跳过DynamicFetch")
+        
+        self._update_progress(task_id, 'fetching', 25)
         
         # 计算城市中心坐标作为起点
         from backend.data.loader import get_city_center
@@ -228,6 +242,8 @@ class RoutePlannerService:
             all_pois, request, user_pref, constraints
         )
         print(f"[Planner] 筛选策略: {strategy.value}, 输入{filter_metadata['input_count']} → 输出{filter_metadata['output_count']}, 隐性需求: {filter_metadata.get('hidden_needs', 'N/A')}")
+        
+        self._update_progress(task_id, 'filtering', 45)
         
         # Step 4.5: 天气感知调整
         try:
@@ -318,6 +334,8 @@ class RoutePlannerService:
                         except Exception as e:
                             print(f"[Planner] 并发任务失败: {e}")
         
+        self._update_progress(task_id, 'planning', 65)
+        
         # Step 4.95: 【第四层】LLM骨架规划（在筛选之后、路线规划之前）
         skeleton_pois = []
         if request.raw_query and request.raw_query.strip():
@@ -331,8 +349,12 @@ class RoutePlannerService:
             except Exception as e:
                 print(f"[Planner] 骨架规划调用失败（非关键）: {e}")
         
+        self._update_progress(task_id, 'planning', 75)
+        
         # Step 5: 偏好驱动路线规划（传入 policy 和 skeleton_pois）
         plans = route_engine.generate_preference_variants(candidates, user_pref, constraints, policy=policy, skeleton_pois=skeleton_pois, raw_query=request.raw_query)
+        
+        self._update_progress(task_id, 'reasoning', 85)
         
         # Step 6: LLM推荐理由生成（P1优化）
         # 只在有raw_query时启用LLM推荐理由，避免无意义调用
@@ -358,6 +380,8 @@ class RoutePlannerService:
                         future.result(timeout=10)
                     except Exception as e:
                         print(f"[Planner] {theme} 推荐理由超时或失败: {e}")
+        
+        self._update_progress(task_id, 'reasoning', 95)
         
         # Step 7: 缓存方案（内存热点 + SQLite 持久化）
         cache_entry = {
@@ -481,6 +505,8 @@ class RoutePlannerService:
                 )
             except Exception as e:
                 print(f"[Planner] 画像双轨更新失败（非关键）: {e}")
+        
+        self._update_progress(task_id, 'completed', 100)
         
         return PlanResponse(
             request_id=request_id,

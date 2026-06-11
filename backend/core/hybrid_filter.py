@@ -125,7 +125,12 @@ class RuleBasedFilter:
         根据用户偏好对 POI 打分
         【重构】使用语义匹配替代同义词表匹配
         【泛化】使用CATEGORY_BOOST_RULES替代硬编码加分规则
+        【优化】批量预计算 POI Embedding，避免逐条推理 overhead
         """
+        # 批量预计算所有 POI 的 embedding（大幅减少逐条推理 overhead）
+        from backend.core.semantic_matcher import semantic_matcher
+        semantic_matcher.batch_compute_poi_embeddings(pois)
+        
         scored = []
         for poi in pois:
             match = compute_preference_match(poi, user_pref.theme_weights)
