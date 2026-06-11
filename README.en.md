@@ -1,6 +1,10 @@
 # 🗺️ Local Intelligent Route Planning System
 
 <p align="center">
+  <img src="docs/logo.png" alt="Logo" width="180">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/Python-3.12-blue?style=flat-square&logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/Leaflet-199900?style=flat-square&logo=leaflet&logoColor=white" alt="Leaflet">
