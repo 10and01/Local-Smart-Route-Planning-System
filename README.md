@@ -8,6 +8,10 @@
 </p>
 
 <p align="center">
+  <a href="README.en.md">English</a> | 简体中文
+</p>
+
+<p align="center">
   <b>偏好驱动的智能本地路线规划 —— LLM + 经典算法 + 用户画像的长期进化</b>
 </p>
 
